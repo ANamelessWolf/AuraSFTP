@@ -10,7 +10,7 @@ namespace Nameless.Libraries.Aura.Model {
     /// </summary>
     public class MappedPath {
         /// <summary>
-        /// Gets the remote file path
+        /// Gets the remote path
         /// </summary>
         public string RemotePath;
         /// <summary>
@@ -21,5 +21,13 @@ namespace Nameless.Libraries.Aura.Model {
         /// Gets the project current copy
         /// </summary>
         public string ProjectCopy;
+        /// <summary>
+        /// Gets the local version date time
+        /// </summary>
+        public DateTime LocaVersion;
+        /// <summary>
+        /// Gets the remote version date time
+        /// </summary>
+        public DateTime RemoteVersion;
     }
 }

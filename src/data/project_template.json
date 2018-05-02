@@ -1,0 +1,22 @@
+{
+    "Connection": {
+        "Site": "svrIdeSisiPre",
+        "Data": {
+            "Host": "172.25.39.84",
+            "User": "idesisi",
+            "Password": "geocloud01",
+            "RootDir": "/var/www/html/geocloud/",
+            "Port": 22
+        }
+    },
+    "Data": {
+        "Name": "",
+        "ServerCopy": "",
+        "ProjectCopy": "",
+        "Map": {
+            "Directories": [],
+            "Files": []
+        },
+        "ServerLastTimeCopy": "2012-04-23T18:25:43.511Z"
+    }
+}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using static Nameless.Libraries.Aura.data.Message;
+using Nameless.Libraries.Aura.Utils;
 namespace Nameless.Libraries.Aura.Controller {
     /// <summary>
     /// Initialize a new instance of the project controller
@@ -29,11 +30,11 @@ namespace Nameless.Libraries.Aura.Controller {
         /// Runs the given command
         /// <throw>An exception is thrown when the given option is invalid</throw>
         /// </summary>
-        protected override void RunCommand () {
+        public override void RunCommand () {
             if (this.ValidOptions.Contains (this.Option))
                 switch (this.Option) {
                     case "new":
-                        if (this.Args.Length > 2)
+                        if (this.Args.Length == 2)
                             this.CreateProject (this.Args[0], this.Args[1]);
                         else
                             throw new Exception (this.GetErrorArgsMessage (this.Option));
@@ -52,9 +53,11 @@ namespace Nameless.Libraries.Aura.Controller {
                 prjDirExists = pathExists?Directory.Exists (Path.Combine (projectPath, projectName)) : false,
                 prjIsEmpty = prjDirExists?Directory.GetDirectories (projectPath).Length + Directory.GetFiles (projectPath).Length == 0 : true;
 
-            if (pathExists && prjIsEmpty) {
-
-            } else if (!pathExists)
+            if (pathExists && prjIsEmpty)
+                ProjectUtils.InitProject (projectName, projectPath);
+            else if (!pathExists)
+                throw new Exception (MSG_ERR_NEW_PRJ_MISS_DIR);
+            else if (!prjIsEmpty)
                 throw new Exception (MSG_ERR_NEW_PRJ_MISS_DIR);
         }
     }

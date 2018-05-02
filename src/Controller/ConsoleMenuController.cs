@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Nameless.Libraries.Aura.Model;
 using static Nameless.Libraries.Aura.data.Message;
+using static Nameless.Libraries.Aura.Utils.CommandUtils;
 namespace Nameless.Libraries.Aura.Controller {
     /// <summary>
     /// This class controls the menu controller
@@ -12,7 +13,16 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <summary>
         /// Access the application user settings
         /// </summary>
-        private UserSettings Settings;
+        public static UserSettings Settings;
+        /// <summary>
+        /// Access the application current connection
+        /// </summary>
+        public static SiteDefinition Connection {
+            get {
+                int selCred = Settings.SelectedSite;
+                return Settings.Sites[selCred];
+            }
+        }
         /// <summary>
         /// The current site credentials
         /// </summary>
@@ -24,13 +34,13 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <summary>
         /// Current Site
         /// </summary>
-        public String SiteName { get => this.Settings.Sites[this.Settings.SelectedSite].Site; }
+        public String SiteName { get => Settings.Sites[Settings.SelectedSite].Site; }
         /// <summary>
         /// Initialize a new instance of the user settings
         /// </summary>
         /// <param name="sett">The application user settings</param>
         public ConsoleMenuController (UserSettings sett) {
-            this.Settings = sett;
+            Settings = sett;
             int selCred = sett.SelectedSite;
             this.Credentials = sett.Sites[selCred].Data;
         }
@@ -57,7 +67,16 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <param name="args">The arguments used to run the command</param>
         public void RunCommand (string[] args) {
             if (args.Length > 0 && this.ValidParameters.Contains (args[0])) {
-
+                CommandController cmd = null;
+                String[] opt, cmdArgs;
+                args.Split (1, out opt, out cmdArgs);
+                switch (opt[0]) {
+                    case "-p":
+                        cmd = new ProjectController (cmdArgs);
+                        break;
+                }
+                if (cmd != null)
+                    cmd.RunCommand ();
             } else
                 throw new Exception (MSG_ERR_BAD_ARGS);
         }

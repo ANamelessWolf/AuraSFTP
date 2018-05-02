@@ -45,7 +45,7 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <summary>
         /// Runs the given command
         /// </summary>
-        protected abstract void RunCommand ();
+        public abstract void RunCommand ();
         /// <summary>
         /// Gets the specific error message for the given option
         /// </summary>
