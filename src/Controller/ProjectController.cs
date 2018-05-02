@@ -52,13 +52,13 @@ namespace Nameless.Libraries.Aura.Controller {
             Boolean pathExists = Directory.Exists (projectPath),
                 prjDirExists = pathExists?Directory.Exists (Path.Combine (projectPath, projectName)) : false,
                 prjIsEmpty = prjDirExists?Directory.GetDirectories (projectPath).Length + Directory.GetFiles (projectPath).Length == 0 : true;
-
             if (pathExists && prjIsEmpty)
                 ProjectUtils.InitProject (projectName, projectPath);
             else if (!pathExists)
                 throw new Exception (MSG_ERR_NEW_PRJ_MISS_DIR);
             else if (!prjIsEmpty)
-                throw new Exception (MSG_ERR_NEW_PRJ_MISS_DIR);
+                throw new Exception (MSG_ERR_PRJ_NOT_EMPTY);
+                Console.WriteLine(MSG_INF_NEW_PRJ);
         }
     }
 }

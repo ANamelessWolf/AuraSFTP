@@ -30,7 +30,7 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <summary>
         /// Defines the console menu valid parameters
         /// </summary>
-        private readonly String[] ValidParameters = new String[] { "-p", "-h" };
+        private readonly String[] ValidParameters = new String[] { "-p", "-h", "-m" };
         /// <summary>
         /// Current Site
         /// </summary>
@@ -51,13 +51,29 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <returns>The console menu</returns>
         public string GetMenu () {
             String[] menu = new String[] {
-                "Create a new project",
+                "Create a new project", //0
                 String.Format ("{0,2} {1,4} {2,9} {3}", "-p", "new", "<prj_name>", "<prj_path>"),
                 "Parameters",
                 String.Format ("<prj_name> : {0}", "The name of the project"),
                 String.Format ("<prj_path> : {0}", "The path where the project is saved"),
                 "Example: ",
-                "-p new MyProject C:\\MyProjects\\",
+                "-p new MyProject C:\\MyProjects\\", //6
+                "Map a directory", //7
+                "Maps a directory from the server remote path to the local path. The directory is mapped with subdirectory recursion",
+                String.Format ("{0,2} {1,4} {2,9} {3}", "-m", "dir", "<local_path>", "<remote_path>"),
+                "Parameters",
+                String.Format ("<local_path> : {0}", "The local path for the directory, use the project path as base directory"),
+                String.Format ("<remote_path> : {0}", "The remote path where the directory is downloaded use the connection RootDir as base path"),
+                "Example: ",
+                "-m dir JavaScript\\Widget\\downloader JavaScript/Widget/downloader", //14
+                "Map a directory", //15
+                "Maps a file from the server remote path to the local path. ",
+                String.Format ("{0,2} {1,4} {2,9} {3}", "-m", "dir", "<local_file_path>", "<remote_file_path>"),
+                "Parameters",
+                String.Format ("<local_path> : {0}", "The local path for the file, use the project path as base file"),
+                String.Format ("<remote_path> : {0}", "The remote path where the file is downloaded use the connection RootDir as base path"),
+                "Example: ",
+                "-m file protected\\config\\properties.php config/properties.php", //22
             };
             return String.Join ("\n", menu);
         }
@@ -73,6 +89,9 @@ namespace Nameless.Libraries.Aura.Controller {
                 switch (opt[0]) {
                     case "-p":
                         cmd = new ProjectController (cmdArgs);
+                        break;
+                    case "-m":
+                        cmd = new MappingController (cmdArgs);
                         break;
                 }
                 if (cmd != null)

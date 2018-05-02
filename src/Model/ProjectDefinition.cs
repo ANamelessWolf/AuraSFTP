@@ -7,8 +7,7 @@ namespace Nameless.Libraries.Aura.Model {
     /// <summary>
     /// This class represents the project definition
     /// </summary>
-    public class ProjectDefinition 
-    { 
+    public class ProjectDefinition {
         /// <summary>
         /// The name of the project
         /// </summary>
@@ -29,5 +28,17 @@ namespace Nameless.Libraries.Aura.Model {
         /// The server local mapping
         /// </summary>
         public MapDefinition Map;
+        /// <summary>
+        /// The extensions that the application ignore
+        /// </summary>
+        public String[] IgnoreExtensions;
+        /// <summary>
+        /// The files that the application ignore
+        /// </summary>
+        public String[] IgnoreFiles;
+        /// <summary>
+        /// The directories that the application ignore
+        /// </summary>
+        public String[] IgnoreDirectories;
     }
 }

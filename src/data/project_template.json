@@ -17,6 +17,14 @@
             "Directories": [],
             "Files": []
         },
-        "ServerLastTimeCopy": "2012-04-23T18:25:43.511Z"
+        "ServerLastTimeCopy": "2012-04-23T18:25:43.511Z",
+        "IgnoreExtensions": [
+            ".svn"
+        ],
+        "IgnoreFiles": [],
+        "IgnoreDirectories": [
+            ".svn",
+            ".git"
+        ]
     }
 }

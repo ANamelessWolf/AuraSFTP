@@ -30,6 +30,11 @@ namespace Nameless.Libraries.Aura.data {
          ****** Project Messages ******
          *****************************/
         /// <summary>
+        /// The message sent when the project is created.
+        /// </summary>
+        public const string MSG_INF_NEW_PRJ = "The SSH projected '{0}' was created correctly at the path '{1}'";
+
+        /// <summary>
         /// The error message sent when the specified path does not exists.
         /// </summary>
         public const string MSG_ERR_NEW_PRJ_MISS_DIR = "Can not create the project in the given directory. The directory does not exists";
@@ -40,6 +45,6 @@ namespace Nameless.Libraries.Aura.data {
         /// <summary>
         /// The error message sent when the project can not be open.
         /// </summary>
-        public const string MSG_ERR_PRJ_OPEN = "An error occurred opening the project configuration file '%s'";
+        public const string MSG_ERR_PRJ_OPEN = "An error occurred opening the project configuration file '{0}'";
     }
 }
