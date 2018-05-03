@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Nameless.Libraries.Aura.Model;
 using Renci.SshNet;
+using RenCiSftpClient = Renci.SshNet.SftpClient;
 using static Renci.SshNet.RemotePathTransformation;
 
 namespace Nameless.Libraries.Aura.Controller {
@@ -40,6 +41,7 @@ namespace Nameless.Libraries.Aura.Controller {
                         client.RemotePathTransformation = remotePath;
                     client.Connect ();
                     result = task (client);
+                    client.Disconnect ();
                 } catch (System.Exception exc) {
                     Console.WriteLine (exc.Message);
                 }
@@ -74,42 +76,55 @@ namespace Nameless.Libraries.Aura.Controller {
                         client.RemotePathTransformation = remotePath;
                     client.Connect ();
                     task (client);
+                    client.Disconnect ();
                 } catch (System.Exception exc) {
                     Console.WriteLine (exc.Message);
                 }
             }
         }
         /// <summary>
-        /// List all the files in the given directory
+        /// Defines a SFTP Client transaction
         /// </summary>
-        /// <param name="dirPath">The directory path</param>
-        /// <returns>The files inside the directory</returns>
-        public IEnumerable<String> ListFiles (string dirPath) {
-            IEnumerable<String> result = new String[0];
-            using (var client = new Renci.SshNet.SftpClient (this.credentials.Host, this.credentials.Port,
-                this.credentials.User, this.credentials.Password)) {
-                client.Connect ();
-                result = this.ListFiles (client, dirPath);
-                client.Disconnect ();
+        /// <param name="_cred">The SSH transaction credentials</param>
+        /// <param name="task">The Transaction task</param>
+        /// <returns>The transaction result</returns>
+        public static Object SFTPTransaction (SiteCredentials _cred, Func<Renci.SshNet.SftpClient, Object> task) {
+            Object result = null;
+            using (var client = new Renci.SshNet.SftpClient (_cred.Host, _cred.Port, _cred.User, _cred.Password)) {
+                try {
+                    client.Connect ();
+                    result = task (client);
+                    client.Disconnect ();
+                } catch (System.Exception exc) {
+                    Console.WriteLine (exc.Message);
+                }
             }
             return result;
         }
         /// <summary>
-        /// List the files inside a given directory
+        /// Defines a SFTP Client transaction
         /// </summary>
-        /// <param name="client">The Sftp client</param>
-        /// <param name="dirPath">The directory path</param>
-        /// <returns>The file list collection</returns>
-        private IEnumerable<String> ListFiles (Renci.SshNet.SftpClient client, string dirPath) {
-            List<String> files = new List<String> ();
-            IEnumerable<String> result;
-            var entries = client.ListDirectory (dirPath);
-            foreach (var entry in entries.Where (x => !x.IsDirectory))
-                files.Add (entry.FullName);
-            result = files;
-            foreach (var subDirPath in entries.Where (x => x.IsDirectory && x.Name != ".." && x.Name != "."))
-                result = result.Union (ListFiles (client, subDirPath.FullName));
-            return result;
+        /// <param name="_cred">The SSH transaction credentials</param>
+        /// <param name="task">The Transaction task</param>
+        /// <returns>The transaction result</returns>
+        public static T SFTPTransactionGen<T> (SiteCredentials _cred, Func<Renci.SshNet.SftpClient, T> task)
+        where T : class => (T) SFTPTransaction (_cred, task);
+        /// <summary>
+        /// Defines a SFTP Client transaction
+        /// </summary>
+        /// <param name="_cred">The SSH transaction credentials</param>
+        /// <param name="task">The Transaction task</param>
+        public static void SFTPTransactionVoid (SiteCredentials _cred, Action<Renci.SshNet.SftpClient> task) {
+            using (var client = new Renci.SshNet.SftpClient (_cred.Host, _cred.Port, _cred.User, _cred.Password)) {
+                try {
+                    client.Connect ();
+                    task (client);
+                    client.Disconnect ();
+                } catch (System.Exception exc) {
+                    Console.WriteLine (exc.Message);
+                }
+            }
         }
+
     }
 }

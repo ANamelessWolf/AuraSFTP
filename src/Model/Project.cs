@@ -16,5 +16,10 @@ namespace Nameless.Libraries.Aura.Model {
         /// Defines the project configuration data
         /// </summary>
         public ProjectDefinition Data;
+        /// <summary>
+        /// Creates a filter using the current project
+        /// </summary>
+        /// <returns>The Sftp filter</returns>
+        public SftpFilter Filter { get => new SftpFilter (this); }
     }
 }

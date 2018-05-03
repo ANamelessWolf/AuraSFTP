@@ -8,10 +8,11 @@ using Newtonsoft.Json;
 namespace Nameless.Libraries.Aura.Utils {
 
     public static class SiteUtils {
-        public static SiteCredentials GetCredentialsBySelectedIndex (int selIndex) {
-            return null;
-        }
-
+        
+        /// <summary>
+        /// Get the current application settings
+        /// </summary>
+        /// <returns>The SSH app settings</returns>
         public static UserSettings GetUserSettings () {
             UserSettings settings=null;
             string pth = Path.Combine ("data", "settings.json");

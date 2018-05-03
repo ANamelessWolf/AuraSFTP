@@ -47,7 +47,7 @@ namespace Nameless.Libraries.Aura.Utils {
         /// </summary>
         /// <param name="prj">The project configuration file</param>
         /// <param name="pth">The project configuration file path</param>
-        public static void SaveProject (Project prj, string pth) {
+        public static void SaveProject (this Project prj, string pth) {
             File.WriteAllText (pth, JsonConvert.SerializeObject (prj));
         }
 
@@ -56,7 +56,7 @@ namespace Nameless.Libraries.Aura.Utils {
         /// </summary>
         /// <param name="configPth">The configuration file path</param>
         /// <returns>The open project</returns>
-        private static Project OpenProjectFile (this string configPth) {
+        public static Project OpenProjectFile (this string configPth) {
             if (File.Exists (configPth)) {
                 using (StreamReader r = new StreamReader (configPth)) {
                     string json = r.ReadToEnd ();
