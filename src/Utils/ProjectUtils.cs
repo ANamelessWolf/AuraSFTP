@@ -65,5 +65,19 @@ namespace Nameless.Libraries.Aura.Utils {
             } else
                 throw new Exception (String.Format (MSG_ERR_PRJ_OPEN, configPth));
         }
+        /// <summary>
+        /// Opens the current project
+        /// </summary>
+        /// <throw>An exception is thrown if the current directory doesn't has a project</throw>
+        /// <returns>The current project</returns>
+        public static Project OpenProject () {
+            String localPath = Environment.CurrentDirectory;
+            String configFile = Path.Combine (localPath, ".ssh", "config.json");
+            Boolean sshProjectExists = File.Exists (configFile);
+            if (sshProjectExists)
+                return configFile.OpenProjectFile ();
+            else
+                throw new Exception (MSG_ERR_PRJ_MISS);
+        }
     }
 }

@@ -27,6 +27,12 @@ namespace Nameless.Libraries.Aura.Model {
             this.IgnoreFiles = prj.Data.IgnoreFiles;
             this.IgnoreExtensions = prj.Data.IgnoreExtensions;
         }
+
+        internal bool UnixFile()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Filter the directory name
         /// </summary>

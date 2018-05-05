@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace Nameless.Libraries.Aura.Model {
     /// <summary>
@@ -20,6 +21,7 @@ namespace Nameless.Libraries.Aura.Model {
         /// Creates a filter using the current project
         /// </summary>
         /// <returns>The Sftp filter</returns>
+        [IgnoreDataMemberAttribute]
         public SftpFilter Filter { get => new SftpFilter (this); }
     }
 }

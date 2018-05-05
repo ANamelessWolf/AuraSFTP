@@ -6,10 +6,11 @@ using Nameless.Libraries.Aura.Model;
 using Renci.SshNet;
 using RenCiSftpClient = Renci.SshNet.SftpClient;
 using static Renci.SshNet.RemotePathTransformation;
+using Nameless.Libraries.Aura.Utils;
 
 namespace Nameless.Libraries.Aura.Controller {
 
-    public class SftpClient : ScpClient {
+    public class AuraSftpClient : ScpClient {
         /// <summary>
         /// The Sftp connection credentials
         /// </summary>
@@ -19,7 +20,7 @@ namespace Nameless.Libraries.Aura.Controller {
         /// Start the connection to SFTP client
         /// </summary>
         /// <param name="_cred">The SFTP connection credentials</param>
-        public SftpClient (SiteCredentials _cred) : base (_cred.Host, _cred.Port, _cred.User, _cred.Password) {
+        public AuraSftpClient (SiteCredentials _cred) : base (_cred.Host, _cred.Port, _cred.User, _cred.Password) {
             this.credentials = _cred;
         }
         /// <summary>
@@ -31,9 +32,9 @@ namespace Nameless.Libraries.Aura.Controller {
         /// it is passed to the scp command on the remote server.
         /// DoubleQuote, ShellQuote, None</param>
         /// <returns>The transaction result</returns>
-        public static Object SSHTransaction (SiteCredentials _cred, Func<SftpClient, Object> task, IRemotePathTransformation remotePath = null) {
+        public static Object SSHTransaction (SiteCredentials _cred, Func<AuraSftpClient, Object> task, IRemotePathTransformation remotePath = null) {
             Object result = null;
-            using (var client = new SftpClient (_cred)) {
+            using (var client = new AuraSftpClient (_cred)) {
                 try {
                     if (remotePath == null)
                         client.RemotePathTransformation = ShellQuote;
@@ -57,7 +58,7 @@ namespace Nameless.Libraries.Aura.Controller {
         /// it is passed to the scp command on the remote server.
         /// DoubleQuote, ShellQuote, None</param>
         /// <returns>The transaction result</returns>
-        public static T SSHTransaction<T> (SiteCredentials _cred, Func<SftpClient, T> task, IRemotePathTransformation remotePath = null)
+        public static T SSHTransactionGen<T> (SiteCredentials _cred, Func<AuraSftpClient, T> task, IRemotePathTransformation remotePath = null)
         where T : class => (T) SSHTransaction (_cred, task);
         /// <summary>
         /// Defines a SSH transaction
@@ -67,8 +68,8 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <param name="remotePath">Changes how the remote path is transformed before 
         /// it is passed to the scp command on the remote server.
         /// DoubleQuote, ShellQuote, None</param>
-        public static void SSHTransactionVoid (SiteCredentials _cred, Action<SftpClient> task, IRemotePathTransformation remotePath = null) {
-            using (var client = new SftpClient (_cred)) {
+        public static void SSHTransactionVoid (SiteCredentials _cred, Action<AuraSftpClient> task, IRemotePathTransformation remotePath = null) {
+            using (var client = new AuraSftpClient (_cred)) {
                 try {
                     if (remotePath == null)
                         client.RemotePathTransformation = ShellQuote;

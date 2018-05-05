@@ -37,7 +37,22 @@ namespace Nameless.Libraries.Aura.data {
         /// The message sent when the project is created.
         /// </summary>
         public const string MSG_INF_NEW_PRJ = "The SSH projected '{0}' was created correctly at the path '{1}'";
-
+        /// <summary>
+        /// The message sent when a file is download
+        /// </summary>
+        public const string MSG_INF_DOW_FILE = "Downloading the file '{0}'";
+        /// <summary>
+        /// The message sent when a file is copied
+        /// </summary>
+        public const string MSG_INF_COPY_FILE = "File copied at '{0}'";
+        /// <summary>
+        /// The message sent when a file is omitted because replace is deactivated
+        /// </summary>
+        public const string MSG_INF_EXIST_OMIT_FILE = "The file '{0}' already exists, replace is disable omitting.";
+        /// <summary>
+        /// The message sent when a file is replaced
+        /// </summary>
+        public const string MSG_INF_EXIST_REPLACE_FILE = "The file '{0}' already exists, replacing file.";
         /// <summary>
         /// The error message sent when the specified path does not exists.
         /// </summary>
@@ -50,14 +65,23 @@ namespace Nameless.Libraries.Aura.data {
         /// The error message sent when the project can not be open.
         /// </summary>
         public const string MSG_ERR_PRJ_OPEN = "An error occurred opening the project configuration file '{0}'";
+        /// <summary>
+        /// The error message sent when the project has nothing to pull.
+        /// </summary>
+        public const string MSG_ERR_PRJ_PULL_EMPTY_MAP = "There are no mapped directories or files. Nothing to download";
+
         /*****************************
          ****** Mapping Messages *****
          *****************************/
         /// <summary>
+        /// The message sent when a mapping is added.
+        /// </summary>
+        public const string MSG_INF_MAP_CREATED = "A new mapped path from '{0}' to '{1}' was created correctly.";
+        /// <summary>
         /// The error message sent when the remote path not exists
         /// </summary>
-        public const string MSG_ERR_MAP_REM_PTH = "The remote path '{0}' was not found on the server. See '-h {0} {1}' for removing a map";
-                /// <summary>
+        public const string MSG_ERR_MAP_REM_PTH = "The remote path '{0}' was not found on the server.";
+        /// <summary>
         /// The error message sent when the remote path is already mapped
         /// </summary>
         public const string MSG_ERR_MAP_AlREADY_MAPPED = "The remote path '{0}' is already mapped.";
@@ -65,5 +89,9 @@ namespace Nameless.Libraries.Aura.data {
         /// The error message sent when the remote path should be a directory
         /// </summary>
         public const string MSG_ERR_MAP_REM_PTH_NOT_DIR = "The remote path '{0}' is not a directory. See '-h {0} {1}' for more information.";
+        /// <summary>
+        /// The error message sent when the remote path should be a file
+        /// </summary>
+        public const string MSG_ERR_MAP_REM_PTH_NOT_FILE = "The remote path '{0}' is not a file. See '-h {0} {1}' for more information.";
     }
 }

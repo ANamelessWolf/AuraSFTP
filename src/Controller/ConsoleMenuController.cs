@@ -68,12 +68,19 @@ namespace Nameless.Libraries.Aura.Controller {
                 "-m dir JavaScript\\Widget\\downloader JavaScript/Widget/downloader", //14
                 "Map a directory", //15
                 "Maps a file from the server remote path to the local path. ",
-                String.Format ("{0,2} {1,4} {2,9} {3}", "-m", "dir", "<local_file_path>", "<remote_file_path>"),
+                String.Format ("{0,2} {1,4} {2,9} {3}", "-m", "file", "<local_file_path>", "<remote_file_path>"),
                 "Parameters",
-                String.Format ("<local_path> : {0}", "The local path for the file, use the project path as base file"),
-                String.Format ("<remote_path> : {0}", "The remote path where the file is downloaded use the connection RootDir as base path"),
+                String.Format ("<local_file_path> : {0}", "The local path for the file, use the project path as base file"),
+                String.Format ("<remote_file_path> : {0}", "The remote path where the file is downloaded use the connection RootDir as base path"),
                 "Example: ",
                 "-m file protected\\config\\properties.php config/properties.php", //22
+                "Removes a path", //23
+                "Removes a path from the current Project",
+                String.Format ("{0,2} {1,4} {2,9}", "-m", "remove", "<local_path>"),
+                "Parameters",
+                String.Format ("<local_path> : {0}", "The local path to remove"),
+                "Example: ",
+                "-m file protected\\config\\properties.php config/properties.php", //29
             };
             return String.Join ("\n", menu);
         }
