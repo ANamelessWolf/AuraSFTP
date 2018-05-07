@@ -51,36 +51,43 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <returns>The console menu</returns>
         public string GetMenu () {
             String[] menu = new String[] {
-                "Create a new project", //0
+                "Create a new project",
                 String.Format ("{0,2} {1,4} {2,9} {3}", "-p", "new", "<prj_name>", "<prj_path>"),
                 "Parameters",
                 String.Format ("<prj_name> : {0}", "The name of the project"),
                 String.Format ("<prj_path> : {0}", "The path where the project is saved"),
                 "Example: ",
-                "-p new MyProject C:\\MyProjects\\", //6
-                "Map a directory", //7
+                "-p new MyProject C:\\MyProjects\\",
+                "Pull from server",
+                "Downloads the mapped files from the server",
+                String.Format ("{0,2} {1,4} {2,9} {3}", "-p", "pull", "replace", "[optional]"),
+                "Parameters",
+                String.Format ("[optional]replace : {0}", "Use the word 'replace' to overwrite existant files"),
+                "Example: ",
+                "-p pull replace",
+                "Map a directory",
                 "Maps a directory from the server remote path to the local path. The directory is mapped with subdirectory recursion",
                 String.Format ("{0,2} {1,4} {2,9} {3}", "-m", "dir", "<local_path>", "<remote_path>"),
                 "Parameters",
                 String.Format ("<local_path> : {0}", "The local path for the directory, use the project path as base directory"),
                 String.Format ("<remote_path> : {0}", "The remote path where the directory is downloaded use the connection RootDir as base path"),
                 "Example: ",
-                "-m dir JavaScript\\Widget\\downloader JavaScript/Widget/downloader", //14
-                "Map a directory", //15
+                "-m dir JavaScript\\Widget\\downloader JavaScript/Widget/downloader",
+                "Map a directory",
                 "Maps a file from the server remote path to the local path. ",
                 String.Format ("{0,2} {1,4} {2,9} {3}", "-m", "file", "<local_file_path>", "<remote_file_path>"),
                 "Parameters",
                 String.Format ("<local_file_path> : {0}", "The local path for the file, use the project path as base file"),
                 String.Format ("<remote_file_path> : {0}", "The remote path where the file is downloaded use the connection RootDir as base path"),
                 "Example: ",
-                "-m file protected\\config\\properties.php config/properties.php", //22
-                "Removes a path", //23
+                "-m file protected\\config\\properties.php config/properties.php",
+                "Removes a path",
                 "Removes a path from the current Project",
                 String.Format ("{0,2} {1,4} {2,9}", "-m", "remove", "<local_path>"),
                 "Parameters",
                 String.Format ("<local_path> : {0}", "The local path to remove"),
                 "Example: ",
-                "-m file protected\\config\\properties.php config/properties.php", //29
+                "-m file protected\\config\\properties.php config/properties.php",
             };
             return String.Join ("\n", menu);
         }

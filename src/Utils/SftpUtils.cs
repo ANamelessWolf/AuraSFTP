@@ -23,10 +23,10 @@ namespace Nameless.Libraries.Aura.Utils {
             IEnumerable<String> result;
             var entries = client.ListDirectory (dirPath);
             foreach (var entry in entries.Where (x => !x.IsDirectory))
-            if(filter.UnixFile())
-                files.Add (entry.FullName);
+                if (filter.IsUnixFileValid (entry.FullName))
+                    files.Add (entry.FullName);
             result = files;
-            foreach (var subDirPath in entries.Where (x => x.IsDirectory && x.Name != ".." && x.Name != "."))
+            foreach (var subDirPath in entries.Where (x => x.IsDirectory && filter.IsUnixDirValid(x)))
                 result = result.Union (ListFiles (client, subDirPath.FullName, filter));
             return result;
         }
@@ -34,20 +34,34 @@ namespace Nameless.Libraries.Aura.Utils {
         /// Downloads a directory
         /// </summary>
         /// <param name="client">The Sftp client</param>
-        /// <param name="dir">The directory used to download its files</param>
+        /// <param name="file">The directory used to download its files</param>
         /// <param name="filter">The download filter</param>
         public static void Download (this RenciSftpClient client, SiteCredentials credentials, MappedPath dir, SftpFilter filter, Boolean replace) {
             var files = SftpUtils.ListFiles (client, dir.RemotePath, filter);
             string localPath, serverCopy;
             FileInfo sC, lC;
-            AuraSftpClient.SSHTransactionVoid (credentials, (AuraSftpClient c) => {
+            AuraSftpClient.SSHTransactionVoid (credentials, (Action<AuraSftpClient>) ((AuraSftpClient c) => {
                 foreach (String file in files) {
-                    localPath = file.Replace (dir.RemotePath, "").Substring (1).Replace ("/", "\\");
-                    serverCopy = Path.Combine (dir.ServerCopy, localPath);
+                    localPath = file.Replace ((string) dir.RemotePath, "").Substring (1).Replace ("/", "\\");
+                    serverCopy = Path.Combine ((string) dir.ServerCopy, localPath);
                     sC = new FileInfo (serverCopy);
-                    lC = new FileInfo (Path.Combine (dir.ProjectCopy, localPath));
+                    lC = new FileInfo (Path.Combine ((string) dir.ProjectCopy, localPath));
                     DownloadFile (c, file, sC, lC, replace);
                 }
+            }));
+        }
+        /// <summary>
+        /// Downloads a file 
+        /// </summary>
+        /// <param name="credentials">The ssh site credentials</param>
+        /// <param name="fileMap">The mapping file to download</param>
+        /// <param name="replace">True if the downloaded file will be replaced</param>
+        public static void Download (this SiteCredentials credentials, MappedPath fileMap, Boolean replace) {
+            FileInfo sC, lC;
+            AuraSftpClient.SSHTransactionVoid (credentials, (AuraSftpClient c) => {
+                sC = new FileInfo (fileMap.ServerCopy);
+                lC = new FileInfo (fileMap.ProjectCopy);
+                DownloadFile (c, fileMap.RemotePath, sC, lC, replace);
             });
         }
         /// <summary>
