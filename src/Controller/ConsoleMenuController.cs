@@ -30,7 +30,7 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <summary>
         /// Defines the console menu valid parameters
         /// </summary>
-        private readonly String[] ValidParameters = new String[] { "-p", "-h", "-m" };
+        private readonly String[] ValidParameters = new String[] { "-p", "-h", "-m", "-c", "-v" };
         /// <summary>
         /// Current Site
         /// </summary>
@@ -106,6 +106,12 @@ namespace Nameless.Libraries.Aura.Controller {
                         break;
                     case "-m":
                         cmd = new MappingController (cmdArgs);
+                        break;
+                    case "-c":
+                        cmd = new SettingsController (cmdArgs);
+                        break;
+                    case "-v":
+                        Console.WriteLine ("dir: " + Directory.GetCurrentDirectory ());
                         break;
                 }
                 if (cmd != null)
