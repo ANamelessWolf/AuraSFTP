@@ -93,5 +93,28 @@ namespace Nameless.Libraries.Aura.data {
         /// The error message sent when the remote path should be a file
         /// </summary>
         public const string MSG_ERR_MAP_REM_PTH_NOT_FILE = "The remote path '{0}' is not a file. See '-h {0} {1}' for more information.";
+        /*****************************
+         ****** Site Messages ********
+         *****************************/
+        /// <summary>
+        /// The error message sent when the remote site was not found
+        /// </summary>
+        public const string MSG_INF_SITE_ADDED = "The site '{0}' has been added to the application.";
+        /// <summary>
+        /// The error message sent when the remote site was not found
+        /// </summary>
+        public const string MSG_ERR_SITE_NOT_FOUND = "The site configuration named '{0}' was not found.";
+        /// <summary>
+        /// The error message sent when no sites are defined
+        /// </summary>
+        public const string MSG_ERR_NO_SITES = "No sites defined run -s add.";
+        /// <summary>
+        /// The error message sent when the site exists
+        /// </summary>
+        public const string MSG_ERR_SITE_EXISTS = "The site '{0}' already exists use another name for the site";
+        /// <summary>
+        /// The error message sent when a site cannot be added
+        /// </summary>
+        public const string MSG_ERR_BAD_CRED = "The given credentials are not valid. Host, User and RootDir cannot be empty.";
     }
 }

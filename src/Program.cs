@@ -5,9 +5,13 @@ using Nameless.Libraries.Aura.Utils;
 
 namespace Nameless.Libraries.Aura {
     class Program {
+        /// <summary>
+        /// Defines the application user settings
+        /// </summary>
+        public static UserSettings Settings;
         static void Main (string[] args) {
-            UserSettings sett = SiteUtils.GetUserSettings ();
-            ConsoleMenuController menu = new ConsoleMenuController (sett);
+            Settings = SiteUtils.GetUserSettings ();
+            ConsoleMenuController menu = new ConsoleMenuController (Settings);
             try {
                 menu.RunCommand (args);
             } catch (System.Exception exc) {

@@ -11,16 +11,12 @@ namespace Nameless.Libraries.Aura.Controller {
     /// </summary>
     public class ConsoleMenuController {
         /// <summary>
-        /// Access the application user settings
-        /// </summary>
-        public static UserSettings Settings;
-        /// <summary>
         /// Access the application current connection
         /// </summary>
         public static SiteDefinition Connection {
             get {
-                int selCred = Settings.SelectedSite;
-                return Settings.Sites[selCred];
+                int selCred = Program.Settings.SelectedSite;
+                return Program.Settings.Sites[selCred];
             }
         }
         /// <summary>
@@ -30,17 +26,16 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <summary>
         /// Defines the console menu valid parameters
         /// </summary>
-        private readonly String[] ValidParameters = new String[] { "-p", "-h", "-m", "-c", "-v" };
+        private readonly String[] ValidParameters = new String[] { "-p", "-h", "-m", "-s", "-v" };
         /// <summary>
         /// Current Site
         /// </summary>
-        public String SiteName { get => Settings.Sites[Settings.SelectedSite].Site; }
+        public String SiteName { get => Program.Settings.Sites[Program.Settings.SelectedSite].Site; }
         /// <summary>
         /// Initialize a new instance of the user settings
         /// </summary>
         /// <param name="sett">The application user settings</param>
         public ConsoleMenuController (UserSettings sett) {
-            Settings = sett;
             int selCred = sett.SelectedSite;
             this.Credentials = sett.Sites[selCred].Data;
         }
@@ -107,8 +102,8 @@ namespace Nameless.Libraries.Aura.Controller {
                     case "-m":
                         cmd = new MappingController (cmdArgs);
                         break;
-                    case "-c":
-                        cmd = new SettingsController (cmdArgs);
+                    case "-s":
+                        cmd = new SiteController (cmdArgs);
                         break;
                     case "-v":
                         Console.WriteLine ("dir: " + Directory.GetCurrentDirectory ());

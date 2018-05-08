@@ -8,7 +8,18 @@ using Newtonsoft.Json;
 namespace Nameless.Libraries.Aura.Utils {
 
     public static class SiteUtils {
-
+        /// <summary>
+        /// Gets the format of a site used when a site is listed
+        /// </summary>
+        /// <returns>The site listed format</returns>
+        public static String ListSizeFormat {
+            get => "Site {0}\n" +
+                "\tSite directory: {1}\n" +
+                "\tHost: {2}\n" +
+                "\tUser: {3}\n" +
+                "\tPassword: {4}\n" +
+                "\tPort: {5}\n";
+        }
         /// <summary>
         /// Get the current application settings
         /// </summary>
@@ -23,6 +34,41 @@ namespace Nameless.Libraries.Aura.Utils {
                 settings = JsonConvert.DeserializeObject<UserSettings> (json);
             }
             return settings;
+        }
+        /// <summary>
+        /// Gets a string, formatting the site credentials
+        /// </summary>
+        /// <param name="site">The site to get a formatted string</param>
+        /// <param name="format">The site format</param>
+        /// <returns>The site format string</returns>
+        public static string ToStringFormat (this SiteDefinition site, String format) {
+            return String.Format (format,
+                site.Site,
+                site.Data.RootDir,
+                site.Data.Host,
+                site.Data.User,
+                "********",
+                site.Data.Port);
+        }
+        /// <summary>
+        /// Validates that the site credentials are valid
+        /// </summary>
+        /// <param name="credentials">The site credentials</param>
+        /// <returns>True if the site credentials are valid</returns>
+        public static bool IsValid (this SiteCredentials credentials) {
+            if (credentials.Port == 0)
+                credentials.Port = 22;
+            return credentials.Host.Length > 0 && credentials.User.Length > 0 && credentials.RootDir.Length > 0;
+        }
+        /// <summary>
+        /// Saves the current settings
+        /// </summary>
+        /// <param name="settings">The current application settings</param>
+        public static void Save (this UserSettings settings) {
+            String bin = System.Reflection.Assembly.GetAssembly (typeof (SiteUtils)).Location;
+            bin = new FileInfo (bin).Directory.FullName;
+            string pth = Path.Combine (bin, "data", "settings.json");
+            File.WriteAllText (pth, JsonConvert.SerializeObject (settings));
         }
     }
 }

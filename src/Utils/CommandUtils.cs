@@ -19,5 +19,35 @@ namespace Nameless.Libraries.Aura.Utils {
             first = array.Take (index).ToArray ();
             second = array.Skip (index).ToArray ();
         }
+        /// <summary>
+        /// Ask the user for a value
+        /// </summary>
+        /// <param name="msg">The query message</param>
+        /// <returns>The value obtained from the user</returns>
+        public static string Ask (string msg) {
+            Console.WriteLine (msg);
+            return Console.ReadLine ();
+        }
+        /// <summary>
+        /// Ask the user for a password value
+        /// </summary>
+        /// <param name="msg">The query message</param>
+        /// <returns>The value obtained from the user</returns>
+        public static string AskPassword (string msg) {
+            string pass = "";
+            Console.Write (msg + "\n");
+            ConsoleKeyInfo key;
+            do {
+                key = Console.ReadKey (true);
+                if (key.Key != ConsoleKey.Backspace) {
+                    pass += key.KeyChar;
+                    Console.Write ("*");
+                } else if (key.Key == ConsoleKey.Backspace && pass.Length > 0) {
+                    pass = pass.Substring (0, (pass.Length - 1));
+                    Console.Write ("\b \b");
+                }
+            } while (key.Key != ConsoleKey.Enter); // Stops Receving Keys Once Enter is Pressed
+            return pass;
+        }
     }
 }
