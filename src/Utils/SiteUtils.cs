@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Nameless.Libraries.Aura.Model;
 using Newtonsoft.Json;
 
@@ -69,6 +70,33 @@ namespace Nameless.Libraries.Aura.Utils {
             bin = new FileInfo (bin).Directory.FullName;
             string pth = Path.Combine (bin, "data", "settings.json");
             File.WriteAllText (pth, JsonConvert.SerializeObject (settings));
+        }
+        /// <summary>
+        /// Updates the site data via the user request
+        /// </summary>
+        /// <param name="site">The site to update</param>
+        /// <returns>True if the user updated data is valid</returns>
+        public static Boolean UpdateData (this SiteCredentials site) {
+            var variables = typeof (SiteCredentials).GetFields ();
+            foreach (var v in variables)
+                UpdateField (site, v);
+            return SiteUtils.IsValid (site);
+        }
+        /// <summary>
+        /// Update the given field
+        /// </summary>
+        /// <param name="site">The site to update</param>
+        /// <param name="field">The field to update</param>
+        public static void UpdateField (this SiteCredentials site, FieldInfo field) {
+            Object value;
+            int port;
+            if (field.Name == "Password")
+                value = CommandUtils.AskPassword ("User " + field.Name);
+            else
+                value = CommandUtils.Ask ("Value of " + field.Name);
+            if (field.FieldType == typeof (int))
+                value = int.TryParse (value.ToString (), out port) ? port : 22;
+            field.SetValue (site, value);
         }
     }
 }

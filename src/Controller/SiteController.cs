@@ -34,13 +34,19 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <throw>An exception is thrown when the given option is invalid</throw>
         /// </summary>
         public override void RunCommand () {
+            String siteName;
             if (this.ValidOptions.Contains (this.Option))
                 switch (this.Option) {
                     case "add":
-                        this.AddSite ();
+                        siteName = this.Args.Length > 0 ? this.Args[0] : "";
+                        this.AddSite (siteName);
+                        break;
+                    case "edit":
+                        siteName = this.Args.Length > 0 ? this.Args[0] : "";
+                        this.EditSite (siteName);
                         break;
                     case "list":
-                        String siteName = this.Args.Length > 0 ? this.Args[0] : "";
+                        siteName = this.Args.Length > 0 ? this.Args[0] : "";
                         this.ListCurrentSites (siteName);
                         break;
                 } else
@@ -50,24 +56,38 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <summary>
         /// Adds a new site to the configuration file
         /// </summary>
-        private void AddSite () {
-            String siteName = CommandUtils.Ask ("Site Name?");
-            if (Program.Settings.Sites.Count (x => x.Site.ToLower () == siteName.ToLower ()) == 0) {
-                var variables = typeof (SiteCredentials).GetFields ();
-                SiteCredentials credentials = new SiteCredentials ();
-                Object value;
-                foreach (var v in variables) {
-
-                    int port;
-                    if (v.Name == "Password")
-                        value = CommandUtils.AskPassword ("User " + v.Name);
-                    else
-                        value = CommandUtils.Ask ("Value of " + v.Name);
-                    if (v.FieldType == typeof (int))
-                        value = int.TryParse (value.ToString (), out port) ? port : 22;
-                    v.SetValue (credentials, value);
+        /// <param name="siteName">The name of the site</param>
+        private void EditSite (string siteName, string fieldName = "") {
+            var site = Program.Settings.Sites.FirstOrDefault (x => x.Site.ToLower () == siteName.ToLower ());
+            if (site != null)
+                Console.WriteLine (MSG_ERR_SITE_NOT_FOUND, siteName);
+            else {
+                if (fieldName == "") { //Update all fields
+                    if (site.Data.UpdateData ()) {
+                        Program.Settings.Save ();
+                        Console.WriteLine (MSG_INF_SITE_UPDATED, siteName);
+                    } else
+                        Console.WriteLine (MSG_ERR_BAD_CRED);
+                } else {
+                    var variable = typeof (SiteCredentials).GetFields ().FirstOrDefault (x => x.Name.ToLower () == fieldName.ToLower ());
+                    if (variable != null) {
+                        site.Data.UpdateField (variable);
+                        Program.Settings.Save ();
+                    } else
+                        Console.WriteLine (MSG_ERR_SITE_UPDATED, siteName, fieldName);
                 }
-                if (SiteUtils.IsValid (credentials)) {
+            }
+        }
+
+        /// <summary>
+        /// Adds a new site to the configuration file
+        /// </summary>
+        /// <param name="siteName">The name of the site</param>
+        private void AddSite (String siteName = "") {
+            siteName = siteName == "" ? CommandUtils.Ask ("Site Name?") : siteName;
+            if (Program.Settings.Sites.Count (x => x.Site.ToLower () == siteName.ToLower ()) == 0) {
+                SiteCredentials credentials = new SiteCredentials ();
+                if (credentials.UpdateData ()) {
                     Program.Settings.Sites = Program.Settings.Sites.Union (new SiteDefinition[] {
                         new SiteDefinition () { Site = siteName, Data = credentials }
                     }).ToArray ();
@@ -82,8 +102,8 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <summary>
         /// List the current sites
         /// </summary>
-        /// <param name="siteName">The available site names</param>
-        private void ListCurrentSites (string siteName) {
+        /// <param name="siteName">The name of the site</param>
+        private void ListCurrentSites (string siteName = "") {
             var sites = Program.Settings.Sites;
             StringBuilder output = new StringBuilder ();
             String format = SiteUtils.ListSizeFormat;

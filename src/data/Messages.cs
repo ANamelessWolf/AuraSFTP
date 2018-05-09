@@ -97,9 +97,13 @@ namespace Nameless.Libraries.Aura.data {
          ****** Site Messages ********
          *****************************/
         /// <summary>
-        /// The error message sent when the remote site was not found
+        /// The message sent when a new site is added
         /// </summary>
         public const string MSG_INF_SITE_ADDED = "The site '{0}' has been added to the application.";
+        /// <summary>
+        /// The message sent when a site is modified
+        /// </summary>
+        public const string MSG_INF_SITE_UPDATED = "The site '{0}' information has been updated.";
         /// <summary>
         /// The error message sent when the remote site was not found
         /// </summary>
@@ -113,8 +117,12 @@ namespace Nameless.Libraries.Aura.data {
         /// </summary>
         public const string MSG_ERR_SITE_EXISTS = "The site '{0}' already exists use another name for the site";
         /// <summary>
-        /// The error message sent when a site cannot be added
+        /// The error message sent when a site data is invalid
         /// </summary>
         public const string MSG_ERR_BAD_CRED = "The given credentials are not valid. Host, User and RootDir cannot be empty.";
+        /// <summary>
+        /// The error message sent when a site fail to be modified, because the given property not exists
+        /// </summary>
+        public const string MSG_ERR_SITE_UPDATED = "The site '{0}' doesn't has a property called '{1}'.";
     }
 }
