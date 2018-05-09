@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Nameless.Libraries.Aura.Model;
+using Nameless.Libraries.Aura.Utils;
 using static Nameless.Libraries.Aura.data.Message;
 using static Nameless.Libraries.Aura.Utils.CommandUtils;
 namespace Nameless.Libraries.Aura.Controller {
@@ -37,7 +38,15 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <param name="sett">The application user settings</param>
         public ConsoleMenuController (UserSettings sett) {
             int selCred = sett.SelectedSite;
-            this.Credentials = sett.Sites[selCred].Data;
+            if (selCred < sett.Sites.Length)
+                this.Credentials = sett.Sites[selCred].Data;
+            else if (sett.Sites.Length > 0) {
+                sett.SelectedSite = 0;
+                this.Credentials = sett.Sites[0].Data;
+                sett.Save ();
+            } else
+                throw new Exception (MSG_ERR_NO_SITES);
+
         }
 
         /// <summary>

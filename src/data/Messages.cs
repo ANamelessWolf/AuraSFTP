@@ -105,6 +105,26 @@ namespace Nameless.Libraries.Aura.data {
         /// </summary>
         public const string MSG_INF_SITE_UPDATED = "The site '{0}' information has been updated.";
         /// <summary>
+        /// The message sent when a field from a site is modified
+        /// </summary>
+        public const string MSG_INF_SITE_FIELD_UPDATED = "The site '{0}' field '{1}' has been updated.";
+        /// <summary>
+        /// The message sent when a site is removed
+        /// </summary>
+        public const string MSG_INF_SITE_REMOVED = "The site '{0}' has been removed from the configuration file.";
+        /// <summary>
+        /// The message sent when a site connection succed
+        /// </summary>
+        public const string MSG_INF_SITE_CONN_SUCCED = "The site '{0}' has valid credentials to connect to the server.";
+        /// <summary>
+        /// The message sent when a site connection fails
+        /// </summary>
+        public const string MSG_INF_SITE_CONN_FAIL = "The site '{0}' could connect to the server, check your credentials. Server error: {1}";
+         /// <summary>
+        /// The message sent when a site is set as default
+        /// </summary>
+        public const string MSG_INF_SITE_DFTL = "The site '{0}' is set as default connection";
+        /// <summary>
         /// The error message sent when the remote site was not found
         /// </summary>
         public const string MSG_ERR_SITE_NOT_FOUND = "The site configuration named '{0}' was not found.";

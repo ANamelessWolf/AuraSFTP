@@ -103,6 +103,27 @@ namespace Nameless.Libraries.Aura.Controller {
             return result;
         }
         /// <summary>
+        /// Test the credentials connection
+        /// </summary>
+        /// <param name="_cred">The credential connections</param>
+        /// <param name="errMsg">The error message</param>
+        /// <returns>True if the credentials are valid to connect to the host</returns>
+        public static Boolean TestConnection (SiteCredentials _cred, out string errMsg) {
+            Boolean result = true;
+            errMsg = String.Empty;
+            using (var client = new Renci.SshNet.SftpClient (_cred.Host, _cred.Port, _cred.User, _cred.Password)) {
+                try {
+                    client.Connect ();
+                    client.Disconnect ();
+                } catch (System.Exception exc) {
+                    errMsg = exc.Message;
+                    result = false;
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
         /// Defines a SFTP Client transaction
         /// </summary>
         /// <param name="_cred">The SSH transaction credentials</param>

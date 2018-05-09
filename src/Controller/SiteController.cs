@@ -23,7 +23,7 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <summary>
         /// The validation options
         /// </summary>
-        protected override string[] ValidOptions => new String[] { "add", "edit", "list" };
+        protected override string[] ValidOptions => new String[] { "add", "edit", "list", "remove", "test", "default", "check" };
         /// <summary>
         /// Initialize a new instance for a command controller
         /// </summary>
@@ -42,24 +42,113 @@ namespace Nameless.Libraries.Aura.Controller {
                         this.AddSite (siteName);
                         break;
                     case "edit":
-                        siteName = this.Args.Length > 0 ? this.Args[0] : "";
-                        this.EditSite (siteName);
+                        String fieldName;
+                        if (this.Args.Length > 0) {
+                            siteName = this.Args[0];
+                            fieldName = this.Args.Length > 1 ? this.Args[1] : "";
+                            this.EditSite (siteName, fieldName);
+                        } else
+                            throw new Exception (this.GetErrorArgsMessage (this.Option));
                         break;
                     case "list":
                         siteName = this.Args.Length > 0 ? this.Args[0] : "";
                         this.ListCurrentSites (siteName);
+                        break;
+                    case "remove":
+                        if (this.Args.Length > 0) {
+                            siteName = this.Args[0];
+                            this.RemoveSite (siteName);
+                        } else
+                            throw new Exception (this.GetErrorArgsMessage (this.Option));
+                        break;
+                    case "test":
+                        if (this.Args.Length > 0) {
+                            siteName = this.Args[0];
+                            this.TestSite (siteName);
+                        } else
+                            throw new Exception (this.GetErrorArgsMessage (this.Option));
+                        break;
+                    case "default":
+                        if (this.Args.Length > 0) {
+                            siteName = this.Args[0];
+                            this.SetSiteAsDefault (siteName);
+                        } else
+                            throw new Exception (this.GetErrorArgsMessage (this.Option));
+                        break;
+                    case "check":
+                        this.CheckDefaultConnection ();
                         break;
                 } else
                     throw new Exception (String.Format (MSG_ERR_BAD_OPTION, this.CommandShortcut, this.HelpCommand));
 
         }
         /// <summary>
+        /// Checks the site default connection
+        /// </summary>
+        private void CheckDefaultConnection () {
+            if (Program.Settings.SelectedSite < Program.Settings.Sites.Length) {
+                var site = Program.Settings.Sites[Program.Settings.SelectedSite];
+                Console.WriteLine (MSG_INF_SITE_DFTL, site.Site);
+                Console.WriteLine (site.ToStringFormat (SiteUtils.ListSizeFormat) + "\n");
+            }
+        }
+
+        /// <summary>
+        /// Sets the given site as the default site connection
+        /// </summary>
+        /// <param name="siteName">The name of the site</param>
+        private void SetSiteAsDefault (string siteName) {
+            var site = Program.Settings.Sites.FirstOrDefault (x => x.Site.ToLower () == siteName.ToLower ());
+            if (site == null)
+                Console.WriteLine (MSG_ERR_SITE_NOT_FOUND, siteName);
+            else {
+                int index = Program.Settings.Sites.ToList ().IndexOf (site);
+                Program.Settings.SelectedSite = index;
+                Program.Settings.Save ();
+                Console.WriteLine (MSG_INF_SITE_DFTL, siteName);
+            }
+        }
+
+        /// <summary>
+        /// Test the connection to a given site
+        /// </summary>
+        /// <param name="siteName">The name of the site</param>
+        private void TestSite (string siteName) {
+            var site = Program.Settings.Sites.FirstOrDefault (x => x.Site.ToLower () == siteName.ToLower ());
+            String errMsg;
+            if (site == null)
+                Console.WriteLine (MSG_ERR_SITE_NOT_FOUND, siteName);
+            else {
+                if (AuraSftpClient.TestConnection (site.Data, out errMsg))
+                    Console.WriteLine (MSG_INF_SITE_CONN_SUCCED, siteName);
+                else
+                    Console.WriteLine (MSG_INF_SITE_CONN_FAIL, siteName, errMsg);
+            }
+
+        }
+
+        /// <summary>
+        /// Removes a site from the configuration file
+        /// </summary>
+        /// <param name="siteName">The site name</param>
+        private void RemoveSite (string siteName) {
+            var site = Program.Settings.Sites.FirstOrDefault (x => x.Site.ToLower () == siteName.ToLower ());
+            if (site == null)
+                Console.WriteLine (MSG_ERR_SITE_NOT_FOUND, siteName);
+            else {
+                Program.Settings.Sites = Program.Settings.Sites.Where (x => x.Site != site.Site).ToArray ();
+                Program.Settings.Save ();
+                Console.WriteLine (MSG_INF_SITE_REMOVED, siteName);
+            }
+        }
+
+        /// <summary>
         /// Adds a new site to the configuration file
         /// </summary>
         /// <param name="siteName">The name of the site</param>
         private void EditSite (string siteName, string fieldName = "") {
             var site = Program.Settings.Sites.FirstOrDefault (x => x.Site.ToLower () == siteName.ToLower ());
-            if (site != null)
+            if (site == null)
                 Console.WriteLine (MSG_ERR_SITE_NOT_FOUND, siteName);
             else {
                 if (fieldName == "") { //Update all fields
@@ -73,6 +162,7 @@ namespace Nameless.Libraries.Aura.Controller {
                     if (variable != null) {
                         site.Data.UpdateField (variable);
                         Program.Settings.Save ();
+                        Console.WriteLine (MSG_INF_SITE_FIELD_UPDATED, siteName, variable.Name);
                     } else
                         Console.WriteLine (MSG_ERR_SITE_UPDATED, siteName, fieldName);
                 }
