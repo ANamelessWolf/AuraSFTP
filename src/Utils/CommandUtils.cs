@@ -47,6 +47,7 @@ namespace Nameless.Libraries.Aura.Utils {
                     Console.Write ("\b \b");
                 }
             } while (key.Key != ConsoleKey.Enter); // Stops Receving Keys Once Enter is Pressed
+            Console.Write ("\n");
             return pass;
         }
     }

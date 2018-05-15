@@ -1,0 +1,140 @@
+******************
+*** Site Help ****
+******************
+Topics
+
+1. Add a site
+2. Edit a site
+3. List sites
+4. Test a site connection
+5. Set a site connection as default
+6. Check the default site connection
+7. Remove a site
+
+Add a site
+Adds a new site configuration in to the application settings. The site properties will be prompted
+by the application.
+Aura -s add [optional]<site_name>
+Parameters
+[optional]<site_name> — If not provider is prompted by the application
+Example:
+Create a new site called MySite
+Aura -s add MySite
+
+Edit a site
+Edit a site completely or just a site field.
+To edit all fields use
+Aura -s add <site_name>
+To edit a field use
+Aura -s edit <site_name> [optional]<field_name>
+Parameters
+<site_name> — The site name to edit
+[optional]<field_name> — The name of the field to edit.
+Valid field names: Host, Password, User, RootDir, Port
+Example:
+Edit the port from MySite
+Aura -s edit MySite Port
+
+List sites
+List all sites available configurations or the configuration of a given site.
+Aura -s edit [optional]<site_name>
+Parameters
+[optional]<site_name> — The name of the site to list its configuration
+Example:
+List the current configuration of the site MySite
+aura -s list MySite
+
+Test a site connection
+Test the connectivity of a given site
+Aura -s test <site_name>
+Parameters
+<site_name> — The name of the site to test connection
+Example:
+Test the connection of MySite
+Aura -s test MySite
+
+Set a site connection as default
+Allows choosing which connection will be use as default when creating a new site
+Aura -s default <site_name>
+Parameters
+<site_name> — The name of the site to set as default
+Example:
+Aura -s default MySite
+
+Check the default site connection
+Check which connection is the default
+Aura -s check
+
+Remove a site
+Remove a site from the configuration file
+Aura -s remove <site_name>
+Parameters
+<site_name> — The name of the site to remove
+Example:
+Aura -s remove MySite
+
+******************
+** Project Help **
+******************
+Topics
+1. Create a new project
+2. Pull files from server
+
+Create a new project
+Creates a new project in a given directory
+-p new <prj_name> <prj_path>
+Parameters
+<prj_name>  The name of the project
+<prj_path>  The path where the project is saved
+Example:
+Create a new project called MyProject in the directory C:\MyProjects\
+-p new MyProject C:\MyProjects\
+
+Pull files from server
+Downloads mapped files and directories from the current server
+-p pull [optional]replace
+Parameters
+[optional]replace Use the word 'replace' to overwrite existent files
+Example:
+Pull files from the server and replace existent files
+-p pull replace
+
+******************
+** Mapping Help **
+******************
+Topics
+1. Maps a directory
+2. Maps a file
+3. Removes a path
+
+Map a directory
+Add a path that maps a server directory path to a local directory path.
+Remote paths are relative to the server RootDir path taken from the project connection data node and
+locals paths are relative to the project path.
+Adds a path mapping a directory from the server remote path to the local path. 
+-m dir <local_path> <remote_path>
+Parameters
+<local_path>    The local path for the directory, use a relative path base on the project path
+<remote_path>   The remote path where the directory is on the server, use a relative path base on the RootDir path
+Example:
+Maps a relative path between the downloader directory and a local directory
+-m dir widget\downloader widget/downloader
+
+Maps a file
+Add a path that maps a server file path to a local file path
+-m file <local_file> <remote_file>
+Parameters
+<local_file>    The local path for the file path, use a relative path base on the project path
+<remote_file>   The remote path where the file path is on the server, use a relative path base on the RootDir path
+Example:
+Maps a relative path between the properties file and the local file path.
+-m file config/properties.php protected/config/properties.php
+                
+Removes a path
+Removes a map entry from the current Project
+-m remove <local_path>
+Parameters
+<local_path>    The local path to remove. Must be the same path used in the mapping process
+Example:
+Removes the mapping entry to the properties.php file
+-m remove protected\config\properties.php
