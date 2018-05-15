@@ -62,6 +62,17 @@ namespace Nameless.Libraries.Aura.Controller {
                             throw exc;
                         }
                         break;
+                    case "site":
+                        try {
+                            if (this.Args.Length == 1) {
+                                String siteName = this.Args[0];
+                                this.SetSite (ProjectUtils.OpenProject (), siteName);
+                            } else
+                                throw new Exception (String.Format (MSG_ERR_BAD_OPTION, this.CommandShortcut, this.HelpCommand));
+                        } catch (System.Exception exc) {
+                            throw exc;
+                        }
+                        break;
                 }
             else
                 throw new Exception (String.Format (MSG_ERR_BAD_OPTION, this.CommandShortcut, this.HelpCommand));
@@ -94,6 +105,23 @@ namespace Nameless.Libraries.Aura.Controller {
                 });
             } else
                 throw new Exception (MSG_ERR_PRJ_PULL_EMPTY_MAP);
+        }
+
+        /// <summary>
+        /// Set the project connection site configuration data
+        /// </summary>
+        /// <param name="prj">The current project</param>
+        /// <param name="siteName">The site name</param>
+        private void SetSite (Project prj, String siteName) {
+            var site = Program.Settings.Sites.FirstOrDefault (x => x.Site.ToLower () == siteName.ToLower ());
+            if (site == null)
+                throw new Exception (String.Format (MSG_ERR_SITE_NOT_FOUND, siteName));
+            else {
+                prj.Connection = site;
+                String localPath = Environment.CurrentDirectory;
+                String configFile = Path.Combine (localPath, ".ssh", "config.json");
+                prj.SaveProject (configFile);
+            }
         }
 
         /// <summary>
