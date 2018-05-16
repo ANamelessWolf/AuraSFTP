@@ -84,11 +84,12 @@ namespace Nameless.Libraries.Aura.Controller {
         private void PushToServer (Project prj) {
             if (prj.Data.Map.Files.Count () > 0 || prj.Data.Map.Directories.Count () > 0) {
                 List<MappedPath> files = new List<MappedPath> ();
-                foreach (var dir in prj.Data.Map.Directories)
-                    this.GetPaths (ref files, prj, dir);
                 foreach (var file in prj.Data.Map.Files)
                     if (files.Count (x => x.ProjectCopy == file.ProjectCopy) == 0)
                         files.Add (file);
+                foreach (var dir in prj.Data.Map.Directories)
+                    this.GetPaths (ref files, new DirectoryInfo (dir.ProjectCopy), prj, dir);
+                files.ForEach (x => Console.WriteLine (x.ProjectCopy + "->" + x.RemotePath));
             } else
                 throw new Exception (MSG_ERR_PRJ_PULL_EMPTY_MAP);
         }
@@ -99,13 +100,17 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <param name="files">The list of mapped files</param>
         /// <param name="prj">The current project</param>
         /// <param name="dir">The mapped path directory</param>
-        private void GetPaths (ref List<MappedPath> files, Project prj, MappedPath dir) {
-            DirectoryInfo dirInfo = new DirectoryInfo (dir.ProjectCopy);
-            foreach (var file in dirInfo.GetFiles ()) 
-                files.Add (SftpUtils.GetMappedPath (file, dir.ProjectCopy, dir.RemotePath));
-            foreach (var file in dirInfo.GetDirectories ()) {
-                
+        private void GetPaths (ref List<MappedPath> files, DirectoryInfo dirInfo, Project prj, MappedPath dirMap) {
+            String servercopy = prj.Data.ServerCopy,
+                fileInServerCopy;
+            foreach (var file in dirInfo.GetFiles ()) {
+                //Files must exist in server copy and shouldn't be already added
+                fileInServerCopy = file.FullName.Replace (prj.Data.ProjectCopy, prj.Data.ServerCopy);
+                if (File.Exists (fileInServerCopy) && files.Count (x => file.FullName == x.ProjectCopy) == 0)
+                    files.Add (SftpUtils.GetMappedPath (file, dirMap.ProjectCopy, dirMap.RemotePath, dirMap.ServerCopy));
             }
+            foreach (var dir in dirInfo.GetDirectories ())
+                GetPaths (ref files, dir, prj, dirMap);
         }
 
         /// <summary>

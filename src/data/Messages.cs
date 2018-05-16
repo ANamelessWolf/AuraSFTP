@@ -6,6 +6,13 @@ using System.Linq;
 namespace Nameless.Libraries.Aura.data {
 
     public static class Message {
+        /*****************************
+         **** Application Messages ***
+         *****************************/
+        /// <summary>
+        /// The message sent when the application configuration file was not found
+        /// </summary>
+        public const string MSG_ERR_APP_MISS_CONF = "Application 'settings.json' was not found.";
         /// <summary>
         /// The error message sent when no action is defined
         /// with the given arguments
@@ -69,7 +76,10 @@ namespace Nameless.Libraries.Aura.data {
         /// The error message sent when the project has nothing to pull.
         /// </summary>
         public const string MSG_ERR_PRJ_PULL_EMPTY_MAP = "There are no mapped directories or files. Nothing to download";
-
+        /// <summary>
+        /// The error message sent when the project has nothing to push.
+        /// </summary>
+        public const string MSG_ERR_PRJ_PUSH_EMPTY_MAP = "There are no mapped directories or files. Nothing to upload. New files must be added first";
         /*****************************
          ****** Mapping Messages *****
          *****************************/
@@ -120,7 +130,7 @@ namespace Nameless.Libraries.Aura.data {
         /// The message sent when a site connection fails
         /// </summary>
         public const string MSG_INF_SITE_CONN_FAIL = "The site '{0}' could connect to the server, check your credentials. Server error: {1}";
-         /// <summary>
+        /// <summary>
         /// The message sent when a site is set as default
         /// </summary>
         public const string MSG_INF_SITE_DFTL = "The site '{0}' is set as default connection";

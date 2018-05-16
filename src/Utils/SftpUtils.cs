@@ -71,10 +71,11 @@ namespace Nameless.Libraries.Aura.Utils {
         /// <param name="projectPath">The project path</param>
         /// <param name="remotePath">The remote path</param>
         /// <returns>The mapped path</returns>
-        public static MappedPath GetMappedPath (FileInfo file, String projectPath, String remotePath) {
+        public static MappedPath GetMappedPath (FileInfo file, String projectPath, String remotePath, String serverPth) {
             return new MappedPath () {
                 ProjectCopy = file.FullName,
-                ServerCopy = GetServerPath (file.FullName.Replace (projectPath, ""), remotePath)
+                    RemotePath = GetServerPath (file.FullName.Replace (projectPath, ""), remotePath),
+                    ServerCopy = file.FullName.Replace (projectPath, serverPth)
             };
         }
         /// <summary>
@@ -83,9 +84,8 @@ namespace Nameless.Libraries.Aura.Utils {
         /// <param name="filePath">The relative path</param>
         /// <param name="remotePath">The file remote path</param>
         /// <returns>The server path</returns>
-        private static string GetServerPath(string filePath, string remotePath)
-        {
-           return remotePath+filePath.Replace('\\','/');
+        private static string GetServerPath (string filePath, string remotePath) {
+            return remotePath + filePath.Replace ('\\', '/');
         }
 
         /// <summary>

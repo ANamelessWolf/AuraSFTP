@@ -10,9 +10,9 @@ namespace Nameless.Libraries.Aura {
         /// </summary>
         public static UserSettings Settings;
         static void Main (string[] args) {
-            Settings = SiteUtils.GetUserSettings ();
-            ConsoleMenuController menu = new ConsoleMenuController (Settings);
             try {
+                Settings = SiteUtils.GetUserSettings ();
+                ConsoleMenuController menu = new ConsoleMenuController (Settings);
                 menu.RunCommand (args);
             } catch (System.Exception exc) {
                 Console.WriteLine (exc.Message);

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Nameless.Libraries.Aura.Model;
 using Newtonsoft.Json;
-
+using static Nameless.Libraries.Aura.data.Message;
 namespace Nameless.Libraries.Aura.Utils {
 
     public static class SiteUtils {
@@ -30,11 +30,13 @@ namespace Nameless.Libraries.Aura.Utils {
             String bin = System.Reflection.Assembly.GetAssembly (typeof (SiteUtils)).Location;
             bin = new FileInfo (bin).Directory.FullName;
             string pth = Path.Combine (bin, "data", "settings.json");
-            using (StreamReader r = new StreamReader (pth)) {
-                string json = r.ReadToEnd ();
-                settings = JsonConvert.DeserializeObject<UserSettings> (json);
-            }
-            return settings;
+            if (File.Exists (pth)) {
+                using (StreamReader r = new StreamReader (pth)) {
+                    string json = r.ReadToEnd ();
+                    settings = JsonConvert.DeserializeObject<UserSettings> (json);
+                }
+                return settings;
+            } else throw new Exception (MSG_ERR_APP_MISS_CONF);
         }
         /// <summary>
         /// Gets a string, formatting the site credentials
