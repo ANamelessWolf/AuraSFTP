@@ -78,12 +78,34 @@ namespace Nameless.Libraries.Aura.Controller {
                 throw new Exception (String.Format (MSG_ERR_BAD_OPTION, this.CommandShortcut, this.HelpCommand));
         }
         /// <summary>
-        /// Push the files to the server that are defined on the project
-        /// configuration file Map
+        /// Push the files to the server only the mapped fies are push to the server
         /// </summary>
         /// <param name="prj">The current project</param>
-        private void PushToServer (Project project) {
-            throw new NotImplementedException ();
+        private void PushToServer (Project prj) {
+            if (prj.Data.Map.Files.Count () > 0 || prj.Data.Map.Directories.Count () > 0) {
+                List<MappedPath> files = new List<MappedPath> ();
+                foreach (var dir in prj.Data.Map.Directories)
+                    this.GetPaths (ref files, prj, dir);
+                foreach (var file in prj.Data.Map.Files)
+                    if (files.Count (x => x.ProjectCopy == file.ProjectCopy) == 0)
+                        files.Add (file);
+            } else
+                throw new Exception (MSG_ERR_PRJ_PULL_EMPTY_MAP);
+        }
+        /// <summary>
+        /// Gets the mapped file paths from the given directory, using the project filtering
+        /// The result is saved in the files List 
+        /// </summary>
+        /// <param name="files">The list of mapped files</param>
+        /// <param name="prj">The current project</param>
+        /// <param name="dir">The mapped path directory</param>
+        private void GetPaths (ref List<MappedPath> files, Project prj, MappedPath dir) {
+            DirectoryInfo dirInfo = new DirectoryInfo (dir.ProjectCopy);
+            foreach (var file in dirInfo.GetFiles ()) 
+                files.Add (SftpUtils.GetMappedPath (file, dir.ProjectCopy, dir.RemotePath));
+            foreach (var file in dirInfo.GetDirectories ()) {
+                
+            }
         }
 
         /// <summary>

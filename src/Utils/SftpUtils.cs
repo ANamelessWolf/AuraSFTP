@@ -26,7 +26,7 @@ namespace Nameless.Libraries.Aura.Utils {
                 if (filter.IsUnixFileValid (entry.FullName))
                     files.Add (entry.FullName);
             result = files;
-            foreach (var subDirPath in entries.Where (x => x.IsDirectory && filter.IsUnixDirValid(x)))
+            foreach (var subDirPath in entries.Where (x => x.IsDirectory && filter.IsUnixDirValid (x)))
                 result = result.Union (ListFiles (client, subDirPath.FullName, filter));
             return result;
         }
@@ -64,6 +64,30 @@ namespace Nameless.Libraries.Aura.Utils {
                 DownloadFile (c, fileMap.RemotePath, sC, lC, replace);
             });
         }
+        /// <summary>
+        /// Gets a mapped path from a file
+        /// </summary>
+        /// <param name="file">The file to map</param>
+        /// <param name="projectPath">The project path</param>
+        /// <param name="remotePath">The remote path</param>
+        /// <returns>The mapped path</returns>
+        public static MappedPath GetMappedPath (FileInfo file, String projectPath, String remotePath) {
+            return new MappedPath () {
+                ProjectCopy = file.FullName,
+                ServerCopy = GetServerPath (file.FullName.Replace (projectPath, ""), remotePath)
+            };
+        }
+        /// <summary>
+        /// Gets the path to the file in unix format
+        /// </summary>
+        /// <param name="filePath">The relative path</param>
+        /// <param name="remotePath">The file remote path</param>
+        /// <returns>The server path</returns>
+        private static string GetServerPath(string filePath, string remotePath)
+        {
+           return remotePath+filePath.Replace('\\','/');
+        }
+
         /// <summary>
         /// Dowloads a file using a SFTP client
         /// </summary>
