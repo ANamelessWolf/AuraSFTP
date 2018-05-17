@@ -6,6 +6,8 @@ using static Nameless.Libraries.Aura.data.Message;
 using Nameless.Libraries.Aura.Model;
 using Nameless.Libraries.Aura.Utils;
 using RenciSftpClient = Renci.SshNet.SftpClient;
+using Nameless.Libraries.Aura.Utils.DiffMatchPatch;
+
 namespace Nameless.Libraries.Aura.Controller {
     /// <summary>
     /// Initialize a new instance of the project controller
@@ -89,7 +91,15 @@ namespace Nameless.Libraries.Aura.Controller {
                         files.Add (file);
                 foreach (var dir in prj.Data.Map.Directories)
                     this.GetPaths (ref files, new DirectoryInfo (dir.ProjectCopy), prj, dir);
-                files.ForEach (x => Console.WriteLine (x.ProjectCopy + "->" + x.RemotePath));
+                diff_match_patch dmp = new diff_match_patch ();
+                List<Diff> diffs;
+
+                files.ForEach (x => {
+                    diffs = x.ProjectCopy.CompareFile (dmp, x.ServerCopy);
+                    var html = dmp.diff_prettyHtml (diffs).Replace("\r&para;","");
+                    File.WriteAllText (@"C:\tmp\nom.html", html);
+                    Console.WriteLine (x.ProjectCopy + "->" + x.RemotePath);
+                });
             } else
                 throw new Exception (MSG_ERR_PRJ_PULL_EMPTY_MAP);
         }
