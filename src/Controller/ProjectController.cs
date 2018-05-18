@@ -92,14 +92,17 @@ namespace Nameless.Libraries.Aura.Controller {
                 foreach (var dir in prj.Data.Map.Directories)
                     this.GetPaths (ref files, new DirectoryInfo (dir.ProjectCopy), prj, dir);
                 diff_match_patch dmp = new diff_match_patch ();
-                List<Diff> diffs;
-
-                files.ForEach (x => {
-                    diffs = x.ProjectCopy.CompareFile (dmp, x.ServerCopy);
-                    var html = dmp.diff_prettyHtml (diffs).Replace("\r&para;","");
-                    File.WriteAllText (@"C:\tmp\nom.html", html);
-                    Console.WriteLine (x.ProjectCopy + "->" + x.RemotePath);
+                //Only uploads files with diff
+                String[] cExt = Program.Settings.ComparableFilesExt;
+                Boolean isComparable;
+                var filesToUpload = files.Where (x => {
+                    isComparable = x.ProjectCopy.IsComparable (cExt);
+                    return !isComparable || (isComparable && !dmp.AreFilesEquals (x.ProjectCopy, x.ServerCopy));
                 });
+                if (filesToUpload.Count () > 0)
+                    SftpUtils.UploadFiles (filesToUpload, prj);
+                else
+                    Console.WriteLine (MSG_INF_PRJ_PUSH_NO_CHANGES);
             } else
                 throw new Exception (MSG_ERR_PRJ_PULL_EMPTY_MAP);
         }

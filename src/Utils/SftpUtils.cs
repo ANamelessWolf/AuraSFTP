@@ -9,6 +9,8 @@ using RenciSftpClient = Renci.SshNet.SftpClient;
 
 using SftpFile = Renci.SshNet.Sftp.SftpFile;
 using static Nameless.Libraries.Aura.data.Message;
+using Renci.SshNet.Common;
+
 namespace Nameless.Libraries.Aura.Utils {
 
     public static class SftpUtils {
@@ -115,5 +117,29 @@ namespace Nameless.Libraries.Aura.Utils {
                     Console.WriteLine (String.Format (MSG_INF_EXIST_REPLACE_FILE, localCopy.FullName));
             }
         }
+        /// <summary>
+        /// Uploads a collection of files to the current server site
+        /// </summary>
+        /// <param name="files">The collection of files to upload</param>
+        /// <param name="project">The active project</param>
+        public static void UploadFiles (IEnumerable<MappedPath> files, Project project) {
+            Console.WriteLine (MSG_TIT_FILES_UP);
+            files.ToList ().ForEach (x => Console.WriteLine (x.ToUploadPreviewFormat ()));
+            if (CommandUtils.AskYesNo (MSG_ASK_CONTINUE)) {
+                AuraSftpClient.SSHTransactionVoid (project.Connection.Data,
+                    (Action<AuraSftpClient>) ((AuraSftpClient c) => {
+                        c.Uploading += (object sender, ScpUploadEventArgs e) => {
+                            Console.WriteLine (String.Format ("\rUploading [{0}], {1:P2}", e.Filename,
+                                (double) e.Uploaded / (double) e.Size));
+                        };
+                        foreach (MappedPath file in files.OrderBy (x => x.RemotePath)) {
+                            c.Upload (new FileInfo (file.ProjectCopy), file.RemotePath);
+                            Console.WriteLine (String.Format ("Uploaded at {0}", file.RemotePath));
+                        }
+
+                    }));
+            }
+        }
+
     }
 }

@@ -10,6 +10,14 @@ namespace Nameless.Libraries.Aura.data {
          **** Application Messages ***
          *****************************/
         /// <summary>
+        /// The title used for uploading files
+        /// </summary>
+        public const string MSG_TIT_FILES_UP = "Files To upload:";        
+                /// <summary>
+        /// The message used to ask for a value
+        /// </summary>
+        public const string MSG_ASK_CONTINUE = "Continue?";   
+        /// <summary>
         /// The message sent when the application configuration file was not found
         /// </summary>
         public const string MSG_ERR_APP_MISS_CONF = "Application 'settings.json' was not found.";
@@ -60,6 +68,10 @@ namespace Nameless.Libraries.Aura.data {
         /// The message sent when a file is replaced
         /// </summary>
         public const string MSG_INF_EXIST_REPLACE_FILE = "The file '{0}' already exists, replacing file.";
+        /// <summary>
+        /// The error message sent when the project has nothing to push.
+        /// </summary>
+        public const string MSG_INF_PRJ_PUSH_NO_CHANGES = "There are no changes in the project files. Nothing to upload.";
         /// <summary>
         /// The error message sent when the specified path does not exists.
         /// </summary>

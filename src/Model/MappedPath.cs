@@ -29,5 +29,13 @@ namespace Nameless.Libraries.Aura.Model {
         /// Gets the remote version date time
         /// </summary>
         public DateTime RemoteVersion;
+        /// <summary>
+        /// Gets the format
+        /// </summary>
+        /// <returns>The Upload format preview</returns>
+        public String ToUploadPreviewFormat () {
+            String format = "{0} -->> {1}";
+            return String.Format (format, this.ProjectCopy, this.RemotePath);
+        }
     }
 }

@@ -14,6 +14,10 @@ namespace Nameless.Libraries.Aura.Model {
         /// </summary>
         public int SelectedSite;
         /// <summary>
+        /// Defines the extensions that can be compared as plaint txt
+        /// </summary>
+        public String[] ComparableFilesExt;
+        /// <summary>
         /// The list of sites defined by the user
         /// </summary>
         public SiteDefinition[] Sites;

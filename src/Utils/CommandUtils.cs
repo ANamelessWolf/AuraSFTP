@@ -29,6 +29,15 @@ namespace Nameless.Libraries.Aura.Utils {
             return Console.ReadLine ();
         }
         /// <summary>
+        /// Ask the user for a yes no value
+        /// </summary>
+        /// <param name="msg">The query message</param>
+        /// <returns>The value obtained from the user</returns>
+        public static Boolean AskYesNo (string msg) {
+            Console.WriteLine (msg + "(Y/N)");
+            return Console.ReadLine ().ToUpper () == "Y";
+        }
+        /// <summary>
         /// Ask the user for a password value
         /// </summary>
         /// <param name="msg">The query message</param>
