@@ -136,7 +136,6 @@ namespace Nameless.Libraries.Aura.Utils {
                             c.Upload (new FileInfo (file.ProjectCopy), file.RemotePath);
                             Console.WriteLine (String.Format ("Uploaded at {0}", file.RemotePath));
                         }
-
                     }));
             }
         }

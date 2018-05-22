@@ -12,11 +12,11 @@ namespace Nameless.Libraries.Aura.data {
         /// <summary>
         /// The title used for uploading files
         /// </summary>
-        public const string MSG_TIT_FILES_UP = "Files To upload:";        
-                /// <summary>
+        public const string MSG_TIT_FILES_UP = "Files To upload:";
+        /// <summary>
         /// The message used to ask for a value
         /// </summary>
-        public const string MSG_ASK_CONTINUE = "Continue?";   
+        public const string MSG_ASK_CONTINUE = "Continue?";
         /// <summary>
         /// The message sent when the application configuration file was not found
         /// </summary>
@@ -61,6 +61,10 @@ namespace Nameless.Libraries.Aura.data {
         /// </summary>
         public const string MSG_INF_COPY_FILE = "File copied at '{0}'";
         /// <summary>
+        /// The list of files that need to be uploaded to the server
+        /// </summary>
+        public const string MSG_INF_FILES_WITH_CHANGES = "The following files had changes from the server files";
+        /// <summary>
         /// The message sent when a file is omitted because replace is deactivated
         /// </summary>
         public const string MSG_INF_EXIST_OMIT_FILE = "The file '{0}' already exists, replace is disable omitting.";
@@ -71,7 +75,11 @@ namespace Nameless.Libraries.Aura.data {
         /// <summary>
         /// The error message sent when the project has nothing to push.
         /// </summary>
-        public const string MSG_INF_PRJ_PUSH_NO_CHANGES = "There are no changes in the project files. Nothing to upload.";
+        public const string MSG_INF_PRJ_PUSH_NO_CHANGES = MSG_INF_PRJ_NO_CHANGES + " Nothing to upload.";
+        /// <summary>
+        /// The error message sent when the project has nothing to push.
+        /// </summary>
+        public const string MSG_INF_PRJ_NO_CHANGES = "There are no changes in the project files.";
         /// <summary>
         /// The error message sent when the specified path does not exists.
         /// </summary>
@@ -84,6 +92,10 @@ namespace Nameless.Libraries.Aura.data {
         /// The error message sent when the project can not be open.
         /// </summary>
         public const string MSG_ERR_PRJ_OPEN = "An error occurred opening the project configuration file '{0}'";
+        /// <summary>
+        /// The error message sent when the local path not exists.
+        /// </summary>
+        public const string MSG_ERR_PRJ_BAD_LOC_PTH = "The local path is not an existant file or an existant directory";
         /// <summary>
         /// The error message sent when the project has nothing to pull.
         /// </summary>
