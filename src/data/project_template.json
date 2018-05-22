@@ -1,11 +1,11 @@
 {
     "Connection": {
-        "Site": "svrIdeSisiPre",
+        "Site": "mySite",
         "Data": {
-            "Host": "172.25.39.84",
-            "User": "idesisi",
-            "Password": "geocloud01",
-            "RootDir": "/var/www/html/geocloud/",
+            "Host": "127.0.0.0",
+            "User": "username",
+            "Password": "password",
+            "RootDir": "/var/www/html/mySite/",
             "Port": 22
         }
     },
@@ -19,7 +19,7 @@
         },
         "ServerLastTimeCopy": "2012-04-23T18:25:43.511Z",
         "IgnoreExtensions": [
-            ".svn"
+            ".jpg","png"
         ],
         "IgnoreFiles": [],
         "IgnoreDirectories": [

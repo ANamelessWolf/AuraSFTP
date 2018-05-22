@@ -35,26 +35,5 @@
         "txt",
         "xml"
     ],
-    "Sites": [
-        {
-            "Site": "svrIdeSisiPre",
-            "Data": {
-                "Host": "172.25.39.84",
-                "User": "idesisi",
-                "Password": "geocloud01",
-                "RootDir": "/var/www/html/geocloud/",
-                "Port": 22
-            }
-        },
-        {
-            "Site": "ideSISI",
-            "Data": {
-                "Host": "172.25.39.86",
-                "User": "idesisi",
-                "Password": "geocloud03",
-                "RootDir": "/var/log/tomcat/ds_ide_catalina",
-                "Port": 22
-            }
-        }
-    ]
+    "Sites": []
 }
