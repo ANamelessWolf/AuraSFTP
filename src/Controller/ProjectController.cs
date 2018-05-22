@@ -10,7 +10,7 @@ using Nameless.Libraries.Aura.Utils.DiffMatchPatch;
 
 namespace Nameless.Libraries.Aura.Controller {
     /// <summary>
-    /// Initialize a new instance of the project controller
+    /// This class controls the project functionality
     /// </summary>
     public class ProjectController : CommandController {
         /// <summary>

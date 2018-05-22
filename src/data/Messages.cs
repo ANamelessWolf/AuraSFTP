@@ -178,5 +178,24 @@ namespace Nameless.Libraries.Aura.data {
         /// The error message sent when a site fail to be modified, because the given property not exists
         /// </summary>
         public const string MSG_ERR_SITE_UPDATED = "The site '{0}' doesn't has a property called '{1}'.";
+        /****************************
+         ****** Ignore Messages *****
+         ****************************/
+        /// <summary>
+        /// The error message sent when an entry already exists
+        /// </summary>
+        public const string MSG_INF_IGNORE_ADDED = "Added '{0}' to the '{1}' ignore list";
+        /// <summary>
+        /// The error message sent when an entry already exists
+        /// </summary>
+        public const string MSG_ERR_IGNORE_EXIST = "Already exists in ignore list";
+        /// <summary>
+        /// The error message sent when an extension doesn't start a period
+        /// </summary>
+        public const string MSG_ERR_BAD_EXT = "Extensions must start with a period";
+                /// <summary>
+        /// The error message sent when an entry is not defined in the ignore list
+        /// </summary>
+        public const string MSG_ERR_IGNORE_NOT_DEF = "The entry '{0}' was not found in the '{1}' list";
     }
 }

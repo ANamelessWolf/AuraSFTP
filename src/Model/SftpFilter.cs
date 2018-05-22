@@ -69,7 +69,7 @@ namespace Nameless.Libraries.Aura.Model {
         /// <param name="file">The file to validate</param>
         /// <returns>True if the file is ignored</returns>
         public Boolean IsIgnoreExtension (FileInfo file) {
-            return this.IgnoreExtensions.Select (x => x.ToLower ()).Contains (file.Extension.ToLower ().Substring (1));
+            return this.IgnoreExtensions.Select (x => x.ToLower ()).Contains (file.Extension.ToLower ());
         }
         /// <summary>
         /// Check if a file is ignore by its name
