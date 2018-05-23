@@ -101,7 +101,7 @@ namespace Nameless.Libraries.Aura.Utils {
             Object value;
             int port;
             if (field.Name == "Password")
-                value = CommandUtils.AskPassword ("User " + field.Name);
+                value = CommandUtils.AskPassword ("User " + field.Name).Replace("\r","");
             else
                 value = CommandUtils.Ask ("Value of " + field.Name);
             if (field.FieldType == typeof (int))
