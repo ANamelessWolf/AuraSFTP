@@ -184,7 +184,7 @@ namespace Nameless.Libraries.Aura.Resources {
         /// <summary>
         /// The error message sent when an entry already exists
         /// </summary>
-        public const string MSG_INF_IGNORE_ADDED = "Added '{0}' to the '{1}' ignore list";
+        public const string MSG_INF_IGNORE_ADDED = "Added extensions [{0}] to the '{1}' ignore list";
         /// <summary>
         /// The error message sent when an entry already exists
         /// </summary>

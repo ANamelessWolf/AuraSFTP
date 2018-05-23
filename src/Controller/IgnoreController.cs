@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using Nameless.Libraries.Aura.Model;
 using Nameless.Libraries.Aura.Utils;
-using static Nameless.Libraries.Aura.Resources .Message;
+using static Nameless.Libraries.Aura.Resources.Message;
 using static Nameless.Libraries.Aura.Utils.CommandUtils;
 
 namespace Nameless.Libraries.Aura.Controller {
@@ -25,7 +25,7 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <summary>
         /// The command valid options
         /// </summary>
-        protected override string[] ValidOptions => new String[] { "dir", "file", "ext", "remove" };
+        protected override string[] ValidOptions => new String[] { "dir", "file", "ext", "remove", "list" };
         /// <summary>
         /// The command sub valid options
         /// </summary>
@@ -61,8 +61,8 @@ namespace Nameless.Libraries.Aura.Controller {
                                 throw new Exception (this.GetErrorArgsMessage (this.Option));
                             break;
                         case "ext":
-                            if (this.Args.Length == 1)
-                                this.IgnoreExtension (prj, this.Args[0]);
+                            if (this.Args.Length > 1)
+                                this.IgnoreExtension (prj, this.Args);
                             else
                                 throw new Exception (this.GetErrorArgsMessage (this.Option));
                             break;
@@ -72,6 +72,9 @@ namespace Nameless.Libraries.Aura.Controller {
                                 this.Remove (prj, this.Args[0], this.Args[1]);
                             else
                                 throw new Exception (this.GetErrorArgsMessage (this.Option));
+                            break;
+                        case "list":
+                            throw new NotImplementedException ("Falta implementar la selección que muestra que archivos estan ignorados en el proyecto");
                             break;
                     }
                 } catch (Exception exc) {
@@ -120,16 +123,22 @@ namespace Nameless.Libraries.Aura.Controller {
         /// Adds an extension to the ignore list of the project
         /// </summary>
         /// <param name="prj">The active project</param>
-        /// <param name="ext">The extension</param>
-        private void IgnoreExtension (Project prj, string ext) {
-            if (!ext.Contains ('.'))
+        /// <param name="exts">The extension</param>
+        private void IgnoreExtension (Project prj, params string[] exts) {
+            if (exts.Count (x => x.Contains ('.')) != exts.Count ())
                 throw new Exception (MSG_ERR_BAD_EXT);
-            else if (prj.Data.IgnoreDirectories.Contains (ext))
+            else if (exts.Count (x => !prj.Data.IgnoreExtensions.Contains (x)) == 0)
                 throw new Exception (MSG_ERR_IGNORE_EXIST);
             else {
-                prj.Data.IgnoreDirectories = prj.Data.IgnoreDirectories.Union (new String[] { ext }).ToArray ();
+                String addedExt = String.Empty;
+                List<String> newExts = new List<string> ();
+                foreach (string ext in exts) {
+                    newExts.Add (ext);
+                    addedExt += ext + ", ";
+                }
+                prj.Data.IgnoreExtensions = prj.Data.IgnoreExtensions.Union (newExts).ToArray ();
+                Console.WriteLine (MSG_INF_IGNORE_ADDED, addedExt.Substring (0, addedExt.Length - 2), "extensions");
                 prj.SaveProject (this.ConfigFile);
-                Console.WriteLine (MSG_INF_IGNORE_ADDED, ext, "extensions");
             }
         }
         /// <summary>
@@ -138,10 +147,10 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <param name="prj">The active project</param>
         /// <param name="fileName">The file name</param>
         private void IgnoreFile (Project prj, string fileName) {
-            if (prj.Data.IgnoreDirectories.Contains (fileName))
+            if (prj.Data.IgnoreFiles.Contains (fileName))
                 throw new Exception (MSG_ERR_IGNORE_EXIST);
             else {
-                prj.Data.IgnoreDirectories = prj.Data.IgnoreDirectories.Union (new String[] { fileName }).ToArray ();
+                prj.Data.IgnoreFiles = prj.Data.IgnoreFiles.Union (new String[] { fileName }).ToArray ();
                 prj.SaveProject (this.ConfigFile);
                 Console.WriteLine (MSG_INF_IGNORE_ADDED, fileName, "files");
             }
