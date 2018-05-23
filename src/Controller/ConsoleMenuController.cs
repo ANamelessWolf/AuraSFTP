@@ -27,7 +27,7 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <summary>
         /// Defines the console menu valid parameters
         /// </summary>
-        private readonly String[] ValidParameters = new String[] { "-p", "-h", "i", "-m", "-s", "-v" };
+        private readonly String[] ValidParameters = new String[] { "-p", "-h", "-i", "-m", "-s", "-v" };
         /// <summary>
         /// Current Site
         /// </summary>
