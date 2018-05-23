@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using static Nameless.Libraries.Aura.Utils.CommandUtils;
-using static Nameless.Libraries.Aura.data.Message;
+using static Nameless.Libraries.Aura.Resources.Message;
 namespace Nameless.Libraries.Aura.Controller {
     /// <summary>
     /// Initialize a new instance of the project controller

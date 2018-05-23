@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using Nameless.Libraries.Aura.Model;
 using Nameless.Libraries.Aura.Utils;
-using static Nameless.Libraries.Aura.data.Message;
+using static Nameless.Libraries.Aura.Resources .Message;
 using RenCiSftpClient = Renci.SshNet.SftpClient;
 namespace Nameless.Libraries.Aura.Controller {
 

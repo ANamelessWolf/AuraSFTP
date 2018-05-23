@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using static Nameless.Libraries.Aura.data.Message;
+using static Nameless.Libraries.Aura.Resources .Message;
 using Nameless.Libraries.Aura.Model;
 using Nameless.Libraries.Aura.Utils;
 using RenciSftpClient = Renci.SshNet.SftpClient;

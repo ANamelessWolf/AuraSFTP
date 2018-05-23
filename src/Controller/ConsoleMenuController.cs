@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using Nameless.Libraries.Aura.Model;
 using Nameless.Libraries.Aura.Utils;
-using static Nameless.Libraries.Aura.data.Message;
+using static Nameless.Libraries.Aura.Resources .Message;
 using static Nameless.Libraries.Aura.Utils.CommandUtils;
 namespace Nameless.Libraries.Aura.Controller {
     /// <summary>
@@ -27,7 +27,7 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <summary>
         /// Defines the console menu valid parameters
         /// </summary>
-        private readonly String[] ValidParameters = new String[] { "-p", "-h", "-m", "-s", "-v" };
+        private readonly String[] ValidParameters = new String[] { "-p", "-h", "i", "-m", "-s", "-v" };
         /// <summary>
         /// Current Site
         /// </summary>
@@ -114,8 +114,13 @@ namespace Nameless.Libraries.Aura.Controller {
                     case "-s":
                         cmd = new SiteController (cmdArgs);
                         break;
+                    case "-i":
+                        cmd = new IgnoreController (cmdArgs);
+                        break;
                     case "-v":
-                        Console.WriteLine ("dir: " + Directory.GetCurrentDirectory ());
+                        Version v = System.Reflection.Assembly.GetAssembly (typeof (ConsoleMenuController)).GetName ().Version;
+                        Console.WriteLine ("Version: v{0}.{1}.{2} ", v.Major, v.MinorRevision, v.Revision);
+                        Console.WriteLine ("Install Directory: " + Directory.GetCurrentDirectory ());
                         break;
                 }
                 if (cmd != null)

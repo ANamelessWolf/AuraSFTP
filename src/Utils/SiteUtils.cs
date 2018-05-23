@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Nameless.Libraries.Aura.Model;
 using Newtonsoft.Json;
-using static Nameless.Libraries.Aura.data.Message;
+using static Nameless.Libraries.Aura.Resources .Message;
 namespace Nameless.Libraries.Aura.Utils {
 
     public static class SiteUtils {

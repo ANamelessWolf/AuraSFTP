@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Nameless.Libraries.Aura.data {
+namespace Nameless.Libraries.Aura.Resources {
 
     public static class Message {
         /*****************************

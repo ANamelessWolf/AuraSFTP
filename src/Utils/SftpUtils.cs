@@ -8,7 +8,7 @@ using Renci.SshNet;
 using RenciSftpClient = Renci.SshNet.SftpClient;
 
 using SftpFile = Renci.SshNet.Sftp.SftpFile;
-using static Nameless.Libraries.Aura.data.Message;
+using static Nameless.Libraries.Aura.Resources .Message;
 using Renci.SshNet.Common;
 
 namespace Nameless.Libraries.Aura.Utils {
