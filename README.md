@@ -5,7 +5,13 @@ Install [.NET core](https://dotnet.github.io/) *SDK* from here for [[Windows]](h
 ## Installing
 Downloads the file from [here](https://github.com/ANamelessWolf/AuraSFTP/releases/download/v1.0/aura_v1.0.rar)
 Unzip the file in a local directory.
-### Installing on windows
+### Quick install
+For windows run the `install.bat` as an administrator.
+Then open a console and test the installation.
+```batch
+Aura -v
+```
+### Installing on windows step by step
 Open a window console where the aura folder is extracted.
 
 Move the aura directory to the Application folder
@@ -34,8 +40,9 @@ Inside this folder create a file named `Aura.bat`.
 dotnet %APPDATA%\aura\AuraSFTP.dll %*
 ```
 Add the bin folder to the PATH
-```
-SET PATH=%PATH%;%APPDATA%\bin
+To make it permantly run the next command as an administrator
+```batch
+setx path "%PATH%;%APPDATA%\bin"
 ```
 Now you can run Aura command in any folder.
 For a quick tutorial visit the following [link](https://github.com/ANamelessWolf/AuraSFTP/wiki/Quick-tutorial)
