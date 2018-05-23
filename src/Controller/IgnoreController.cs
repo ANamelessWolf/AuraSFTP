@@ -74,7 +74,10 @@ namespace Nameless.Libraries.Aura.Controller {
                                 throw new Exception (this.GetErrorArgsMessage (this.Option));
                             break;
                         case "list":
-                            throw new NotImplementedException ("Falta implementar la selección que muestra que archivos estan ignorados en el proyecto");
+                            if (this.Args.Length == 1)
+                                this.ListIgnore (prj, this.Args[0]);
+                            else
+                                throw new Exception (this.GetErrorArgsMessage (this.Option));
                             break;
                     }
                 } catch (Exception exc) {
@@ -86,10 +89,35 @@ namespace Nameless.Libraries.Aura.Controller {
                 throw new Exception (String.Format (MSG_ERR_BAD_OPTION, this.CommandShortcut, this.HelpCommand));
         }
         /// <summary>
+        /// List the entries of an ignore list
+        /// </summary>
+        /// <param name="prj">The active project</param>
+        /// <param name="optionToList">The selected list option, file|ext|dir</param>
+        private void ListIgnore (Project prj, string optionToList) {
+            if (this.SubValidOptions.Contains (optionToList)) {
+                String[] list = new String[0];
+                String join = ", ";
+                switch (this.Option) {
+                    case "dir":
+                        list = prj.Data.IgnoreDirectories;
+                        break;
+                    case "file":
+                        list = prj.Data.IgnoreFiles;
+                        break;
+                    case "ext":
+                        list = prj.Data.IgnoreExtensions;
+                        break;
+                }
+                Console.WriteLine (String.Join (join, list));
+            } else
+                throw new Exception (String.Format (MSG_ERR_BAD_OPTION, this.CommandShortcut, this.HelpCommand));
+        }
+
+        /// <summary>
         /// Removes an entry from a ignore list
         /// </summary>
         /// <param name="prj">The active project</param>
-        /// <param name="optionToRemove">The list to remove the file</param>
+        /// <param name="optionToRemove">The selected remove option, file|ext|dir</param>
         /// <param name="value">The value to remove</param>
         private void Remove (Project prj, string optionToRemove, string value) {
             if (this.SubValidOptions.Contains (optionToRemove)) {

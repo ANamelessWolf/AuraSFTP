@@ -232,14 +232,17 @@ namespace Nameless.Libraries.Aura.Controller {
         /// </summary>
         /// <param name="prj">The current project</param>
         /// <param name="replace">True if the pulled files will remove the local ones</param>
-        private void PullFromServer (Project prj, Boolean replace) {
+        /// <param name="silentDownload">Download the files without listing everything</param>
+        private void PullFromServer (Project prj, Boolean replace, Boolean silentDownload = false) {
             if (prj.Data.Map.Files.Count () > 0 || prj.Data.Map.Directories.Count () > 0) {
                 AuraSftpClient.SFTPTransactionVoid (prj.Connection.Data, (RenciSftpClient client) => {
                     var dirs = prj.Data.Map.Directories;
                     var files = prj.Data.Map.Files;
                     SftpFilter filter = prj.Filter;
+                    if (silentDownload)
+                        Console.WriteLine ("Downloading...");
                     foreach (var dir in dirs)
-                        client.Download (prj.Connection.Data, dir, filter, replace);
+                        client.Download (prj.Connection.Data, dir, filter, replace, silentDownload);
                     foreach (var file in files)
                         prj.Connection.Data.Download (file, replace);
                 });

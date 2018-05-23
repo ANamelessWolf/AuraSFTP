@@ -8,7 +8,7 @@ using Renci.SshNet;
 using RenciSftpClient = Renci.SshNet.SftpClient;
 
 using SftpFile = Renci.SshNet.Sftp.SftpFile;
-using static Nameless.Libraries.Aura.Resources .Message;
+using static Nameless.Libraries.Aura.Resources.Message;
 using Renci.SshNet.Common;
 
 namespace Nameless.Libraries.Aura.Utils {
@@ -28,8 +28,8 @@ namespace Nameless.Libraries.Aura.Utils {
                 if (filter.IsUnixFileValid (entry.FullName))
                     files.Add (entry.FullName);
             result = files;
-            foreach (var subDirPath in entries.Where (x => x.IsDirectory && filter.IsUnixDirValid (x))){
-                Console.WriteLine(subDirPath);
+            foreach (var subDirPath in entries.Where (x => x.IsDirectory && filter.IsUnixDirValid (x))) {
+                Console.WriteLine (subDirPath);
                 result = result.Union (ListFiles (client, subDirPath.FullName, filter));
             }
             return result;
@@ -40,7 +40,9 @@ namespace Nameless.Libraries.Aura.Utils {
         /// <param name="client">The Sftp client</param>
         /// <param name="file">The directory used to download its files</param>
         /// <param name="filter">The download filter</param>
-        public static void Download (this RenciSftpClient client, SiteCredentials credentials, MappedPath dir, SftpFilter filter, Boolean replace) {
+        /// <param name="silentDownload">Download the files without listing everything</param>
+        public static void Download (this RenciSftpClient client, SiteCredentials credentials,
+            MappedPath dir, SftpFilter filter, Boolean replace, Boolean silentDownload = false) {
             var files = SftpUtils.ListFiles (client, dir.RemotePath, filter);
             string localPath, serverCopy;
             FileInfo sC, lC;
@@ -50,7 +52,7 @@ namespace Nameless.Libraries.Aura.Utils {
                     serverCopy = Path.Combine ((string) dir.ServerCopy, localPath);
                     sC = new FileInfo (serverCopy);
                     lC = new FileInfo (Path.Combine ((string) dir.ProjectCopy, localPath));
-                    DownloadFile (c, file, sC, lC, replace);
+                    DownloadFile (c, file, sC, lC, replace, silentDownload);
                 }
             }));
         }
@@ -100,8 +102,11 @@ namespace Nameless.Libraries.Aura.Utils {
         /// <param name="serverCopy">The server file copy</param>
         /// <param name="localCopy">The project file copy</param>
         /// <param name="replace">True if the file is replaced</param>
-        private static void DownloadFile (AuraSftpClient client, string remoteFile, FileInfo serverCopy, FileInfo localCopy, Boolean replace) {
-            Console.WriteLine (String.Format (MSG_INF_DOW_FILE, remoteFile));
+        /// <param name="silentDownload">Download the files without listing everything</param>
+        private static void DownloadFile (AuraSftpClient client, string remoteFile,
+            FileInfo serverCopy, FileInfo localCopy, Boolean replace, Boolean silentDownload = false) {
+            if (!silentDownload)
+                Console.WriteLine (String.Format (MSG_INF_DOW_FILE, remoteFile));
 
             if (!Directory.Exists (serverCopy.Directory.FullName))
                 Directory.CreateDirectory (serverCopy.Directory.FullName);
@@ -109,14 +114,16 @@ namespace Nameless.Libraries.Aura.Utils {
 
             if (!Directory.Exists (localCopy.Directory.FullName))
                 Directory.CreateDirectory (localCopy.Directory.FullName);
-            if (File.Exists (localCopy.FullName) && !replace)
+            if (File.Exists (localCopy.FullName) && !replace && !silentDownload)
                 Console.WriteLine (String.Format (MSG_INF_EXIST_OMIT_FILE, localCopy.FullName));
             else {
                 File.Copy (serverCopy.FullName, localCopy.FullName, replace);
-                if (!File.Exists (localCopy.FullName))
-                    Console.WriteLine (String.Format (MSG_INF_COPY_FILE, localCopy.FullName));
-                else
-                    Console.WriteLine (String.Format (MSG_INF_EXIST_REPLACE_FILE, localCopy.FullName));
+                if (!silentDownload) {
+                    if (!File.Exists (localCopy.FullName))
+                        Console.WriteLine (String.Format (MSG_INF_COPY_FILE, localCopy.FullName));
+                    else
+                        Console.WriteLine (String.Format (MSG_INF_EXIST_REPLACE_FILE, localCopy.FullName));
+                }
             }
         }
         /// <summary>
