@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using static Nameless.Libraries.Aura.Resources .Message;
+using static Nameless.Libraries.Aura.Resources.Message;
 using Nameless.Libraries.Aura.Model;
 using Nameless.Libraries.Aura.Utils;
 using RenciSftpClient = Renci.SshNet.SftpClient;
@@ -86,6 +86,8 @@ namespace Nameless.Libraries.Aura.Controller {
         /// Checks the site default connection
         /// </summary>
         private void CheckDefaultConnection () {
+            if (Program.Settings.Sites.Length == 0)
+                Console.WriteLine (MSG_ERR_NO_SITES);
             if (Program.Settings.SelectedSite < Program.Settings.Sites.Length) {
                 var site = Program.Settings.Sites[Program.Settings.SelectedSite];
                 Console.WriteLine (MSG_INF_SITE_DFTL, site.Site);

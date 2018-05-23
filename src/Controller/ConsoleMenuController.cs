@@ -44,9 +44,7 @@ namespace Nameless.Libraries.Aura.Controller {
                 sett.SelectedSite = 0;
                 this.Credentials = sett.Sites[0].Data;
                 sett.Save ();
-            } else
-                throw new Exception (MSG_ERR_NO_SITES);
-
+            } 
         }
 
         /// <summary>

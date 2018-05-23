@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using Nameless.Libraries.Aura.Controller;
 using Nameless.Libraries.Aura.Model;
-using static Nameless.Libraries.Aura.Resources .Message;
+using static Nameless.Libraries.Aura.Resources.Message;
 using Newtonsoft.Json;
 
 namespace Nameless.Libraries.Aura.Utils {
@@ -19,28 +19,31 @@ namespace Nameless.Libraries.Aura.Utils {
         /// <param name="prjPath">The project path</param>
         /// <returns>The project configuration class</returns>
         public static Project InitProject (String prjName, String prjPath) {
-            String prjDir = Path.Combine (prjPath, prjName);
-            String prjSettDir = Path.Combine (prjDir, ".ssh");
-            String prjTmp = Path.Combine (SiteUtils.GetBinPath(), "data", "project_template.json");
-            String config = Path.Combine (prjSettDir, "config.json");
-            //1: Create Project Directory
-            if (!Directory.Exists (prjDir))
-                Directory.CreateDirectory (prjDir);
-            //2: Create Project Settings Folder, .ssh folder is hidden
-            DirectoryInfo sshDir = Directory.CreateDirectory (prjSettDir);
-            sshDir.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
-            //3: Create Server copy
-            DirectoryInfo serverCp = Directory.CreateDirectory (Path.Combine (prjSettDir, "ServerCopy"));
-            //4: Add the configuration file
-            File.Copy (prjTmp, config);
-            Project prj = OpenProjectFile (config);
-            prj.Connection = ConsoleMenuController.Connection;
-            prj.Data.Name = prjName;
-            prj.Data.ProjectCopy = prjDir;
-            prj.Data.ServerCopy = serverCp.FullName;
-            prj.Data.ServerLastTimeCopy = DateTime.Now;
-            SaveProject (prj, config);
-            return prj;
+            if (SiteUtils.GetUserSettings ().Sites.Length > 0) {
+                String prjDir = Path.Combine (prjPath, prjName);
+                String prjSettDir = Path.Combine (prjDir, ".ssh");
+                String prjTmp = Path.Combine (SiteUtils.GetBinPath (), "data", "project_template.json");
+                String config = Path.Combine (prjSettDir, "config.json");
+                //1: Create Project Directory
+                if (!Directory.Exists (prjDir))
+                    Directory.CreateDirectory (prjDir);
+                //2: Create Project Settings Folder, .ssh folder is hidden
+                DirectoryInfo sshDir = Directory.CreateDirectory (prjSettDir);
+                sshDir.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
+                //3: Create Server copy
+                DirectoryInfo serverCp = Directory.CreateDirectory (Path.Combine (prjSettDir, "ServerCopy"));
+                //4: Add the configuration file
+                File.Copy (prjTmp, config);
+                Project prj = OpenProjectFile (config);
+                prj.Connection = ConsoleMenuController.Connection;
+                prj.Data.Name = prjName;
+                prj.Data.ProjectCopy = prjDir;
+                prj.Data.ServerCopy = serverCp.FullName;
+                prj.Data.ServerLastTimeCopy = DateTime.Now;
+                SaveProject (prj, config);
+                return prj;
+            } else
+                throw new Exception (MSG_ERR_NO_SITES);
         }
         /// <summary>
         /// Saves the current project configuration file in the given path
