@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using Nameless.Libraries.Aura.Model;
 using Nameless.Libraries.Aura.Utils;
-using static Nameless.Libraries.Aura.Resources .Message;
+using static Nameless.Libraries.Aura.Resources.Message;
 using static Nameless.Libraries.Aura.Utils.CommandUtils;
 namespace Nameless.Libraries.Aura.Controller {
     /// <summary>
@@ -119,8 +119,10 @@ namespace Nameless.Libraries.Aura.Controller {
                         break;
                     case "-v":
                         Version v = System.Reflection.Assembly.GetAssembly (typeof (ConsoleMenuController)).GetName ().Version;
-                        Console.WriteLine ("Version: v{0}.{1}.{2} ", v.Major, v.MinorRevision, v.Revision);
-                        Console.WriteLine ("Install Directory: " + Directory.GetCurrentDirectory ());
+                        String installDir =System.Reflection.Assembly.GetAssembly (typeof (SiteUtils)).Location;
+                        installDir = new FileInfo (installDir).Directory.FullName;
+                        Console.WriteLine ("Version: v{0}.{1}.{2} " , v.Major, v.MinorRevision, v.Revision);
+                        Console.WriteLine ("Install Directory: " + installDir);
                         break;
                 }
                 if (cmd != null)
