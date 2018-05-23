@@ -21,7 +21,7 @@ namespace Nameless.Libraries.Aura.Utils {
         public static Project InitProject (String prjName, String prjPath) {
             String prjDir = Path.Combine (prjPath, prjName);
             String prjSettDir = Path.Combine (prjDir, ".ssh");
-            String prjTmp = Path.Combine ("data", "project_template.json");
+            String prjTmp = Path.Combine (SiteUtils.GetBinPath(), "data", "project_template.json");
             String config = Path.Combine (prjSettDir, "config.json");
             //1: Create Project Directory
             if (!Directory.Exists (prjDir))

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Nameless.Libraries.Aura.Model;
 using Newtonsoft.Json;
-using static Nameless.Libraries.Aura.Resources .Message;
+using static Nameless.Libraries.Aura.Resources.Message;
 namespace Nameless.Libraries.Aura.Utils {
 
     public static class SiteUtils {
@@ -27,8 +27,7 @@ namespace Nameless.Libraries.Aura.Utils {
         /// <returns>The SSH app settings</returns>
         public static UserSettings GetUserSettings () {
             UserSettings settings = null;
-            String bin = System.Reflection.Assembly.GetAssembly (typeof (SiteUtils)).Location;
-            bin = new FileInfo (bin).Directory.FullName;
+            String bin = GetBinPath ();
             string pth = Path.Combine (bin, "data", "settings.json");
             if (File.Exists (pth)) {
                 using (StreamReader r = new StreamReader (pth)) {
@@ -38,6 +37,15 @@ namespace Nameless.Libraries.Aura.Utils {
                 return settings;
             } else throw new Exception (MSG_ERR_APP_MISS_CONF);
         }
+        /// <summary>
+        /// Gets the bin remote folder path
+        /// </summary>
+        /// <returns>The path where the application is installed</returns>
+        public static string GetBinPath () {
+            String bin = System.Reflection.Assembly.GetAssembly (typeof (SiteUtils)).Location;
+            return new FileInfo (bin).Directory.FullName;
+        }
+
         /// <summary>
         /// Gets a string, formatting the site credentials
         /// </summary>

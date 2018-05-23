@@ -119,9 +119,8 @@ namespace Nameless.Libraries.Aura.Controller {
                         break;
                     case "-v":
                         Version v = System.Reflection.Assembly.GetAssembly (typeof (ConsoleMenuController)).GetName ().Version;
-                        String installDir =System.Reflection.Assembly.GetAssembly (typeof (SiteUtils)).Location;
-                        installDir = new FileInfo (installDir).Directory.FullName;
-                        Console.WriteLine ("Version: v{0}.{1}.{2} " , v.Major, v.MinorRevision, v.Revision);
+                        String installDir = SiteUtils.GetBinPath ();
+                        Console.WriteLine ("Version: v{0}.{1}.{2} ", v.Major, v.MinorRevision, v.Revision);
                         Console.WriteLine ("Install Directory: " + installDir);
                         break;
                 }
