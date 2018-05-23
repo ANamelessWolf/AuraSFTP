@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using static Nameless.Libraries.Aura.Resources .Message;
+using static Nameless.Libraries.Aura.Resources.Message;
 using Nameless.Libraries.Aura.Model;
 using Nameless.Libraries.Aura.Utils;
 using RenciSftpClient = Renci.SshNet.SftpClient;
@@ -277,7 +277,7 @@ namespace Nameless.Libraries.Aura.Controller {
                 ProjectUtils.InitProject (projectName, projectPath);
             else if (!pathExists)
                 throw new Exception (MSG_ERR_NEW_PRJ_MISS_DIR);
-            Console.WriteLine (MSG_INF_NEW_PRJ);
+            Console.WriteLine (MSG_INF_NEW_PRJ, projectName, projectPath);
         }
 
     }
