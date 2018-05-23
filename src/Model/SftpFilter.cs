@@ -49,7 +49,7 @@ namespace Nameless.Libraries.Aura.Model {
         /// <param name="unixFile">The unix path to validate</param>
         /// <returns>True if the unix file is valid</returns>
         public bool IsUnixDirValid (SftpFile unixFile) {
-            return unixFile.Name != ".." && unixFile.Name != "." && this.IgnoreDirectories.Contains (unixFile.Name);
+            return unixFile.Name != ".." && unixFile.Name != "." && !this.IgnoreDirectories.Contains (unixFile.Name);
         }
 
         /// <summary>

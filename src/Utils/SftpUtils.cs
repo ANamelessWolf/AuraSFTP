@@ -28,8 +28,10 @@ namespace Nameless.Libraries.Aura.Utils {
                 if (filter.IsUnixFileValid (entry.FullName))
                     files.Add (entry.FullName);
             result = files;
-            foreach (var subDirPath in entries.Where (x => x.IsDirectory && filter.IsUnixDirValid (x)))
+            foreach (var subDirPath in entries.Where (x => x.IsDirectory && filter.IsUnixDirValid (x))){
+                Console.WriteLine(subDirPath);
                 result = result.Union (ListFiles (client, subDirPath.FullName, filter));
+            }
             return result;
         }
         /// <summary>
