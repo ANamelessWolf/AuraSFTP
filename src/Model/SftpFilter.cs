@@ -33,14 +33,10 @@ namespace Nameless.Libraries.Aura.Model {
         /// <param name="unixPath">The unix path to validate</param>
         /// <returns>True if the unix file is valid</returns>
         public bool IsUnixFileValid (string unixPath) {
-            String file = unixPath.Substring (unixPath.LastIndexOf ('/'));
-            bool isInIgnoreList = this.IgnoreFiles.Contains (file);
-            if (isInIgnoreList)
-                return false;
-            else {
-                String ext = file.Contains ('.') ? file.Substring (file.LastIndexOf ('.')) : "";
-                return !this.IgnoreExtensions.Contains (ext);
-            }
+            String file = unixPath.Substring (unixPath.LastIndexOf ('/')+1);
+            bool isInIgnoreList = this.IsIgnoreFile (file),
+                isIgnoreExtension = this.IsIgnoreExtension (file);
+            return !isInIgnoreList && !isIgnoreExtension;
         }
         /// <summary>
         /// Validates if a unix path is valid as a directory 
@@ -78,6 +74,23 @@ namespace Nameless.Libraries.Aura.Model {
         /// <returns>True if the file is ignored</returns>
         public Boolean IsIgnoreFile (FileInfo file) {
             return this.IgnoreFiles.Select (x => x.ToLower ()).Contains (file.Name.ToLower ());
+        }
+        /// <summary>
+        /// Check if a file is ignore by its file extension
+        /// </summary>
+        /// <param name="filename">The file name to validate</param>
+        /// <returns>True if the file is ignored</returns>
+        public Boolean IsIgnoreExtension (String filename) {
+            String extension = filename.Contains ('.') ? filename.Substring (filename.LastIndexOf ('.')).ToLower () : "";
+            return this.IgnoreExtensions.Select (x => x.ToLower ()).Contains (extension);
+        }
+        /// <summary>
+        /// Check if a file is ignore by its name
+        /// </summary>
+        /// <param name="filename">The file to validate</param>
+        /// <returns>True if the file is ignored</returns>
+        public Boolean IsIgnoreFile (String filename) {
+            return this.IgnoreFiles.Select (x => x.ToLower ()).Contains (filename.ToLower ());
         }
         /// <summary>
         /// Check if the directory name is in the ignore list

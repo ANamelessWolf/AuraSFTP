@@ -97,7 +97,7 @@ namespace Nameless.Libraries.Aura.Controller {
             if (this.SubValidOptions.Contains (optionToList)) {
                 String[] list = new String[0];
                 String join = ", ";
-                switch (this.Option) {
+                switch (optionToList) {
                     case "dir":
                         list = prj.Data.IgnoreDirectories;
                         break;
@@ -121,7 +121,7 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <param name="value">The value to remove</param>
         private void Remove (Project prj, string optionToRemove, string value) {
             if (this.SubValidOptions.Contains (optionToRemove)) {
-                switch (this.Option) {
+                switch (optionToRemove) {
                     case "dir":
                         if (prj.Data.IgnoreDirectories.Select (x => x.ToLower ()).Contains (value))
                             prj.Data.IgnoreDirectories = prj.Data.IgnoreDirectories.Where (x => x.ToLower () != value).ToArray ();
@@ -180,7 +180,7 @@ namespace Nameless.Libraries.Aura.Controller {
             else {
                 prj.Data.IgnoreFiles = prj.Data.IgnoreFiles.Union (new String[] { fileName }).ToArray ();
                 prj.SaveProject (this.ConfigFile);
-                Console.WriteLine (MSG_INF_IGNORE_ADDED, fileName, "files");
+                Console.WriteLine (MSG_INF_IGNORE_ADD, fileName, "files");
             }
         }
 
@@ -195,7 +195,7 @@ namespace Nameless.Libraries.Aura.Controller {
             else {
                 prj.Data.IgnoreDirectories = prj.Data.IgnoreDirectories.Union (new String[] { dirName }).ToArray ();
                 prj.SaveProject (this.ConfigFile);
-                Console.WriteLine (MSG_INF_IGNORE_ADDED, dirName, "directory");
+                Console.WriteLine (MSG_INF_IGNORE_ADD, dirName, "directory");
             }
 
         }

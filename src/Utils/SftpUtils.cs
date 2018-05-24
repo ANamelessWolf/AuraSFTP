@@ -19,18 +19,21 @@ namespace Nameless.Libraries.Aura.Utils {
         /// </summary>
         /// <param name="client">The Sftp client</param>
         /// <param name="dirPath">The directory path</param>
+        /// <param name="silentDownload">Download the files without listing everything</param>
         /// <returns>The file list collection</returns>
-        public static IEnumerable<String> ListFiles (this RenciSftpClient client, string dirPath, SftpFilter filter) {
+        public static IEnumerable<String> ListFiles (this RenciSftpClient client, string dirPath, SftpFilter filter, Boolean silentDownload = false) {
             List<String> files = new List<String> ();
             IEnumerable<String> result;
             var entries = client.ListDirectory (dirPath);
+            if (silentDownload)
+                Console.WriteLine ("Downloading {0} entries...", entries.Count ());
             foreach (var entry in entries.Where (x => !x.IsDirectory))
                 if (filter.IsUnixFileValid (entry.FullName))
                     files.Add (entry.FullName);
             result = files;
             foreach (var subDirPath in entries.Where (x => x.IsDirectory && filter.IsUnixDirValid (x))) {
                 Console.WriteLine (subDirPath);
-                result = result.Union (ListFiles (client, subDirPath.FullName, filter));
+                result = result.Union (ListFiles (client, subDirPath.FullName, filter, silentDownload));
             }
             return result;
         }
@@ -43,7 +46,7 @@ namespace Nameless.Libraries.Aura.Utils {
         /// <param name="silentDownload">Download the files without listing everything</param>
         public static void Download (this RenciSftpClient client, SiteCredentials credentials,
             MappedPath dir, SftpFilter filter, Boolean replace, Boolean silentDownload = false) {
-            var files = SftpUtils.ListFiles (client, dir.RemotePath, filter);
+            var files = SftpUtils.ListFiles (client, dir.RemotePath, filter, silentDownload);
             string localPath, serverCopy;
             FileInfo sC, lC;
             AuraSftpClient.SSHTransactionVoid (credentials, (Action<AuraSftpClient>) ((AuraSftpClient c) => {
@@ -117,7 +120,8 @@ namespace Nameless.Libraries.Aura.Utils {
             if (File.Exists (localCopy.FullName) && !replace && !silentDownload)
                 Console.WriteLine (String.Format (MSG_INF_EXIST_OMIT_FILE, localCopy.FullName));
             else {
-                File.Copy (serverCopy.FullName, localCopy.FullName, replace);
+                if (replace)
+                    File.Copy (serverCopy.FullName, localCopy.FullName, replace);
                 if (!silentDownload) {
                     if (!File.Exists (localCopy.FullName))
                         Console.WriteLine (String.Format (MSG_INF_COPY_FILE, localCopy.FullName));

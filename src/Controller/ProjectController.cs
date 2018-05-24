@@ -182,7 +182,7 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <param name="prj">The current project</param>
         private void CheckFiles (Project prj) {
             if (prj.Data.Map.Files.Count () > 0 || prj.Data.Map.Directories.Count () > 0) {
-                this.PullFromServer (prj, false);
+                this.PullFromServer (prj, false, true);
                 List<MappedPath> files = new List<MappedPath> ();
                 foreach (var file in prj.Data.Map.Files)
                     if (files.Count (x => x.ProjectCopy == file.ProjectCopy) == 0)
@@ -239,8 +239,6 @@ namespace Nameless.Libraries.Aura.Controller {
                     var dirs = prj.Data.Map.Directories;
                     var files = prj.Data.Map.Files;
                     SftpFilter filter = prj.Filter;
-                    if (silentDownload)
-                        Console.WriteLine ("Downloading...");
                     foreach (var dir in dirs)
                         client.Download (prj.Connection.Data, dir, filter, replace, silentDownload);
                     foreach (var file in files)
