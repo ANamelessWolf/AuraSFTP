@@ -24,7 +24,7 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <summary>
         /// The command valid options
         /// </summary>
-        protected override string[] ValidOptions => new String[] { "new", "add", "pull", "push", "check", "site" };
+        protected override string[] ValidOptions => new String[] { "new", "add", "pull", "push", "check", "site", "clean" };
         /// <summary>
         /// Command shortcut
         /// </summary>
@@ -88,10 +88,28 @@ namespace Nameless.Libraries.Aura.Controller {
                             throw exc;
                         }
                         break;
+                    case "clean":
+                        try {
+                            this.CleanServerCopy (ProjectUtils.OpenProject ());
+                        } catch (System.Exception exc) {
+                            throw exc;
+                        }
+                        break;
                 }
             else
                 throw new Exception (String.Format (MSG_ERR_BAD_OPTION, this.CommandShortcut, this.HelpCommand));
         }
+        /// <summary>
+        /// Cleans the server copy
+        /// </summary>
+        /// <param name="project">The active project</param>
+        private void CleanServerCopy (Project project) {
+            String serverCopy = project.Data.ServerCopy;
+            Directory.Delete(serverCopy,true);
+            Directory.CreateDirectory(serverCopy);
+            this.PullFromServer(project,false,true);
+        }
+
         /// <summary>
         /// Adds a file or a directory to the server
         /// </summary>
@@ -166,9 +184,9 @@ namespace Nameless.Libraries.Aura.Controller {
                 Boolean isComparable;
                 var filesToUpload = files.Where (x => {
                     isComparable = x.ProjectCopy.IsComparable (cExt);
-                    return !isComparable || (isComparable && !dmp.AreFilesEquals (x.ProjectCopy, x.ServerCopy));
-                });
-                if (filesToUpload.Count () > 0)
+                    return isComparable && !dmp.AreFilesEquals (x.ProjectCopy, x.ServerCopy);
+                }).ToArray ();
+                if (filesToUpload.Length > 0)
                     SftpUtils.UploadFiles (filesToUpload, prj);
                 else
                     Console.WriteLine (MSG_INF_PRJ_PUSH_NO_CHANGES);

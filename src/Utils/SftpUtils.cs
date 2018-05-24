@@ -139,19 +139,19 @@ namespace Nameless.Libraries.Aura.Utils {
             Console.WriteLine (MSG_TIT_FILES_UP);
             files.ToList ().ForEach (x => Console.WriteLine (x.ToUploadPreviewFormat ()));
             if (CommandUtils.AskYesNo (MSG_ASK_CONTINUE)) {
-                AuraSftpClient.SSHTransactionVoid (project.Connection.Data,
-                    (Action<AuraSftpClient>) ((AuraSftpClient c) => {
-                        c.Uploading += (object sender, ScpUploadEventArgs e) => {
-                            Console.WriteLine (String.Format ("\rUploading [{0}], {1:P2}", e.Filename,
-                                (double) e.Uploaded / (double) e.Size));
-                        };
-                        foreach (MappedPath file in files.OrderBy (x => x.RemotePath)) {
-                            c.Upload (new FileInfo (file.ProjectCopy), file.RemotePath);
+                AuraSftpClient.SFTPTransactionVoid (project.Connection.Data, (SftpClient c) => {
+                    var uploadedFiles = files.OrderBy (x => x.RemotePath).ToArray ();
+                    Stream input;
+                    foreach (MappedPath file in uploadedFiles) {
+                        input = File.OpenRead (file.ProjectCopy);
+                        using (input = File.OpenRead (file.ProjectCopy)) {
+                            c.UploadFile (input, file.RemotePath, true, null);
                             Console.WriteLine (String.Format ("Uploaded at {0}", file.RemotePath));
+                            File.Copy (file.ProjectCopy, file.ServerCopy, true);
                         }
-                    }));
+                    }
+                });
             }
         }
-
     }
 }

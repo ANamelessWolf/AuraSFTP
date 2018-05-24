@@ -35,7 +35,8 @@ namespace Nameless.Libraries.Aura.Utils {
         /// <returns>The value obtained from the user</returns>
         public static Boolean AskYesNo (string msg) {
             Console.WriteLine (msg + "(Y/N)");
-            return Console.ReadLine ().ToUpper () == "Y";
+            String variable = Console.ReadLine ();
+            return variable.ToUpper () == "Y";
         }
         /// <summary>
         /// Ask the user for a password value

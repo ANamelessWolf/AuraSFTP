@@ -42,7 +42,8 @@ namespace Nameless.Libraries.Aura.Utils {
         public static Boolean AreFilesEquals (this diff_match_patch dmp, String projectFilePath, String serverFilePath) {
             String projectFile = String.Join ("\r\n", File.ReadAllLines (projectFilePath)),
                 serverFile = String.Join ("\r\n", File.ReadAllLines (serverFilePath));
-            return dmp.diff_main (serverFile, projectFile).Count (x => x.operation != Operation.EQUAL) == 0;
+            Boolean areEqual = dmp.diff_main (serverFile, projectFile).Count (x => x.operation != Operation.EQUAL) == 0;
+            return areEqual;
         }
         /// <summary>
         /// Creates an html report
