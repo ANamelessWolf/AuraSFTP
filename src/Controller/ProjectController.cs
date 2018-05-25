@@ -26,6 +26,19 @@ namespace Nameless.Libraries.Aura.Controller {
         /// </summary>
         protected override string[] ValidOptions => new String[] { "new", "add", "pull", "push", "check", "site", "clean" };
         /// <summary>
+        /// Gets the help documentation pointers
+        /// </summary>
+        public override HelpPointer[] Help => new HelpPointer[] {
+            new HelpPointer (this, String.Empty, 76, 142),
+            new HelpPointer (this, "new", 87, 94),
+            new HelpPointer (this, "site", 96, 101),
+            new HelpPointer (this, "pull", 103, 109),
+            new HelpPointer (this, "add", 111, 118),
+            new HelpPointer (this, "check", 120, 126),
+            new HelpPointer (this, "push", 128, 134),
+            new HelpPointer (this, "clean", 136, 142),
+        };
+        /// <summary>
         /// Command shortcut
         /// </summary>
         public override string CommandShortcut => "-p";
@@ -105,9 +118,9 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <param name="project">The active project</param>
         private void CleanServerCopy (Project project) {
             String serverCopy = project.Data.ServerCopy;
-            Directory.Delete(serverCopy,true);
-            Directory.CreateDirectory(serverCopy);
-            this.PullFromServer(project,false,true);
+            Directory.Delete (serverCopy, true);
+            Directory.CreateDirectory (serverCopy);
+            this.PullFromServer (project, false, true);
         }
 
         /// <summary>

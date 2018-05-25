@@ -31,6 +31,17 @@ namespace Nameless.Libraries.Aura.Controller {
         /// </summary>
         private string[] SubValidOptions => new String[] { "dir", "file", "ext" };
         /// <summary>
+        /// Gets the help documentation pointers
+        /// </summary>
+        public override HelpPointer[] Help => new HelpPointer[] {
+            new HelpPointer (this, String.Empty, 178, 229),
+            new HelpPointer (this, "dir", 188, 194),
+            new HelpPointer (this, "file", 196, 202),
+            new HelpPointer (this, "ext", 204, 210),
+            new HelpPointer (this, "remove", 212, 220),
+            new HelpPointer (this, "list", 222, 229)
+        };
+        /// <summary>
         /// Initialize a new instance for a project controller
         /// </summary>
         /// <param name="args">The command arguments</param>

@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using Nameless.Libraries.Aura.Model;
 using Nameless.Libraries.Aura.Utils;
-using static Nameless.Libraries.Aura.Resources .Message;
+using static Nameless.Libraries.Aura.Resources.Message;
 using RenCiSftpClient = Renci.SshNet.SftpClient;
 namespace Nameless.Libraries.Aura.Controller {
 
@@ -25,6 +25,15 @@ namespace Nameless.Libraries.Aura.Controller {
         /// The command valid options
         /// </summary>
         protected override string[] ValidOptions => new String[] { "dir", "file", "remove" };
+        /// <summary>
+        /// Gets the help documentation pointers
+        /// </summary>
+        public override HelpPointer[] Help => new HelpPointer[] {
+            new HelpPointer (this, String.Empty, 144, 176),
+            new HelpPointer (this, "dir", 152, 159),
+            new HelpPointer (this, "file", 161, 168),
+            new HelpPointer (this, "remove", 170, 176)
+        };
         /// <summary>
         /// Initialize a new instance for a command controller
         /// </summary>

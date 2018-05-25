@@ -24,6 +24,18 @@ namespace Nameless.Libraries.Aura.Controller {
         /// The validation options
         /// </summary>
         protected override string[] ValidOptions => new String[] { "add", "edit", "list", "remove", "test", "default", "check" };
+                /// <summary>
+        /// Gets the help documentation pointers
+        /// </summary>
+        public override HelpPointer[] Help => new HelpPointer[] {
+            new HelpPointer (this, String.Empty, 1, 74),
+            new HelpPointer (this, "add", 87, 94),
+            new HelpPointer (this, "edit", 96, 101),
+            new HelpPointer (this, "list", 103, 109),
+            new HelpPointer (this, "test", 111, 118),
+            new HelpPointer (this, "default", 120, 126),
+            new HelpPointer (this, "check", 128, 134)
+        };
         /// <summary>
         /// Initialize a new instance for a command controller
         /// </summary>

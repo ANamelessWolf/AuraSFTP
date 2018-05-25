@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using static Nameless.Libraries.Aura.Utils.CommandUtils;
 using static Nameless.Libraries.Aura.Resources.Message;
+using Nameless.Libraries.Aura.Model;
+
 namespace Nameless.Libraries.Aura.Controller {
     /// <summary>
     /// Initialize a new instance of the project controller
@@ -29,6 +31,10 @@ namespace Nameless.Libraries.Aura.Controller {
         /// Gets the help command name
         /// </summary>
         public abstract String HelpCommand { get; }
+        /// <summary>
+        /// Gets the help documentation pointers
+        /// </summary>
+        public abstract HelpPointer[] Help { get; }
         /// <summary>
         /// Initialize a new instance for a command controller
         /// </summary>
