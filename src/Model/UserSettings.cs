@@ -21,5 +21,10 @@ namespace Nameless.Libraries.Aura.Model {
         /// The list of sites defined by the user
         /// </summary>
         public SiteDefinition[] Sites;
+        /// <summary>
+        /// Gets the application default language
+        /// by default english
+        /// </summary>
+        public String Language;
     }
 }
