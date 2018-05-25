@@ -79,25 +79,67 @@ Aura -s remove MySite
 Topics
 1. Create a new project
 2. Pull files from server
+3. Adds a file to the server
+4. Check project changes
+5. Push changes to the server
+6. Clean the project
 
 Create a new project
 Creates a new project in a given directory
--p new <prj_name> <prj_path>
+Aura -p new <prj_name> <prj_path>
 Parameters
-<prj_name>  The name of the project
-<prj_path>  The path where the project is saved
-Example:
-Create a new project called MyProject in the directory C:\MyProjects\
--p new MyProject C:\MyProjects\
+<prj_name> — The name of the project
+<prj_path> — The path where the project is saved
+Example: Create a new project called MyProject in the directory C:\MyProjects\
+Aura -p new MyProject C:\MyProjects\
+
+Updates the site credentials
+Set the project remote site connection credentials. The site connection credentials are specified in the application configuration file.
+Aura -p site <site_name>
+Parameters <site_name> — The name of the site configuration
+Example: Set the current project the site configuration named mySite
+Aura -p site mySite
 
 Pull files from server
-Downloads mapped files and directories from the current server
--p pull [optional]replace
+Downloads mapped files and directories using the current connection settings. Mapped directories are filtered using ignore rules defined in the project.
+Aura -p pull [optional]replace
 Parameters
-[optional]replace Use the word 'replace' to overwrite existent files
-Example:
-Pull files from the server and replace existent files
--p pull replace
+[optional]replace — Use the word 'replace' to overwrite existent files in the project copy
+Example: Pull from the server and replace the project copy
+Aura -p pull replace
+
+Adds a file to the server
+A file or a directory that doesn't exist in the server is uploaded and mapped to the current project.
+Aura -p add <local_path> <remote_path>
+Parameters
+<local_path> — The local path, use a relative path based on the project path
+<remote_path> — The server remote path, use a relative path based on the RootDir property
+Example: Adds the contents.json file to the server content folder
+Aura -p add data\contents.json content/contents.json
+
+Check project changes
+This method runs a pull without and replace the server copy, once the server copy is downloaded it is compared using the library diff-match-patch to see its differences. The files with changes are listed in the console.
+Aura -p check
+Parameters
+NONE
+Example: Check the current changes
+Aura -p check
+
+Push changes to the server
+Push the mapped files that have changes in to the server
+Aura -p push
+Parameters
+NONE
+Example: Push the current changes
+Aura -p push
+
+Clean project
+Cleans the server copy and downloads a new copy
+Aura -p clean
+Parameters
+NONE
+Example: Cleans the server copy
+Aura -p clean
 
 ******************
 ** Mapping Help **
@@ -108,33 +150,80 @@ Topics
 3. Removes a path
 
 Map a directory
-Add a path that maps a server directory path to a local directory path.
-Remote paths are relative to the server RootDir path taken from the project connection data node and
-locals paths are relative to the project path.
-Adds a path mapping a directory from the server remote path to the local path. 
--m dir <local_path> <remote_path>
+Maps local directory to a remote directory. Files are filtered with ignore filters.
+Aura -m dir <local_path> <remote_path>
 Parameters
-<local_path>    The local path for the directory, use a relative path base on the project path
-<remote_path>   The remote path where the directory is on the server, use a relative path base on the RootDir path
-Example:
-Maps a relative path between the downloader directory and a local directory
--m dir widget\downloader widget/downloader
+<local_path> — The local path for the directory, use a relative path based on the project path
+<remote_path> — The server remote directory path, use a relative path based on the RootDir property
+Example: Map a relative path between the downloader directory and a local directory
+Aura -m dir widget\downloader widget/downloader
 
-Maps a file
-Add a path that maps a server file path to a local file path
--m file <local_file> <remote_file>
+Map a file
+Maps local file to a remote file.
+Aura -m file <local_file> <remote_file>
 Parameters
-<local_file>    The local path for the file path, use a relative path base on the project path
-<remote_file>   The remote path where the file path is on the server, use a relative path base on the RootDir path
-Example:
-Maps a relative path between the properties file and the local file path.
--m file config/properties.php protected/config/properties.php
-                
-Removes a path
+<local_file> — The local path for the file path, use a relative path base on the project path
+<remote_file> — The remote path where the file path is on the server, use a relative path base on the RootDir property
+Example: Map a relative path between the properties file and the local file path.
+Aura -m file config/properties.php protected/config/properties.php
+
+Remove a mapping
 Removes a map entry from the current Project
--m remove <local_path>
+Aura -m remove <local_path>
 Parameters
-<local_path>    The local path to remove. Must be the same path used in the mapping process
-Example:
-Removes the mapping entry to the properties.php file
--m remove protected\config\properties.php
+<local_path> — The local path to remove. Must be the same path used in the mapping process
+Example: Removes the mapping entry for the properties.php file
+Aura -m remove protected\config\properties.php
+
+*****************
+** Ignore Help **
+*****************
+Topics
+1. Add an entry to ignore a directory
+2. Add an entry to ignore a file name
+3. Adds one or more entries to ignore a file extension
+4. Remove ignored entry
+5. View ignored list
+
+Add an entry to ignore a directory
+Add a directory name to the directory ignore list
+Aura -i dir <dir_name>
+Parameters
+<dir_name> — The directory name to ignore
+Example: Add the directory img to ignore list
+Aura -i dir img
+
+Add an entry to ignore a file by name
+Add a file name to the files ignore list
+Aura -i file <file_name>
+Parameters
+<file_name> — The file name to ignore
+Example: Add the file config.xml to ignore list
+Aura -i file config.xml
+
+Adds one or more entries to ignore a file extension
+Add the extension with period
+Aura -i ext <ext_name>
+Parameters
+<ext_name> — The extension file to ignore
+Example: Add the extensions '.jpg' and '.png' to ignore list
+Aura -i ext '.jpg' '.png'
+
+Remove ignored entry
+Removes an entry from the directory, files or extensions list.
+Aura -i remove <list> <entry>
+Available options; dir, file, ext
+Parameters
+<list> — The list to remove an entry
+<entry>- The entry to remove
+Example: Remove the directory widgets from ignore list
+Aura -i remove dir widgets
+
+View ignored list
+View an ignored list items
+Aura -i list <list_name>
+Available list names; dir, file, ext
+Parameters
+<list_name> — The name of the list to view
+Example: View the files ignore list
+Aura -i list file

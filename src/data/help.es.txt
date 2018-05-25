@@ -1,0 +1,229 @@
+************************
+*** Ayuda de sitios ****
+************************
+Temas
+
+1. Agregar un sitio
+2. Editar un sitio
+3. Listar sitios
+4. Probar la conexión al sitio
+5. Establezca una conexión de sitio como predeterminada
+6. Verifique que conexión de sitio es predeterminada
+7. Eliminar un sitio
+
+Añadir un sitio
+Agrega una nueva configuración de sitio a la configuración de la aplicación. 
+Aura -s add [opcional] <nombre_del_sitio>
+Parámetros
+[opcional] <nombre_del_sitio> — Si el proveedor no lo solicita, la aplicación lo hara
+Ejemplo:
+Crea un nuevo sitio llamado MySite
+Aura -s add MySite
+
+Editar un sitio
+Edite todo los campos del sitio solo un campo seleccionado.
+Para editar todos los campos use
+Aura -s add <nombre del sitio>
+Para editar un solo campo
+Aura -s edit <site_name> [optional] <field_name>
+Parámetros
+<site_name> — El nombre del sitio ha editar
+[opcional] <field_name> — El nombre del campo para editar.
+Nombres de campos válidos: host, contraseña, usuario, RootDir, puerto
+Ejemplo:
+Editar el puerto de MySite
+Aura -s edit el puerto de MySite
+
+Lista de sitios
+Enumera todas las configuraciones disponibles de sitios o la configuración de un sitio determinado.
+Aura -s list [opcional] <site_name>
+Parámetros
+[opcional] <site_name> — El nombre del sitio para listar su configuración
+Ejemplo:
+Listar la configuración del sitio MySite
+Aura -s list MySite
+
+Probar la conexión al sitio
+Prueba la conectividad de un sitio determinado
+Aura -s test <nombre del sitio>
+Parámetros
+<site_name> — El nombre del sitio ha probar su conexión
+Ejemplo:
+Prueba la conexión ha MySite
+Aura -s test MySite
+
+Establezca una conexión de sitio como predeterminada
+Permite elegir qué conexión se utilizará de forma predeterminada al crear un nuevo proyecto
+Aura -s default <site_name>
+Parámetros
+<site_name> — El nombre del sitio para establecer como predeterminado
+Ejemplo:
+Aura -s por defecto MySite
+
+Verifique la conexión predeterminada del sitio
+Verificar qué conexión es la predeterminada
+Aura -s check
+
+Eliminar un sitio
+Eliminar un sitio del archivo de configuración
+Aura -s remove <site_name>
+Parámetros
+<site_name> — El nombre del sitio ha remover
+Ejemplo:
+Aura -s eliminar MySite
+
+************************
+** Ayuda de Proyectos **
+************************
+Temas
+1. Crear un nuevo proyecto
+2. Actualizar credenciales de conexión
+3. Extraer archivos del servidor
+4. Agregar un archivo al servidor
+5. Verificar cambios en el proyecto
+6. Subir los cambios al servidor
+7. Limpiar el proyecto
+
+Crear un nuevo proyecto
+Crea un nuevo proyecto en un directorio determinado
+Aura -p nuevo <prj_name> <prj_path>
+Parámetros
+<prj_name> — El nombre del proyecto
+<prj_path> — La ruta donde se guarda el proyecto
+Ejemplo: Crea un nuevo proyecto llamado MyProject en el directorio C:\MyProjects\
+Aura -p new MyProject C:\MyProjects\
+
+Actualizar credenciales de conexión
+Establezca las credenciales de conexión al sitio remoto. Las credenciales de conexión del sitio se especifican en el archivo de configuración de la aplicación.
+Aura -p sitio <nombre_del_sitio>
+Parámetros <site_name> — El nombre de la configuración de conexión del sitio
+Ejemplo: Configure el proyecto actual con la configuración del sitio denominada mySite
+Aura -p sitio mySite
+
+Extraer archivos del servidor
+Descarga los archivos y directorios mapeados, usando la configuración de conexión actual. Los directorios mapeados se filtran usando las reglas de ignorar definidas en el proyecto.
+Aura -p pull [opcional]replace
+Parámetros
+[opcional]replace — Use la palabra 'replace' para sobrescribir los archivos existentes en la copia del proyecto
+Ejemplo: Descargar una copia del servidor remplazando los archivos del proyecto
+Aura -p pull replace
+
+Agrega un archivo al servidor
+Un archivo o un directorio que no existe en el servidor se carga y se asigna al proyecto actual.
+Aura -p add <ruta_local> <ruta_remota>
+Parámetros
+<ruta_local> — La ruta local, use una ruta relativa basada en la ruta del proyecto
+<remote_path> — La ruta remota del servidor, use una ruta relativa basada en la propiedad RootDir
+Ejemplo: agrega el archivo contents.json a la carpeta de contenido del servidor
+Aura -p add data \ contents.json content / contents.json
+
+Verificar los cambios en el proyecto
+Este método ejecuta una extracción sin y reemplazo hacia la copia del servidor, una vez descargados los archivos, se comparan usando la biblioteca diff-match-patch para ver sus diferencias. Los archivos con cambios se enumeran en la consola.
+Aura -p check
+Parámetros
+NINGUNA
+Ejemplo: verificar los cambios actuales
+Aura -p check
+
+Subir los cambios al servidor
+Sube los archivos mapeados que contienen cambios en el servidor
+Aura -p push
+Parámetros
+NINGUNA
+Ejemplo: Subir los cambios actuales
+Aura -p push
+
+Limpiar el proyecto
+De manera similar al check, con la diferencia que borra la ServerCopy y vuelve a descargar los archivos. Esta opción debe llamarse despues de remover entradas del mapeo
+Aura -p clean
+Parámetros
+NINGUNA
+Ejemplo: Limpiar la copia del servidor
+Aura -p clean
+
+********************
+** Ayuda de mapeo **
+********************
+Temas
+1. Mapear un directorio
+2. Mapear un archivo
+3. Eliminar una entrada de mapeo
+
+Mapear un directorio
+Mapea un directorio local y un directorio remoto. Los archivos y directorios son filtrados usando los filtros de ignorar.
+Aura -m dir <ruta_local> <ruta_remota>
+Parámetros
+<ruta_local> — La ruta local para el directorio, usa una ruta relativa basada en la ruta del proyecto
+<remote_path> — La ruta del directorio remoto en el servidor, use una ruta relativa basada en la propiedad RootDir
+Ejemplo: Mapee una ruta relativa entre el directorio de descarga y un directorio local
+Aura -m dir widget\downloaderWidget /downloaderWidget
+
+Mapear un archivo
+Mapea un archivo local y un archivo remoto.
+Archivo Aura -m <archivo_local> <archivo_remoto>
+Parámetros
+<archivo_local> — La ruta local del archivo, use una ruta relativa basada en la ruta del proyecto
+<archivo_remoto> — la ruta remota donde la ruta del archivo está en el servidor, use una ruta de acceso relativa en la propiedad RootDir
+Ejemplo: Mapee una ruta relativa entre el archivo de propiedades y la ruta del archivo local.
+Aura -m file config/properties.php protected/config/properties.php
+
+Eliminar una entrada de mapeo
+Elimina una entrada de mapeo en el Proyecto actual
+Aura -m eliminar <ruta_local>
+Parámetros
+<ruta_local> — La ruta local ha eliminar. Debe ser la misma ruta utilizado en el proceso de mapeo
+Ejemplo: Elimina la ruta de mapeo hacia el archivo properties.php
+Aura -m remove protected\config\properties.php
+
+************************
+** Ayuda para Ignorar **
+************************
+Temas
+1. Agregue una entrada para ignorar un directorio
+2. Agregue una entrada para ignorar un nombre de archivo
+3. Agrega una o más entradas para ignorar una extensión de archivo
+4. Eliminar la entrada ignorada
+5. Ver contenido de listas
+
+Agregue una entrada para ignorar un directorio
+Agrega un nombre de directorio a la lista de ignorar directorios
+Aura -i dir <dir_name>
+Parámetros
+<dir_name> — El nombre del directorio ha ignorar
+Ejemplo: Agregar el directorio img a la lista de ignorar
+Aura -i dir img
+
+Agregue una entrada para ignorar un archivo por nombre
+Agrega un nombre de archivo a la lista de ignorar archivos
+Aura -i file <nombre_de_archivo>
+Parámetros
+<file_name> — El nombre del archivo ha ignorar
+Ejemplo: Agregue el archivo config.xml para ignorar la lista
+Aura -i file config.xml
+
+Agrega una o más entradas para ignorar extensines de archivos
+Agrega las extensiones iniciando con un punto
+Aura -i ext <ext_name>
+Parámetros
+<ext_name> — La extensión de archivo ha ignorar. Puede recibir n parámetros
+Ejemplo: Agregue las extensiones '.jpg' y '.png' para ignorar
+Aura -i ext '.jpg' '.png'
+
+Eliminar una entrada de la lista
+Elimina una entrada de las listas ha ignorar directorios, archivos o lista de extensiones.
+Aura -i remove <list> <entry>
+Opciones Disponibles; dir, file, ext
+Parámetros
+<list> — La lista ha remover una entrada
+<entry> — La entrada ha remover
+Ejemplo: Eliminar la entrada widgets de la lista de directorios ha ignorar
+Aura -i remove dir widgets
+
+Ver contenido de listas
+Muestra el contenido de las listas
+Aura -i list <list_name>
+Nombres de listas disponibles; dir, file, ext
+Parámetros
+<list_name> — El nombre de la lista ha visualizar
+Ejemplo: Ver la lista de archivos ignorados
+Aura -i list file
