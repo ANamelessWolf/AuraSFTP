@@ -120,7 +120,7 @@ namespace Nameless.Libraries.Aura.Utils {
             if (File.Exists (localCopy.FullName) && !replace && !silentDownload)
                 Console.WriteLine (String.Format (MSG_INF_EXIST_OMIT_FILE, localCopy.FullName));
             else {
-                if (replace)
+                if (replace || !File.Exists(localCopy.FullName))
                     File.Copy (serverCopy.FullName, localCopy.FullName, replace);
                 if (!silentDownload) {
                     if (!File.Exists (localCopy.FullName))
