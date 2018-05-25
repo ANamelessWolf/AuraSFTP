@@ -24,7 +24,7 @@ namespace Nameless.Libraries.Aura.Controller {
         /// The validation options
         /// </summary>
         protected override string[] ValidOptions => new String[] { "add", "edit", "list", "remove", "test", "default", "check" };
-                /// <summary>
+        /// <summary>
         /// Gets the help documentation pointers
         /// </summary>
         public override HelpPointer[] Help => new HelpPointer[] {
