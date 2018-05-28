@@ -4,11 +4,9 @@ using System.IO;
 using System.Linq;
 using Nameless.Libraries.Aura.Controller;
 
-namespace Nameless.Libraries.Aura.Model
-{
+namespace Nameless.Libraries.Aura.Model {
 
-    public class HelpPointer
-    {
+    public class HelpPointer {
         /// <summary>
         /// The name of the command to ask for help
         /// </summary>
@@ -35,8 +33,7 @@ namespace Nameless.Libraries.Aura.Model
         /// <param name="controller">The command controller</param>
         /// <param name="start">The index where the help lines starts. Starting index at 1</param>
         /// <param name="end">The index where the help lines end</param>
-        public HelpPointer(CommandController controller, String option, int start, int end)
-        {
+        public HelpPointer (CommandController controller, String option, int start, int end) {
             this.Command = controller.HelpCommand;
             this.Option = option;
             this.StartLine = start - 1;
@@ -47,8 +44,7 @@ namespace Nameless.Libraries.Aura.Model
         /// </summary>
         /// <param name="start">The index where the help lines starts. Starting index at 1</param>
         /// <param name="end">The index where the help lines end</param>
-        public HelpPointer(String option, int start, int end)
-        {
+        public HelpPointer (String option, int start, int end) {
             this.Command = "";
             this.Option = option;
             this.StartLine = start - 1;
@@ -58,15 +54,13 @@ namespace Nameless.Libraries.Aura.Model
         /// Sets the help content
         /// </summary>
         /// <param name="lines">The help file lines</param>
-        public void SetHelpContent(String[] lines)
-        {
-            this.Content = String.Join("\n", lines.Skip(this.StartLine).Take(this.EndLine - this.StartLine));
+        public void SetHelpContent (String[] lines) {
+            this.Content = String.Join ("\n", lines.Skip (this.StartLine).Take ((this.EndLine - this.StartLine) + 1));
         }
         /// <summary>
         /// Gets the help content
         /// </summary>
-        public String GetHelp()
-        {
+        public String GetHelp () {
             return this.Content;
         }
     }
