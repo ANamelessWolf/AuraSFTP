@@ -75,7 +75,7 @@ namespace Nameless.Libraries.Aura.Controller
         /// <param name="args">The arguments used to run the command</param>
         public void RunCommand(string[] args)
         {
-            if (args.Length > 0 && this.ValidParameters.Contains(args[0]))
+            if (args.Length > 0 && this.HelpCommands.Contains(args[0]))
             {
                 CommandController cmd = null;
                 String[] opt, cmdArgs;
