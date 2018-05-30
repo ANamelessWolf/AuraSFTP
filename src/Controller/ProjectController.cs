@@ -137,11 +137,13 @@ namespace Nameless.Libraries.Aura.Controller {
         private void AddToServer (Project prj, string localPath, string remotePath) {
             String prjPath = Environment.CurrentDirectory;
             String configFile = Path.Combine (prjPath, ".ssh", "config.json");
+            localPath = Path.Combine (prj.Data.ProjectCopy, localPath);
+            remotePath = Path.Combine (prj.Connection.Data.RootDir, remotePath);
             if (File.Exists (localPath)) //is a file
             {
                 var mapped = prj.Data.Map.Files.FirstOrDefault (x => x.ProjectCopy == localPath);
                 if (mapped == null) {
-                    File.Copy (localPath, localPath.Replace (prj.Data.ProjectCopy, prj.Data.ServerCopy));
+                    // File.Copy (localPath, localPath.Replace (prj.Data.ProjectCopy, prj.Data.ServerCopy), true);
                     MappedPath newMap = new MappedPath () {
                         ProjectCopy = localPath,
                         ServerCopy = localPath.Replace (prj.Data.ProjectCopy, prj.Data.ServerCopy),
@@ -149,7 +151,7 @@ namespace Nameless.Libraries.Aura.Controller {
                         RemoteVersion = DateTime.Now,
                         LocaVersion = DateTime.Now
                     };
-                    SftpUtils.UploadFiles (new MappedPath[] { newMap }, prj);
+                    SftpUtils.UploadFiles (new MappedPath[] { newMap }, prj, true);
                     prj.Data.Map.Files = prj.Data.Map.Files.Union (new MappedPath[] { newMap }).ToArray ();
                     prj.SaveProject (configFile);
                     Console.WriteLine (String.Format (MSG_INF_MAP_CREATED, localPath, remotePath));
