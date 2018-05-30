@@ -81,10 +81,31 @@ namespace Nameless.Libraries.Aura.Controller {
         /// </summary>
         /// <param name="prj">The active project</param>
         /// <param name="localPath">The local file path</param>
-        private void RemovePath (Project prj, string v) {
-            throw new NotImplementedException ();
+        private void RemovePath (Project prj, string localPath) {
+            String pth = Path.Combine (prj.Data.ProjectCopy, localPath).ToLower ();
+            //First check in files
+            MappedPath[] fileData = this.RemovePath (prj.Data.Map.Files, pth),
+                dirData = this.RemovePath (prj.Data.Map.Directories, pth);
+            if (fileData != null || dirData != null) {
+                prj.SaveProject (this.ConfigFile);
+                Console.WriteLine (MSG_INF_MAP_REMOVED, pth);
+            } else
+                Console.WriteLine (MSG_ERR_MAP_REM_PTH, pth);
         }
-
+        /// <summary>
+        /// Remove the a path from a collection of paths
+        /// </summary>
+        /// <param name="paths">The collection of paths</param>
+        /// <param name="projectPath">The project path to remove</param>
+        /// <returns>The new path collection if no path is removed this returns null</returns>
+        private MappedPath[] RemovePath (MappedPath[] paths, String projectPath) {
+            int index = -1;
+            MappedPath[] data = null;
+            index = Array.FindIndex (paths, x => x.ProjectCopy.ToLower () == projectPath);
+            if (index > 0)
+                data = paths.Where (x => x.ProjectCopy.ToLower () != projectPath).ToArray ();
+            return data;
+        }
         /// <summary>
         /// Maps a file to the project file
         /// </summary>

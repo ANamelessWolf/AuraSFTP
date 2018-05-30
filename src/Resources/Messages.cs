@@ -112,6 +112,10 @@ namespace Nameless.Libraries.Aura.Resources {
         /// </summary>
         public const string MSG_INF_MAP_CREATED = "A new mapped path from '{0}' to '{1}' was created correctly.";
         /// <summary>
+        /// The message sent when a mapping is removed.
+        /// </summary>
+        public const string MSG_INF_MAP_REMOVED = "A mapped path '{0}' has been removed from the project.";
+        /// <summary>
         /// The error message sent when the remote path not exists
         /// </summary>
         public const string MSG_ERR_MAP_REM_PTH = "The remote path '{0}' was not found on the server.";
@@ -185,7 +189,7 @@ namespace Nameless.Libraries.Aura.Resources {
         /// The error message sent when an entry already exists
         /// </summary>
         public const string MSG_INF_IGNORE_ADDED = "Added extensions [{0}] to the '{1}' ignore list";
-                /// <summary>
+        /// <summary>
         /// The error message sent when an entry already exists
         /// </summary>
         public const string MSG_INF_IGNORE_ADD = "Added entry '{0}' to the '{1}' ignore list";
@@ -197,7 +201,7 @@ namespace Nameless.Libraries.Aura.Resources {
         /// The error message sent when an extension doesn't start a period
         /// </summary>
         public const string MSG_ERR_BAD_EXT = "Extensions must start with a period";
-                /// <summary>
+        /// <summary>
         /// The error message sent when an entry is not defined in the ignore list
         /// </summary>
         public const string MSG_ERR_IGNORE_NOT_DEF = "The entry '{0}' was not found in the '{1}' list";
