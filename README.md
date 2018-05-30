@@ -2,6 +2,10 @@
 A console file manager for testing and editing a web project on a server via SFTP using dotNET Core.
 ## Prerequisites
 Install [.NET core](https://dotnet.github.io/) *SDK* from here for [[Windows]](https://download.microsoft.com/download/2/E/C/2EC018A0-A0FC-40A2-849D-AA692F68349E/dotnet-sdk-2.1.105-win-gs-x64.exe), to learn more or download for another operating system please visit the following link [Get started with .NET in 10 minutes](https://www.microsoft.com/net/learn/get-started/windows).
+## Dependencies
+[Diff Match Patch](https://github.com/google/diff-match-patch) a high-performance library in multiple languages that manipulates plain text. 
+[Renci SshNet](https://github.com/zeevl/Renci.SshNet) a SSH connection library
+
 ## Installing
 Downloads the file from [here](https://github.com/ANamelessWolf/AuraSFTP/releases/download/v1.0/aura_v1.0.rar)
 Unzip the file in a local directory.
