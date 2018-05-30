@@ -120,7 +120,7 @@ namespace Nameless.Libraries.Aura.Utils {
             if (File.Exists (localCopy.FullName) && !replace && !silentDownload)
                 Console.WriteLine (String.Format (MSG_INF_EXIST_OMIT_FILE, localCopy.FullName));
             else {
-                if (replace || !File.Exists(localCopy.FullName))
+                if (replace || !File.Exists (localCopy.FullName))
                     File.Copy (serverCopy.FullName, localCopy.FullName, replace);
                 if (!silentDownload) {
                     if (!File.Exists (localCopy.FullName))
@@ -135,10 +135,11 @@ namespace Nameless.Libraries.Aura.Utils {
         /// </summary>
         /// <param name="files">The collection of files to upload</param>
         /// <param name="project">The active project</param>
-        public static void UploadFiles (IEnumerable<MappedPath> files, Project project) {
+        /// <param name="silentMode">if true push changes without confirmation</param>
+        public static void UploadFiles (IEnumerable<MappedPath> files, Project project, Boolean silentMode = false) {
             Console.WriteLine (MSG_TIT_FILES_UP);
             files.ToList ().ForEach (x => Console.WriteLine (x.ToUploadPreviewFormat ()));
-            if (CommandUtils.AskYesNo (MSG_ASK_CONTINUE)) {
+            if (silentMode || CommandUtils.AskYesNo (MSG_ASK_CONTINUE)) {
                 AuraSftpClient.SFTPTransactionVoid (project.Connection.Data, (SftpClient c) => {
                     var uploadedFiles = files.OrderBy (x => x.RemotePath).ToArray ();
                     Stream input;

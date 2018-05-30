@@ -78,7 +78,10 @@ namespace Nameless.Libraries.Aura.Controller {
                         break;
                     case "push":
                         try {
-                            this.PushToServer (ProjectUtils.OpenProject ());
+                            if (this.Args.Length == 1 && this.Args[0] == "silent")
+                                this.PushToServer (ProjectUtils.OpenProject (), true);
+                            else
+                                this.PushToServer (ProjectUtils.OpenProject ());
                         } catch (System.Exception exc) {
                             throw exc;
                         }
@@ -183,7 +186,8 @@ namespace Nameless.Libraries.Aura.Controller {
         /// Push the files to the server only the mapped fies are push to the server
         /// </summary>
         /// <param name="prj">The current project</param>
-        private void PushToServer (Project prj) {
+        /// <param name="silentMode">if true push changes without confirmation</param>
+        private void PushToServer (Project prj, Boolean silentMode = false) {
             if (prj.Data.Map.Files.Count () > 0 || prj.Data.Map.Directories.Count () > 0) {
                 List<MappedPath> files = new List<MappedPath> ();
                 foreach (var file in prj.Data.Map.Files)
@@ -200,7 +204,7 @@ namespace Nameless.Libraries.Aura.Controller {
                     return isComparable && !dmp.AreFilesEquals (x.ProjectCopy, x.ServerCopy);
                 }).ToArray ();
                 if (filesToUpload.Length > 0)
-                    SftpUtils.UploadFiles (filesToUpload, prj);
+                    SftpUtils.UploadFiles (filesToUpload, prj,silentMode);
                 else
                     Console.WriteLine (MSG_INF_PRJ_PUSH_NO_CHANGES);
             } else
