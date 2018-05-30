@@ -55,7 +55,9 @@ namespace Nameless.Libraries.Aura.Controller {
             if (this.ValidOptions.Contains (this.Option))
                 switch (this.Option) {
                     case "new":
-                        if (this.Args.Length == 2)
+                        if (this.Args.Length == 1)
+                            this.CreateProject (this.Args[0], Environment.CurrentDirectory);
+                        else if (this.Args.Length == 2)
                             this.CreateProject (this.Args[0], this.Args[1]);
                         else
                             throw new Exception (this.GetErrorArgsMessage (this.Option));
@@ -204,7 +206,7 @@ namespace Nameless.Libraries.Aura.Controller {
                     return isComparable && !dmp.AreFilesEquals (x.ProjectCopy, x.ServerCopy);
                 }).ToArray ();
                 if (filesToUpload.Length > 0)
-                    SftpUtils.UploadFiles (filesToUpload, prj,silentMode);
+                    SftpUtils.UploadFiles (filesToUpload, prj, silentMode);
                 else
                     Console.WriteLine (MSG_INF_PRJ_PUSH_NO_CHANGES);
             } else
