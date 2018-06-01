@@ -162,7 +162,7 @@ namespace Nameless.Libraries.Aura.Controller {
                 if (mapped == null) {
                     var files = prj.Filter.FilesInDirectory (localPath);
                     foreach (String file in files)
-                        File.Copy (file, file.Replace (prj.Data.ProjectCopy, prj.Data.ServerCopy));
+                        File.Copy (file, file.Replace (prj.Data.ProjectCopy, prj.Data.ServerCopy + ".copy"));
                     SftpUtils.UploadFiles (files.Select (x =>
                         new MappedPath () {
                             ProjectCopy = x,
@@ -205,7 +205,7 @@ namespace Nameless.Libraries.Aura.Controller {
                 Boolean isComparable;
                 var filesToUpload = files.Where (x => {
                     isComparable = x.ProjectCopy.IsComparable (cExt);
-                    return isComparable && !dmp.AreFilesEquals (x.ProjectCopy, x.ServerCopy);
+                    return isComparable && !dmp.AreFilesEquals (x.ProjectCopy, x.ServerCopy + ".copy");
                 }).ToArray ();
                 if (filesToUpload.Length > 0)
                     SftpUtils.UploadFiles (filesToUpload, prj, silentMode);

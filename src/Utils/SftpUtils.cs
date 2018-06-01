@@ -129,6 +129,7 @@ namespace Nameless.Libraries.Aura.Utils {
                         Console.WriteLine (String.Format (MSG_INF_EXIST_REPLACE_FILE, localCopy.FullName));
                 }
             }
+            File.Move (serverCopy.FullName, serverCopy.FullName + ".copy");
         }
         /// <summary>
         /// Uploads a collection of files to the current server site
@@ -148,7 +149,7 @@ namespace Nameless.Libraries.Aura.Utils {
                         using (input = File.OpenRead (file.ProjectCopy)) {
                             c.UploadFile (input, file.RemotePath, true, null);
                             Console.WriteLine (String.Format ("Uploaded at {0}", file.RemotePath));
-                            File.Copy (file.ProjectCopy, file.ServerCopy, true);
+                            File.Copy (file.ProjectCopy, file.ServerCopy+".copy", true);
                         }
                     }
                 });
