@@ -68,6 +68,9 @@ namespace Nameless.Libraries.Aura.Controller {
                         else
                             throw new Exception (this.GetErrorArgsMessage (this.Option));
                         break;
+                    case "fix":
+                        //  this.FixMapping();
+                        break;
                     case "pull":
                         try {
                             Boolean replace = this.Args.Length > 0 ? this.Args[0] == EXT_OPT_REPLACE : false;
@@ -257,7 +260,7 @@ namespace Nameless.Libraries.Aura.Controller {
                 fileInServerCopy;
             foreach (var file in dirInfo.GetFiles ()) {
                 //Files must exist in server copy and shouldn't be already added
-                fileInServerCopy = file.FullName.Replace (prj.Data.ProjectCopy, prj.Data.ServerCopy);
+                fileInServerCopy = file.FullName.Replace (prj.Data.ProjectCopy, prj.Data.ServerCopy)+".copy";
                 if (File.Exists (fileInServerCopy) && files.Count (x => file.FullName == x.ProjectCopy) == 0)
                     files.Add (SftpUtils.GetMappedPath (file, dirMap.ProjectCopy, dirMap.RemotePath, dirMap.ServerCopy));
             }
