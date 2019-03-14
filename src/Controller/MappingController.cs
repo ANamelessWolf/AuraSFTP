@@ -53,8 +53,10 @@ namespace Nameless.Libraries.Aura.Controller {
                 switch (this.Option) {
                     case "dir":
                         if (this.Args.Length == 2)
-                            this.MapDirectory (prj, this.Args[0], this.Args[1]);
-                        else
+                            this.MapDirectoryAbsolutePath (prj, this.Args[0], this.Args[1]);
+                        else if (this.Args.Length == 1) {
+                            this.MapDirectoryRelativePath (prj, this.Args[0]);
+                        } else
                             throw new Exception (this.GetErrorArgsMessage (this.Option));
                         break;
                     case "file":
@@ -128,7 +130,7 @@ namespace Nameless.Libraries.Aura.Controller {
                                 ServerCopy = Path.Combine (prj.Data.ServerCopy, localFilePath),
                                 RemotePath = rPth,
                                 RemoteVersion = entry.Attributes.LastAccessTime,
-                                LocaVersion = DateTime.Now
+                                LocalVersion = DateTime.Now
                             };
                             if (!Directory.Exists (new FileInfo (path.ProjectCopy).Directory.FullName))
                                 Directory.CreateDirectory (new FileInfo (path.ProjectCopy).Directory.FullName);
@@ -150,37 +152,49 @@ namespace Nameless.Libraries.Aura.Controller {
                 Console.WriteLine (error_msg);
         }
         /// <summary>
+        /// Maps a directory relative to the project file,
+        /// using as base path the project path
+        /// </summary>
+        /// <param name="prj">The active project</param>
+        /// <param name="localPath">The relative path using simple slash as separator</param>
+        private void MapDirectoryRelativePath (Project prj, string pth) {
+            RelativeMappedPath path = MappingUtils.GetMappedPath (prj, pth);
+            this.MapDirectory (prj, path);
+        }
+        /// <summary>
         /// Maps a directory to the project file
         /// </summary>
         /// <param name="prj">The active project</param>
         /// <param name="localPath">The local path</param>
         /// <param name="remotePath">The remote path</param>
-        private void MapDirectory (Project prj, string localPath, string remotePath) {
+        private void MapDirectoryAbsolutePath (Project prj, string localPath, string remotePath) {
+            String rPth = prj.Connection.Data.RootDir + remotePath;
+            MappedPath path = MappingUtils.GetMappedPath (prj, localPath, remotePath);
+            this.MapDirectory (prj, path);
+        }
+        /// <summary>
+        /// Maps a directory to the project file
+        /// </summary>
+        /// <param name="prj">The project file</param>
+        /// <param name="path">The mapped directory data</param>
+        private void MapDirectory (Project prj, MappedPath path) {
             String error_msg = null;
             var result = AuraSftpClient.SFTPTransactionGen<MappedPath> (prj.Connection.Data,
                 (RenCiSftpClient client) => {
-                    MappedPath path = null;
-                    String rPth = prj.Connection.Data.RootDir + remotePath;
+                    String rPth = path.GetFullRemotePath ();
                     if (client.Exists (rPth)) {
                         var entry = client.Get (rPth);
-                        path = prj.Data.Map.Directories.FirstOrDefault (x => x.RemotePath == entry.FullName);
-                        Boolean mapExist = path != null;
+                        path.RemoteVersion = entry.LastAccessTime;
+                        Boolean mapExist = prj.Data.Map.Directories.FirstOrDefault (x => x.RemotePath == entry.FullName) != null;
                         if (entry.IsDirectory && !mapExist) {
-                            path = new MappedPath () {
-                                ProjectCopy = Path.Combine (prj.Data.ProjectCopy, localPath),
-                                ServerCopy = Path.Combine (prj.Data.ServerCopy, localPath),
-                                RemotePath = rPth,
-                                RemoteVersion = entry.Attributes.LastAccessTime,
-                                LocaVersion = DateTime.Now
-                            };
-                            if (!Directory.Exists (path.ProjectCopy))
-                                Directory.CreateDirectory (path.ProjectCopy);
-                            if (!Directory.Exists (path.ServerCopy))
-                                Directory.CreateDirectory (path.ServerCopy);
+                            if (!Directory.Exists (path.GetFullProjectCopy ()))
+                                Directory.CreateDirectory (path.GetFullProjectCopy ());
+                            if (!Directory.Exists (path.GetFullServerCopy ()))
+                                Directory.CreateDirectory (path.GetFullServerCopy ());
                         } else if (!entry.IsDirectory)
                             error_msg = String.Format (MSG_ERR_MAP_REM_PTH_NOT_DIR, rPth, HelpCommand, "dir");
                         else if (mapExist)
-                            error_msg = String.Format (MSG_ERR_MAP_AlREADY_MAPPED, rPth, HelpCommand, "remove");
+                            error_msg = String.Format (MSG_ERR_MAP_AlREADY_MAPPED, rPth);
                     } else
                         error_msg = String.Format (MSG_ERR_MAP_REM_PTH, rPth);
                     return path;
@@ -188,7 +202,7 @@ namespace Nameless.Libraries.Aura.Controller {
             if (result != null && error_msg == null) {
                 prj.Data.Map.Directories = prj.Data.Map.Directories.Union (new MappedPath[] { result }).ToArray ();
                 prj.SaveProject (this.ConfigFile);
-                Console.WriteLine (String.Format (MSG_INF_MAP_CREATED, result.RemotePath, result.ProjectCopy));
+                Console.WriteLine (String.Format (MSG_INF_MAP_CREATED, result.GetFullRemotePath (), result.GetFullProjectCopy ()));
             } else if (error_msg != null)
                 Console.WriteLine (error_msg);
         }
