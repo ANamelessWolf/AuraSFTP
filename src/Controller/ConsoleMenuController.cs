@@ -63,7 +63,7 @@ namespace Nameless.Libraries.Aura.Controller {
             return String.Join ("\n", menu);
         }
         /// <summary>
-        /// Excecutes the given command parameter
+        /// Executes the given command parameter
         /// </summary>
         /// <param name="args">The arguments used to run the command</param>
         public void RunCommand (string[] args) {
@@ -103,7 +103,7 @@ namespace Nameless.Libraries.Aura.Controller {
         }
 
         /// <summary>
-        /// Excecutes the given command parameter
+        /// Executes the given command parameter
         /// </summary>
         /// <param name="args">The arguments used to run the command</param>
         public HelpPointer GetHelpCommand (string[] args) {

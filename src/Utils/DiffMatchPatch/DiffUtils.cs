@@ -9,7 +9,7 @@ namespace Nameless.Libraries.Aura.Utils.DiffMatchPatch {
 
     /// <summary>
     /// Class containing the diff, match and patch methods.
-    /// Also Contains the behaviour settings.
+    /// Also Contains the behavior settings.
     /// </summary>
     public partial class diff_match_patch {
         /**
@@ -365,7 +365,7 @@ namespace Nameless.Libraries.Aura.Utils.DiffMatchPatch {
 
         /**
          * Given the location of the 'middle snake', split the diff in two parts
-         * and recurse.
+         * and recourse.
          * @param text1 Old string to be diffed.
          * @param text2 New string to be diffed.
          * @param x Index of split point in text1.
@@ -989,7 +989,7 @@ namespace Nameless.Libraries.Aura.Utils.DiffMatchPatch {
                         // Upon reaching an equality, check for prior redundancies.
                         if (count_delete + count_insert > 1) {
                             if (count_delete != 0 && count_insert != 0) {
-                                // Factor out any common prefixies.
+                                // Factor out any common prefixes.
                                 commonlength = this.diff_commonPrefix (text_insert, text_delete);
                                 if (commonlength != 0) {
                                     if ((pointer - count_delete - count_insert) > 0 &&
@@ -1004,7 +1004,7 @@ namespace Nameless.Libraries.Aura.Utils.DiffMatchPatch {
                                     text_insert = text_insert.Substring (commonlength);
                                     text_delete = text_delete.Substring (commonlength);
                                 }
-                                // Factor out any common suffixies.
+                                // Factor out any common suffixes.
                                 commonlength = this.diff_commonSuffix (text_insert, text_delete);
                                 if (commonlength != 0) {
                                     diffs[pointer].text = text_insert.Substring (text_insert.Length -

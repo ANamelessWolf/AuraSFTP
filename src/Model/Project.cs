@@ -10,7 +10,7 @@ namespace Nameless.Libraries.Aura.Model {
     /// </summary>
     public class Project {
         /// <summary>
-        /// Defines the connection datta
+        /// Defines the connection data
         /// </summary>
         public SiteDefinition Connection;
         /// <summary>

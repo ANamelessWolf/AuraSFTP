@@ -28,7 +28,7 @@ namespace Nameless.Libraries.Aura.Model {
         /// </summary>
         private String Content;
         /// <summary>
-        /// Inialize a new instance of a help controller
+        /// Initialize a new instance of a help controller
         /// </summary>
         /// <param name="controller">The command controller</param>
         /// <param name="start">The index where the help lines starts. Starting index at 1</param>
@@ -40,7 +40,7 @@ namespace Nameless.Libraries.Aura.Model {
             this.EndLine = end - 1;
         }
         /// <summary>
-        /// Inialize a new instance of a help controller
+        /// Initialize a new instance of a help controller
         /// </summary>
         /// <param name="start">The index where the help lines starts. Starting index at 1</param>
         /// <param name="end">The index where the help lines end</param>

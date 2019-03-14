@@ -9,7 +9,7 @@ namespace Nameless.Libraries.Aura.Utils.DiffMatchPatch {
 
     /// <summary>
     /// Class containing the diff, match and patch methods.
-    /// Also Contains the behaviour settings.
+    /// Also Contains the behavior settings.
     /// </summary>
     public partial class diff_match_patch {
         /**

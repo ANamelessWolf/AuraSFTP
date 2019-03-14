@@ -162,20 +162,20 @@ namespace Nameless.Libraries.Aura.Controller {
         /// Adds an extension to the ignore list of the project
         /// </summary>
         /// <param name="prj">The active project</param>
-        /// <param name="exts">The extension</param>
-        private void IgnoreExtension (Project prj, params string[] exts) {
-            if (exts.Count (x => x.Contains ('.')) != exts.Count ())
+        /// <param name="extensions">The extension to ignore</param>
+        private void IgnoreExtension (Project prj, params string[] extensions) {
+            if (extensions.Count (x => x.Contains ('.')) != extensions.Count ())
                 throw new Exception (MSG_ERR_BAD_EXT);
-            else if (exts.Count (x => !prj.Data.IgnoreExtensions.Contains (x)) == 0)
+            else if (extensions.Count (x => !prj.Data.IgnoreExtensions.Contains (x)) == 0)
                 throw new Exception (MSG_ERR_IGNORE_EXIST);
             else {
                 String addedExt = String.Empty;
-                List<String> newExts = new List<string> ();
-                foreach (string ext in exts) {
-                    newExts.Add (ext);
+                List<String> newExtensions = new List<string> ();
+                foreach (string ext in extensions) {
+                    newExtensions.Add (ext);
                     addedExt += ext + ", ";
                 }
-                prj.Data.IgnoreExtensions = prj.Data.IgnoreExtensions.Union (newExts).ToArray ();
+                prj.Data.IgnoreExtensions = prj.Data.IgnoreExtensions.Union (newExtensions).ToArray ();
                 Console.WriteLine (MSG_INF_IGNORE_ADDED, addedExt.Substring (0, addedExt.Length - 2), "extensions");
                 prj.SaveProject (this.ConfigFile);
             }

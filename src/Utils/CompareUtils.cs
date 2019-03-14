@@ -9,7 +9,7 @@ namespace Nameless.Libraries.Aura.Utils {
 
     public static class CompareUtils {
         /// <summary>
-        /// Check if the file path contains a vali extension
+        /// Check if the file path contains a valid extension
         /// </summary>
         /// <param name="filePath">The file path</param>
         /// <param name="cExt">The extension to validate</param>

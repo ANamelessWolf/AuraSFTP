@@ -16,9 +16,9 @@ namespace Nameless.Libraries.Aura.Utils.DiffMatchPatch {
         public int length2;
 
         /**
-         * Emmulate GNU diff's format.
+         * Emulate GNU diffs format.
          * Header: @@ -382,8 +481,9 @@
-         * Indicies are printed as 1-based, not 0-based.
+         * Indices are printed as 1-based, not 0-based.
          * @return The GNU diff string.
          */
         public override string ToString () {

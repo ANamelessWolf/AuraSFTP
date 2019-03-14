@@ -9,7 +9,7 @@ namespace Nameless.Libraries.Aura.Utils.DiffMatchPatch {
 
     /// <summary>
     /// Class containing the diff, match and patch methods.
-    /// Also Contains the behaviour settings.
+    /// Also Contains the behavior settings.
     /// </summary>
     public partial class diff_match_patch {
         /**
@@ -52,7 +52,7 @@ namespace Nameless.Libraries.Aura.Utils.DiffMatchPatch {
             // assert (Match_MaxBits == 0 || pattern.Length <= Match_MaxBits)
             //    : "Pattern too long for this application.";
 
-            // Initialise the alphabet.
+            // Initialize the alphabet.
             Dictionary<char, int> s = match_alphabet (pattern);
 
             // Highest score beyond which we give up.
@@ -72,7 +72,7 @@ namespace Nameless.Libraries.Aura.Utils.DiffMatchPatch {
                 }
             }
 
-            // Initialise the bit arrays.
+            // Initialize the bit arrays.
             int matchmask = 1 << (pattern.Length - 1);
             best_loc = -1;
 
@@ -164,7 +164,7 @@ namespace Nameless.Libraries.Aura.Utils.DiffMatchPatch {
         }
 
         /**
-         * Initialise the alphabet for the Bitap algorithm.
+         * Initialize the alphabet for the Bitap algorithm.
          * @param pattern The text to encode.
          * @return Hash of character locations.
          */

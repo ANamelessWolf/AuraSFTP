@@ -102,7 +102,7 @@ namespace Nameless.Libraries.Aura.Controller {
                 Console.WriteLine (MSG_ERR_NO_SITES);
             if (Program.Settings.SelectedSite < Program.Settings.Sites.Length) {
                 var site = Program.Settings.Sites[Program.Settings.SelectedSite];
-                Console.WriteLine (MSG_INF_SITE_DFTL, site.Site);
+                Console.WriteLine (MSG_INF_SITE_DEF, site.Site);
                 Console.WriteLine (site.ToStringFormat (SiteUtils.ListSizeFormat) + "\n");
             }
         }
@@ -119,7 +119,7 @@ namespace Nameless.Libraries.Aura.Controller {
                 int index = Program.Settings.Sites.ToList ().IndexOf (site);
                 Program.Settings.SelectedSite = index;
                 Program.Settings.Save ();
-                Console.WriteLine (MSG_INF_SITE_DFTL, siteName);
+                Console.WriteLine (MSG_INF_SITE_DEF, siteName);
             }
         }
 
@@ -134,7 +134,7 @@ namespace Nameless.Libraries.Aura.Controller {
                 Console.WriteLine (MSG_ERR_SITE_NOT_FOUND, siteName);
             else {
                 if (AuraSftpClient.TestConnection (site.Data, out errMsg))
-                    Console.WriteLine (MSG_INF_SITE_CONN_SUCCED, siteName);
+                    Console.WriteLine (MSG_INF_SITE_CONN_SUCCEED, siteName);
                 else
                     Console.WriteLine (MSG_INF_SITE_CONN_FAIL, siteName, errMsg);
             }

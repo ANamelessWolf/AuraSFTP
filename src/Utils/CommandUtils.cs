@@ -56,7 +56,7 @@ namespace Nameless.Libraries.Aura.Utils {
                     pass = pass.Substring (0, (pass.Length - 1));
                     Console.Write ("\b \b");
                 }
-            } while (key.Key != ConsoleKey.Enter); // Stops Receving Keys Once Enter is Pressed
+            } while (key.Key != ConsoleKey.Enter); // Stops Receiving Keys Once Enter is Pressed
             Console.Write ("\n");
             return pass;
         }
