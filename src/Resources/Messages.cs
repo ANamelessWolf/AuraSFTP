@@ -126,11 +126,11 @@ namespace Nameless.Libraries.Aura.Resources {
         /// <summary>
         /// The error message sent when the remote path should be a directory
         /// </summary>
-        public const string MSG_ERR_MAP_REM_PTH_NOT_DIR = "The remote path '{0}' is not a directory. See '-h {0} {1}' for more information.";
+        public const string MSG_ERR_MAP_REM_PTH_NOT_DIR = "The remote path '{0}' is not a directory. See '-h {1} {2}' for more information.";
         /// <summary>
         /// The error message sent when the remote path should be a file
         /// </summary>
-        public const string MSG_ERR_MAP_REM_PTH_NOT_FILE = "The remote path '{0}' is not a file. See '-h {0} {1}' for more information.";
+        public const string MSG_ERR_MAP_REM_PTH_NOT_FILE = "The remote path '{0}' is not a file. See '-h {1} {2}' for more information.";
         /*****************************
          ****** Site Messages ********
          *****************************/
