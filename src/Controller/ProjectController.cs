@@ -152,7 +152,7 @@ namespace Nameless.Libraries.Aura.Controller {
                         ServerCopy = localPath.Replace (prj.Data.ProjectCopy, prj.Data.ServerCopy),
                         RemotePath = remotePath,
                         RemoteVersion = DateTime.Now,
-                        LocaVersion = DateTime.Now
+                        LocalVersion = DateTime.Now
                     };
                     SftpUtils.UploadFiles (new MappedPath[] { newMap }, prj, true);
                     prj.Data.Map.Files = prj.Data.Map.Files.Union (new MappedPath[] { newMap }).ToArray ();
@@ -172,7 +172,7 @@ namespace Nameless.Libraries.Aura.Controller {
                                 ServerCopy = x.Replace (prj.Data.ProjectCopy, prj.Data.ServerCopy),
                                 RemotePath = remotePath + "/" + x.Substring (x.LastIndexOf ('\\')),
                                 RemoteVersion = DateTime.Now,
-                                LocaVersion = DateTime.Now
+                                LocalVersion = DateTime.Now
                         }
                     ), prj);
                     MappedPath newMap = new MappedPath () {
@@ -180,7 +180,7 @@ namespace Nameless.Libraries.Aura.Controller {
                         ServerCopy = localPath.Replace (prj.Data.ProjectCopy, prj.Data.ServerCopy),
                         RemotePath = remotePath,
                         RemoteVersion = DateTime.Now,
-                        LocaVersion = DateTime.Now
+                        LocalVersion = DateTime.Now
                     };
                     prj.Data.Map.Directories = prj.Data.Map.Directories.Union (new MappedPath[] { newMap }).ToArray ();
                     prj.SaveProject (configFile);
@@ -190,7 +190,7 @@ namespace Nameless.Libraries.Aura.Controller {
                 throw new Exception (MSG_ERR_PRJ_BAD_LOC_PTH);
         }
         /// <summary>
-        /// Push the files to the server only the mapped fies are push to the server
+        /// Push the files to the server only the mapped files are push to the server
         /// </summary>
         /// <param name="prj">The current project</param>
         /// <param name="silentMode">if true push changes without confirmation</param>
