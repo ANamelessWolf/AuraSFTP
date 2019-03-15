@@ -185,7 +185,7 @@ namespace Nameless.Libraries.Aura.Controller {
                     if (client.Exists (rPth)) {
                         var entry = client.Get (rPth);
                         path.RemoteVersion = entry.LastAccessTime;
-                        Boolean mapExist = prj.Data.Map.Directories.FirstOrDefault (x => x.RemotePath == entry.FullName) != null;
+                        Boolean mapExist = prj.Data.Map.Directories.FirstOrDefault (x => x.GetFullRemotePath () == entry.FullName) != null;
                         if (entry.IsDirectory && !mapExist) {
                             if (!Directory.Exists (path.GetFullProjectCopy ()))
                                 Directory.CreateDirectory (path.GetFullProjectCopy ());

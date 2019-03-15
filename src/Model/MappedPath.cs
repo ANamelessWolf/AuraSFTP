@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using Nameless.Libraries.Aura.Utils;
 namespace Nameless.Libraries.Aura.Model {
 
     /// <summary>
@@ -43,22 +43,30 @@ namespace Nameless.Libraries.Aura.Model {
             return String.Format (format, this.ProjectCopy, this.RemotePath);
         }
         /// <summary>
+        /// Upgrades relatives mapped path
+        /// </summary>
+        /// <param name="prj">The active project</param>
+        /// <returns>Upgrades the mapped path to a relative path</returns>
+        public RelativeMappedPath UpgradeRelativeMappedPath (Project prj) {
+            return MappingUtils.GetMappedPath (prj, this.RemotePath);
+        }
+        /// <summary>
         /// Gets the remote absolute path
         /// </summary>
         public virtual string GetFullRemotePath () {
-            return this.RemotePath;
+            return MappingUtils.ValidatePath (this.RemotePath,true);
         }
         /// <summary>
         /// Gets the server copy absolute path
         /// </summary>
         public virtual string GetFullProjectCopy () {
-            return this.ProjectCopy;
+            return MappingUtils.ValidatePath (this.ProjectCopy,true);
         }
         /// <summary>
         /// Gets the project absolute copy path
         /// </summary>
         public virtual string GetFullServerCopy () {
-            return this.ServerCopy;
+            return MappingUtils.ValidatePath (this.ServerCopy,true);
         }
     }
 }

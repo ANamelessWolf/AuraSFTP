@@ -34,7 +34,7 @@ namespace Nameless.Libraries.Aura.Utils {
         /// <param name="path">The entry path</param>
         /// <param name="winMode">If true windows directory separator is used otherwise linux separator</param>
         /// <returns>The validated path</returns>
-        public static String validatePath (String path, Boolean winMode) {
+        public static String ValidatePath (String path, Boolean winMode) {
             if (winMode)
                 path = path.Replace ('/', '\\');
             else
@@ -50,8 +50,8 @@ namespace Nameless.Libraries.Aura.Utils {
         /// <param name="relativePath">The relative path to the mapped directory</param>
         /// <returns>The mapped path</returns>
         public static RelativeMappedPath GetMappedPath (Project prj, String relativePath) {
-            String remotePath = validatePath (prj.Connection.Data.RootDir, false),
-                localPath = validatePath (prj.Data.ProjectCopy, true);
+            String remotePath = ValidatePath (prj.Connection.Data.RootDir, false),
+                localPath = ValidatePath (prj.Data.ProjectCopy, true);
             RelativeMappedPath pth = new RelativeMappedPath (remotePath, localPath);
             pth.RemotePath = relativePath;
             pth.ProjectCopy = relativePath.Replace ('/', '\\');
@@ -68,12 +68,12 @@ namespace Nameless.Libraries.Aura.Utils {
         /// <param name="remotePath">The relative path to the remote path in linux format</param>
         /// <returns>The mapped path</returns>
         public static MappedPath GetMappedPath (Project prj, String localPath, String remotePath) {
-            remotePath = validatePath (remotePath, false);
-            localPath = validatePath (localPath, true);
+            remotePath = ValidatePath (remotePath, false);
+            localPath = ValidatePath (localPath, true);
             MappedPath pth = new MappedPath () {
-                ProjectCopy = GetPath (validatePath (prj.Data.ProjectCopy, true), localPath.Split ('\\'), true),
-                ServerCopy = GetPath (validatePath (prj.Data.ServerCopy, true), localPath.Split ('\\'), true),
-                RemotePath = GetPath (validatePath (prj.Connection.Data.RootDir, false), remotePath.Split ('/'), false),
+                ProjectCopy = GetPath (ValidatePath (prj.Data.ProjectCopy, true), localPath.Split ('\\'), true),
+                ServerCopy = GetPath (ValidatePath (prj.Data.ServerCopy, true), localPath.Split ('\\'), true),
+                RemotePath = GetPath (ValidatePath (prj.Connection.Data.RootDir, false), remotePath.Split ('/'), false),
                 RemoteVersion = DateTime.Now,
                 LocalVersion = DateTime.Now
             };

@@ -33,19 +33,19 @@ namespace Nameless.Libraries.Aura.Model {
         /// Gets the remote absolute path
         /// </summary>
         public override string GetFullRemotePath () {
-            return MappingUtils.GetPath (this.RemoteRootPath, new String[] { this.RemotePath }, false);
+            return MappingUtils.ValidatePath (MappingUtils.GetPath (this.RemoteRootPath, new String[] { this.RemotePath }, false), false);
         }
         /// <summary>
         /// Gets the server copy absolute path
         /// </summary>
         public override string GetFullProjectCopy () {
-            return MappingUtils.GetPath (this.LocalRootPath, new String[] { this.ProjectCopy });
+            return MappingUtils.ValidatePath (MappingUtils.GetPath (this.LocalRootPath, new String[] { this.ProjectCopy }), true);
         }
         /// <summary>
         /// Gets the project absolute copy path
         /// </summary>
         public override string GetFullServerCopy () {
-            return MappingUtils.GetPath (this.LocalRootPath, new String[] { this.ServerCopy });
+            return MappingUtils.ValidatePath (MappingUtils.GetPath (this.LocalRootPath, new String[] { this.ServerCopy }), true);
         }
         /// <summary>
         /// Gets the format
