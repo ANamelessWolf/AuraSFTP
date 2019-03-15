@@ -63,7 +63,11 @@ namespace Nameless.Libraries.Aura.Utils {
             if (File.Exists (configPth)) {
                 using (StreamReader r = new StreamReader (configPth)) {
                     string json = r.ReadToEnd ();
-                    return JsonConvert.DeserializeObject<Project> (json);
+                    Project prj = JsonConvert.DeserializeObject<Project> (json);
+                    IEnumerable<MappedPath> mappedPaths = prj.Data.Map.Directories.Where (x => !x.RelativePath);
+                    IEnumerable<RelativeMappedPath> relativePaths = prj.Data.Map.Directories.Where (x => x.RelativePath).Select (x => x.UpgradeRelativeMappedPath (prj));
+                    prj.Data.Map.Directories = mappedPaths.Union (relativePaths).ToArray ();
+                    return prj;
                 }
             } else
                 throw new Exception (String.Format (MSG_ERR_PRJ_OPEN, configPth));
