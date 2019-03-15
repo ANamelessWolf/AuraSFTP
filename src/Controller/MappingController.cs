@@ -54,14 +54,16 @@ namespace Nameless.Libraries.Aura.Controller {
                     case "dir":
                         if (this.Args.Length == 2)
                             this.MapDirectoryAbsolutePath (prj, this.Args[0], this.Args[1]);
-                        else if (this.Args.Length == 1) {
+                        else if (this.Args.Length == 1)
                             this.MapDirectoryRelativePath (prj, this.Args[0]);
-                        } else
+                        else
                             throw new Exception (this.GetErrorArgsMessage (this.Option));
                         break;
                     case "file":
                         if (this.Args.Length == 2)
-                            this.MapFile (prj, this.Args[0], this.Args[1]);
+                            this.MapFileAbsolutePath (prj, this.Args[0], this.Args[1]);
+                        else if (this.Args.Length == 1)
+                            this.MapFileRelativePath (prj, this.Args[0]);
                         else
                             throw new Exception (this.GetErrorArgsMessage (this.Option));
                         break;
@@ -109,37 +111,48 @@ namespace Nameless.Libraries.Aura.Controller {
             return data;
         }
         /// <summary>
+        /// Maps a file relative to the project file,
+        /// using as base path the project path
+        /// </summary>
+        /// <param name="prj">The active project</param>
+        /// <param name="localPath">The relative path using simple slash as separator</param>
+        private void MapFileRelativePath (Project prj, string pth) {
+            RelativeMappedPath path = MappingUtils.GetMappedPath (prj, pth);
+            this.MapFile (prj, path);
+        }
+        /// <summary>
+        /// Maps a file absolute to the project file,
+        /// using as base path the project path
+        /// </summary>
+        /// <param name="prj">The active project</param>
+        /// <param name="localPath">The relative path using simple slash as separator</param>
+        private void MapFileAbsolutePath (Project prj, string localFilePath, string remoteFilePath) {
+            MappedPath path = MappingUtils.GetMappedPath (prj, localFilePath, remoteFilePath);
+            this.MapFile (prj, path);
+        }
+        /// <summary>
         /// Maps a file to the project file
         /// </summary>
         /// <param name="prj">The active project</param>
-        /// <param name="localFilePath">The local file path</param>
-        /// <param name="remoteFilePath">The remote file path</param>
-        private void MapFile (Project prj, string localFilePath, string remoteFilePath) {
+        /// <param name="path">The mapped file data</param>
+        private void MapFile (Project prj, MappedPath path) {
             String error_msg = null;
             var result = AuraSftpClient.SFTPTransactionGen<MappedPath> (prj.Connection.Data,
                 (RenCiSftpClient client) => {
-                    MappedPath path = null;
-                    String rPth = prj.Connection.Data.RootDir + remoteFilePath;
+                    String rPth = path.GetFullRemotePath ();
                     if (client.Exists (rPth)) {
                         var entry = client.Get (rPth);
-                        path = prj.Data.Map.Files.FirstOrDefault (x => x.RemotePath == entry.FullName);
-                        Boolean mapExist = path != null;
+                        path.RemoteVersion = entry.LastAccessTime;
+                        Boolean mapExist = prj.Data.Map.Directories.FirstOrDefault (x => x.GetFullRemotePath () == entry.FullName) != null;
                         if (!entry.IsDirectory && !mapExist) {
-                            path = new MappedPath () {
-                                ProjectCopy = Path.Combine (prj.Data.ProjectCopy, localFilePath),
-                                ServerCopy = Path.Combine (prj.Data.ServerCopy, localFilePath),
-                                RemotePath = rPth,
-                                RemoteVersion = entry.Attributes.LastAccessTime,
-                                LocalVersion = DateTime.Now
-                            };
-                            if (!Directory.Exists (new FileInfo (path.ProjectCopy).Directory.FullName))
-                                Directory.CreateDirectory (new FileInfo (path.ProjectCopy).Directory.FullName);
-                            if (!Directory.Exists (new FileInfo (path.ServerCopy).Directory.FullName))
-                                Directory.CreateDirectory (new FileInfo (path.ServerCopy).Directory.FullName);
+                            if (!Directory.Exists (new FileInfo (path.GetFullProjectCopy ()).Directory.FullName))
+                                Directory.CreateDirectory (new FileInfo (path.GetFullProjectCopy ()).Directory.FullName);
+                            if (!Directory.Exists (new FileInfo (path.GetFullServerCopy ()).Directory.FullName))
+                                Directory.CreateDirectory (new FileInfo (path.GetFullServerCopy ()).Directory.FullName);
                         } else if (entry.IsDirectory)
                             error_msg = String.Format (MSG_ERR_MAP_REM_PTH_NOT_FILE, rPth, HelpCommand, "file");
                         else if (mapExist)
-                            error_msg = String.Format (MSG_ERR_MAP_AlREADY_MAPPED, rPth, HelpCommand, "remove");
+                            error_msg = String.Format (MSG_ERR_MAP_AlREADY_MAPPED, rPth);
                     } else
                         error_msg = String.Format (MSG_ERR_MAP_REM_PTH, rPth);
                     return path;
