@@ -64,9 +64,14 @@ namespace Nameless.Libraries.Aura.Utils {
                 using (StreamReader r = new StreamReader (configPth)) {
                     string json = r.ReadToEnd ();
                     Project prj = JsonConvert.DeserializeObject<Project> (json);
+                    //Directories
                     IEnumerable<MappedPath> mappedPaths = prj.Data.Map.Directories.Where (x => !x.RelativePath);
                     IEnumerable<RelativeMappedPath> relativePaths = prj.Data.Map.Directories.Where (x => x.RelativePath).Select (x => x.UpgradeRelativeMappedPath (prj));
                     prj.Data.Map.Directories = mappedPaths.Union (relativePaths).ToArray ();
+                    //Files
+                    mappedPaths = prj.Data.Map.Files.Where (x => !x.RelativePath);
+                    relativePaths = prj.Data.Map.Files.Where (x => x.RelativePath).Select (x => x.UpgradeRelativeMappedPath (prj));
+                    prj.Data.Map.Files = mappedPaths.Union (relativePaths).ToArray ();
                     return prj;
                 }
             } else
