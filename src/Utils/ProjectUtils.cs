@@ -51,7 +51,8 @@ namespace Nameless.Libraries.Aura.Utils {
         /// <param name="prj">The project configuration file</param>
         /// <param name="pth">The project configuration file path</param>
         public static void SaveProject (this Project prj, string pth) {
-            File.WriteAllText (pth, JsonConvert.SerializeObject (prj));
+            JsonSerializerSettings settings = new JsonSerializerSettings () { Formatting = Formatting.Indented };
+            File.WriteAllText (pth, JsonConvert.SerializeObject (prj, settings));
         }
 
         /// <summary>
