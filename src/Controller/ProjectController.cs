@@ -198,17 +198,17 @@ namespace Nameless.Libraries.Aura.Controller {
             if (prj.Data.Map.Files.Count () > 0 || prj.Data.Map.Directories.Count () > 0) {
                 List<MappedPath> files = new List<MappedPath> ();
                 foreach (var file in prj.Data.Map.Files)
-                    if (files.Count (x => x.ProjectCopy == file.ProjectCopy) == 0)
+                    if (files.Count (x => x.GetFullProjectCopy () == file.GetFullProjectCopy ()) == 0)
                         files.Add (file);
                 foreach (var dir in prj.Data.Map.Directories)
-                    this.GetPaths (ref files, new DirectoryInfo (dir.ProjectCopy), prj, dir);
+                    this.GetPaths (ref files, new DirectoryInfo (dir.GetFullProjectCopy ()), prj, dir);
                 diff_match_patch dmp = new diff_match_patch ();
                 //Only uploads files with diff
                 String[] cExt = Program.Settings.ComparableFilesExt;
                 Boolean isComparable;
                 var filesToUpload = files.Where (x => {
-                    isComparable = x.ProjectCopy.IsComparable (cExt);
-                    return isComparable && !dmp.AreFilesEquals (x.ProjectCopy, x.ServerCopy + ".copy");
+                    isComparable = x.GetFullProjectCopy().IsComparable (cExt);
+                    return isComparable && !dmp.AreFilesEquals (x.GetFullProjectCopy(), x.GetFullServerCopy() + ".copy");
                 }).ToArray ();
                 if (filesToUpload.Length > 0)
                     SftpUtils.UploadFiles (filesToUpload, prj, silentMode);
@@ -260,8 +260,8 @@ namespace Nameless.Libraries.Aura.Controller {
                 fileInServerCopy;
             foreach (var file in dirInfo.GetFiles ()) {
                 //Files must exist in server copy and shouldn't be already added
-                fileInServerCopy = file.FullName.Replace (prj.Data.ProjectCopy, prj.Data.ServerCopy)+".copy";
-                if (File.Exists (fileInServerCopy) && files.Count (x => file.FullName == x.ProjectCopy) == 0)
+                fileInServerCopy = file.FullName.Replace (MappingUtils.ValidatePath (prj.Data.ProjectCopy, true), MappingUtils.ValidatePath (prj.Data.ServerCopy, true)) + ".copy";
+                if (File.Exists (fileInServerCopy) && files.Count (x => file.FullName == x.GetFullServerCopy ()) == 0)
                     files.Add (SftpUtils.GetMappedPath (file, dirMap.ProjectCopy, dirMap.RemotePath, dirMap.ServerCopy));
             }
             foreach (var dir in dirInfo.GetDirectories ())

@@ -67,7 +67,7 @@ namespace Nameless.Libraries.Aura.Resources {
         /// <summary>
         /// The message sent when a file is omitted because replace is deactivated
         /// </summary>
-        public const string MSG_INF_EXIST_OMIT_FILE = "The file '{0}' already exists, replace is disable omitting.";
+        public const string MSG_INF_EXIST_OMIT_FILE = "The file '{0}' already exists, wont be overwritten. Use replace as parameter to overwrite.";
         /// <summary>
         /// The message sent when a file is replaced
         /// </summary>

@@ -54,19 +54,19 @@ namespace Nameless.Libraries.Aura.Model {
         /// Gets the remote absolute path
         /// </summary>
         public virtual string GetFullRemotePath () {
-            return MappingUtils.ValidatePath (this.RemotePath,true);
+            return MappingUtils.ValidatePath (this.RemotePath, false);
         }
         /// <summary>
         /// Gets the server copy absolute path
         /// </summary>
         public virtual string GetFullProjectCopy () {
-            return MappingUtils.ValidatePath (this.ProjectCopy,true);
+            return MappingUtils.ValidatePath (this.ProjectCopy, true);
         }
         /// <summary>
         /// Gets the project absolute copy path
         /// </summary>
         public virtual string GetFullServerCopy () {
-            return MappingUtils.ValidatePath (this.ServerCopy,true);
+            return MappingUtils.ValidatePath (this.ServerCopy, true);
         }
     }
 }

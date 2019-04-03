@@ -46,16 +46,18 @@ namespace Nameless.Libraries.Aura.Utils {
         /// <param name="silentDownload">Download the files without listing everything</param>
         public static void Download (this RenciSftpClient client, SiteCredentials credentials,
             MappedPath dir, SftpFilter filter, Boolean replace, Boolean silentDownload = false) {
-            var files = SftpUtils.ListFiles (client, dir.RemotePath, filter, silentDownload);
-            string localPath, serverCopy;
-            FileInfo sC, lC;
+            var files = SftpUtils.ListFiles (client, dir.GetFullRemotePath (), filter, silentDownload);
+            string fileName, serverCopy;
+            FileInfo cC, wC;
             AuraSftpClient.SSHTransactionVoid (credentials, (Action<AuraSftpClient>) ((AuraSftpClient c) => {
-                foreach (String file in files) {
-                    localPath = file.Replace ((string) dir.RemotePath, "").Substring (1).Replace ("/", "\\");
-                    serverCopy = Path.Combine ((string) dir.ServerCopy, localPath);
-                    sC = new FileInfo (serverCopy);
-                    lC = new FileInfo (Path.Combine ((string) dir.ProjectCopy, localPath));
-                    DownloadFile (c, file, sC, lC, replace, silentDownload);
+                foreach (String remoteFile in files) {
+                    fileName = remoteFile.Replace ((string) dir.GetFullRemotePath (), "").Substring (1).Replace ("/", "\\");
+                    serverCopy = Path.Combine ((string) dir.GetFullServerCopy (), fileName);
+                    //Cache copy
+                    cC = new FileInfo (serverCopy);
+                    //The path to the working copy
+                    wC = new FileInfo (Path.Combine ((string) dir.GetFullProjectCopy (), fileName));
+                    DownloadFile (c, remoteFile, cC, wC, replace, silentDownload);
                 }
             }));
         }
@@ -68,9 +70,9 @@ namespace Nameless.Libraries.Aura.Utils {
         public static void Download (this SiteCredentials credentials, MappedPath fileMap, Boolean replace) {
             FileInfo sC, lC;
             AuraSftpClient.SSHTransactionVoid (credentials, (AuraSftpClient c) => {
-                sC = new FileInfo (fileMap.ServerCopy);
-                lC = new FileInfo (fileMap.ProjectCopy);
-                DownloadFile (c, fileMap.RemotePath, sC, lC, replace);
+                sC = new FileInfo (fileMap.GetFullServerCopy ());
+                lC = new FileInfo (fileMap.GetFullProjectCopy ());
+                DownloadFile (c, fileMap.GetFullRemotePath (), sC, lC, replace);
             });
         }
         /// <summary>
@@ -102,10 +104,10 @@ namespace Nameless.Libraries.Aura.Utils {
         /// </summary>
         /// <param name="client">The SFTP client</param>
         /// <param name="remoteFile">The remote file path</param>
-        /// <param name="serverCopy">The server file copy</param>
-        /// <param name="localCopy">The project file copy</param>
-        /// <param name="replace">True if the file is replaced</param>
-        /// <param name="silentDownload">Download the files without listing everything</param>
+        /// <param name="serverCopy">The server copy path, also called the cache copy. Defines where cache file is stored</param>
+        /// <param name="localCopy">The project copy path, also called the working copy. Defines where the editable file is stored.</param>
+        /// <param name="replace">True if the project copy file is replaced if exists</param>
+        /// <param name="silentDownload">Download the files without listing details</param>
         private static void DownloadFile (AuraSftpClient client, string remoteFile,
             FileInfo serverCopy, FileInfo localCopy, Boolean replace, Boolean silentDownload = false) {
             if (!silentDownload)
@@ -129,7 +131,11 @@ namespace Nameless.Libraries.Aura.Utils {
                         Console.WriteLine (String.Format (MSG_INF_EXIST_REPLACE_FILE, localCopy.FullName));
                 }
             }
-            File.Move (serverCopy.FullName, serverCopy.FullName + ".copy");
+            //Cache is always replaced
+            string copyPath = serverCopy.FullName + ".copy";
+            if (File.Exists (copyPath))
+                File.Delete (copyPath);
+            File.Move (serverCopy.FullName, copyPath);
         }
         /// <summary>
         /// Uploads a collection of files to the current server site
@@ -142,14 +148,14 @@ namespace Nameless.Libraries.Aura.Utils {
             files.ToList ().ForEach (x => Console.WriteLine (x.ToUploadPreviewFormat ()));
             if (silentMode || CommandUtils.AskYesNo (MSG_ASK_CONTINUE)) {
                 AuraSftpClient.SFTPTransactionVoid (project.Connection.Data, (SftpClient c) => {
-                    var uploadedFiles = files.OrderBy (x => x.RemotePath).ToArray ();
+                    var uploadedFiles = files.OrderBy (x => x.GetFullRemotePath ()).ToArray ();
                     Stream input;
                     foreach (MappedPath file in uploadedFiles) {
-                        input = File.OpenRead (file.ProjectCopy);
-                        using (input = File.OpenRead (file.ProjectCopy)) {
-                            c.UploadFile (input, file.RemotePath, true, null);
-                            Console.WriteLine (String.Format ("Uploaded at {0}", file.RemotePath));
-                            File.Copy (file.ProjectCopy, file.ServerCopy+".copy", true);
+                        input = File.OpenRead (file.GetFullProjectCopy ());
+                        using (input = File.OpenRead (file.GetFullProjectCopy ())) {
+                            c.UploadFile (input, file.GetFullRemotePath (), true, null);
+                            Console.WriteLine (String.Format ("Uploaded at {0}", file.GetFullRemotePath ()));
+                            File.Copy (file.GetFullProjectCopy (), file.GetFullServerCopy () + ".copy", true);
                         }
                     }
                 });
