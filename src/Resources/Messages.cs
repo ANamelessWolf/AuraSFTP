@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Nameless.Libraries.Aura.Resources {
+namespace Nameless.Libraries.Aura.Resources
+{
 
-    public static class Message {
+    public static class Message
+    {
         /*****************************
          **** Application Messages ***
          *****************************/
@@ -45,6 +47,11 @@ namespace Nameless.Libraries.Aura.Resources {
         /// with the given arguments in the specified action.
         /// </summary>
         public const string MSG_ERR_BAD_CMD_ARGS = MSG_ERR_BAD_ARGS + " See '-h {0} {1}' for more information.";
+        /// <summary>
+        /// The error message sent when no option is defined
+        /// with the given arguments in the specified action.
+        /// </summary>
+        public const string MSG_ERR_NO_CONN = "No site connection. Check your internet connection and credentials";
         /*****************************
          ****** Project Messages *****
          *****************************/
@@ -182,6 +189,10 @@ namespace Nameless.Libraries.Aura.Resources {
         /// The error message sent when a site fail to be modified, because the given property not exists
         /// </summary>
         public const string MSG_ERR_SITE_UPDATED = "The site '{0}' doesn't has a property called '{1}'.";
+        /// <summary>
+        /// The error message sent when a project name is not valid
+        /// </summary>
+        public const string MSG_ERR_INVALID_PRJ_NAME = "The project name can't contain the following characters '*', '.', '/', '\', '[', ']', ':', ';', '|', '='";
         /****************************
          ****** Ignore Messages *****
          ****************************/

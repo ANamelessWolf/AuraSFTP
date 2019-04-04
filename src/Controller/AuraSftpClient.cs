@@ -7,10 +7,13 @@ using Renci.SshNet;
 using RenCiSftpClient = Renci.SshNet.SftpClient;
 using static Renci.SshNet.RemotePathTransformation;
 using Nameless.Libraries.Aura.Utils;
+using Nameless.Libraries.Aura.Resources;
 
-namespace Nameless.Libraries.Aura.Controller {
+namespace Nameless.Libraries.Aura.Controller
+{
 
-    public class AuraSftpClient : ScpClient {
+    public class AuraSftpClient : ScpClient
+    {
         /// <summary>
         /// The Sftp connection credentials
         /// </summary>
@@ -20,7 +23,8 @@ namespace Nameless.Libraries.Aura.Controller {
         /// Start the connection to SFTP client
         /// </summary>
         /// <param name="_cred">The SFTP connection credentials</param>
-        public AuraSftpClient (SiteCredentials _cred) : base (_cred.Host, _cred.Port, _cred.User, _cred.Password) {
+        public AuraSftpClient(SiteCredentials _cred) : base(_cred.Host, _cred.Port, _cred.User, _cred.Password)
+        {
             this.credentials = _cred;
         }
         /// <summary>
@@ -32,19 +36,24 @@ namespace Nameless.Libraries.Aura.Controller {
         /// it is passed to the scp command on the remote server.
         /// DoubleQuote, ShellQuote, None</param>
         /// <returns>The transaction result</returns>
-        public static Object SSHTransaction (SiteCredentials _cred, Func<AuraSftpClient, Object> task, IRemotePathTransformation remotePath = null) {
+        public static Object SSHTransaction(SiteCredentials _cred, Func<AuraSftpClient, Object> task, IRemotePathTransformation remotePath = null)
+        {
             Object result = null;
-            using (var client = new AuraSftpClient (_cred)) {
-                try {
+            using (var client = new AuraSftpClient(_cred))
+            {
+                try
+                {
                     if (remotePath == null)
                         client.RemotePathTransformation = ShellQuote;
                     else
                         client.RemotePathTransformation = remotePath;
-                    client.Connect ();
-                    result = task (client);
-                    client.Disconnect ();
-                } catch (System.Exception exc) {
-                    Console.WriteLine (exc.Message);
+                    client.Connect();
+                    result = task(client);
+                    client.Disconnect();
+                }
+                catch (System.Exception exc)
+                {
+                    Console.WriteLine(exc.Message);
                 }
             }
             return result;
@@ -58,8 +67,8 @@ namespace Nameless.Libraries.Aura.Controller {
         /// it is passed to the scp command on the remote server.
         /// DoubleQuote, ShellQuote, None</param>
         /// <returns>The transaction result</returns>
-        public static T SSHTransactionGen<T> (SiteCredentials _cred, Func<AuraSftpClient, T> task, IRemotePathTransformation remotePath = null)
-        where T : class => (T) SSHTransaction (_cred, task);
+        public static T SSHTransactionGen<T>(SiteCredentials _cred, Func<AuraSftpClient, T> task, IRemotePathTransformation remotePath = null)
+        where T : class => (T)SSHTransaction(_cred, task);
         /// <summary>
         /// Defines a SSH transaction
         /// </summary>
@@ -68,18 +77,23 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <param name="remotePath">Changes how the remote path is transformed before 
         /// it is passed to the scp command on the remote server.
         /// DoubleQuote, ShellQuote, None</param>
-        public static void SSHTransactionVoid (SiteCredentials _cred, Action<AuraSftpClient> task, IRemotePathTransformation remotePath = null) {
-            using (var client = new AuraSftpClient (_cred)) {
-                try {
+        public static void SSHTransactionVoid(SiteCredentials _cred, Action<AuraSftpClient> task, IRemotePathTransformation remotePath = null)
+        {
+            using (var client = new AuraSftpClient(_cred))
+            {
+                try
+                {
                     if (remotePath == null)
                         client.RemotePathTransformation = ShellQuote;
                     else
                         client.RemotePathTransformation = remotePath;
-                    client.Connect ();
-                    task (client);
-                    client.Disconnect ();
-                } catch (System.Exception exc) {
-                    Console.WriteLine (exc.Message);
+                    client.Connect();
+                    task(client);
+                    client.Disconnect();
+                }
+                catch (System.Exception exc)
+                {
+                    Console.WriteLine(exc.Message);
                 }
             }
         }
@@ -89,15 +103,20 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <param name="_cred">The SSH transaction credentials</param>
         /// <param name="task">The Transaction task</param>
         /// <returns>The transaction result</returns>
-        public static Object SFTPTransaction (SiteCredentials _cred, Func<Renci.SshNet.SftpClient, Object> task) {
+        public static Object SFTPTransaction(SiteCredentials _cred, Func<Renci.SshNet.SftpClient, Object> task)
+        {
             Object result = null;
-            using (var client = new Renci.SshNet.SftpClient (_cred.Host, _cred.Port, _cred.User, _cred.Password)) {
-                try {
-                    client.Connect ();
-                    result = task (client);
-                    client.Disconnect ();
-                } catch (System.Exception exc) {
-                    Console.WriteLine (exc.Message);
+            using (var client = new Renci.SshNet.SftpClient(_cred.Host, _cred.Port, _cred.User, _cred.Password))
+            {
+                try
+                {
+                    client.Connect();
+                    result = task(client);
+                    client.Disconnect();
+                }
+                catch (System.Exception exc)
+                {
+                    Console.WriteLine(exc.Message);
                 }
             }
             return result;
@@ -108,15 +127,20 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <param name="_cred">The credential connections</param>
         /// <param name="errMsg">The error message</param>
         /// <returns>True if the credentials are valid to connect to the host</returns>
-        public static Boolean TestConnection (SiteCredentials _cred, out string errMsg) {
+        public static Boolean TestConnection(SiteCredentials _cred, out string errMsg)
+        {
             Boolean result = true;
             errMsg = String.Empty;
-            using (var client = new Renci.SshNet.SftpClient (_cred.Host, _cred.Port, _cred.User, _cred.Password)) {
-                try {
-                    client.Connect ();
-                    client.Disconnect ();
-                } catch (System.Exception exc) {
-                    errMsg = exc.Message;
+            using (var client = new Renci.SshNet.SftpClient(_cred.Host, _cred.Port, _cred.User, _cred.Password))
+            {
+                try
+                {
+                    client.Connect();
+                    client.Disconnect();
+                }
+                catch (System.Exception exc)
+                {
+                    errMsg = Message.MSG_ERR_NO_CONN + ".\n" + exc.Message;
                     result = false;
                 }
             }
@@ -129,21 +153,26 @@ namespace Nameless.Libraries.Aura.Controller {
         /// <param name="_cred">The SSH transaction credentials</param>
         /// <param name="task">The Transaction task</param>
         /// <returns>The transaction result</returns>
-        public static T SFTPTransactionGen<T> (SiteCredentials _cred, Func<Renci.SshNet.SftpClient, T> task)
-        where T : class => (T) SFTPTransaction (_cred, task);
+        public static T SFTPTransactionGen<T>(SiteCredentials _cred, Func<Renci.SshNet.SftpClient, T> task)
+        where T : class => (T)SFTPTransaction(_cred, task);
         /// <summary>
         /// Defines a SFTP Client transaction
         /// </summary>
         /// <param name="_cred">The SSH transaction credentials</param>
         /// <param name="task">The Transaction task</param>
-        public static void SFTPTransactionVoid (SiteCredentials _cred, Action<Renci.SshNet.SftpClient> task) {
-            using (var client = new Renci.SshNet.SftpClient (_cred.Host, _cred.Port, _cred.User, _cred.Password)) {
-                try {
-                    client.Connect ();
-                    task (client);
-                    client.Disconnect ();
-                } catch (System.Exception exc) {
-                    Console.WriteLine (exc.Message);
+        public static void SFTPTransactionVoid(SiteCredentials _cred, Action<Renci.SshNet.SftpClient> task)
+        {
+            using (var client = new Renci.SshNet.SftpClient(_cred.Host, _cred.Port, _cred.User, _cred.Password))
+            {
+                try
+                {
+                    client.Connect();
+                    task(client);
+                    client.Disconnect();
+                }
+                catch (System.Exception exc)
+                {
+                    Console.WriteLine(exc.Message);
                 }
             }
         }
